@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+484990a468f0ef726c98683b42546ce1 D:/Project/Compile/lab3/MiniC/calculator_lex.cpp
+cb6f4c354bb304c04a7c77866a1f6c7e D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp
