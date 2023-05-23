@@ -41,7 +41,7 @@ void yyerror(char * msg);
 %token <var_id> T_BREAK     // void 类型关键字
 %token <var_id> T_CONTINUE     // INT 类型关键字
 %token <var_id> T_WHILE     // INT 类型关键字
-%token <var_id> T_RETURN
+%token <var_id> T_RETURN    // return
 
 %token T_MUL        // 乘法运算符'*'
 %token T_ADD        // 加法运算符'+'
@@ -67,7 +67,8 @@ void yyerror(char * msg);
 %type <node> expr assexpr lval 
 %type <node> orexpr andexpr cmpexpr cmps aloexpr addsub item muldiv factor lop selfexpr selfop
 %type <node> funccall realarg elem literal 
-%type <node> itemtail cmptail andtail alotail 
+%type <node> itemtail cmptail andtail alotail
+%type <node> ident num
 %left T_ADD T_SUB
 %left T_MUL T_DIV T_MOD
 
@@ -92,7 +93,8 @@ program   :  segment
             };
 
 segment   : type def
-            {
+            {   
+                //  判断是变量定义还是函数定义
                 if ($2->type == AST_OP_NULL) {
                     $$ = new_ast_node(AST_VAR_DECL, $1,$2);
                 }
@@ -166,27 +168,12 @@ para    : {
             }
         | paras
         {   
-            struct ast_node * nd = new struct ast_node();
-            nd->type = AST_FARGS;
-            nd->sons.push_back($1);
-            std::vector<struct ast_node *>::iterator pIter;
-            // 第一个参数的第三个孩子节点开始是后面的参数
-            for (pIter = $1->sons.begin()+2; pIter != $1->sons.end(); ++pIter) {
-                nd->sons.push_back(*pIter);
-            }
-            // 删除参数之间的关系
-            for (pIter = $1->sons.begin()+2; pIter != $1->sons.end(); ++pIter) {
-                $1->sons.pop_back();
-            }
-            $1->sons.pop_back();
-            // $1->sons.clear();
-            // 删除完之后nd节点的所有孩子节点就是函数的参数列表
-            $$ = nd;
+            $$ = $1;
         }
 
 paras   : onepara
         {
-            $$ = $1;
+            $$ = new_ast_node(AST_FARGS,$1);
         }
         | onepara ',' paras
             {
@@ -225,14 +212,9 @@ onestatement : statement
                 $$ = $1;
             }
 
-statement   : blockstat
-            {
-                $$ = $1;
-            }
-            | assignstat
-            {
-                $$ = $1;
-            }
+statement   : blockstat{$$ = $1;}  //另一个语句块
+            | assignstat{$$ = $1;} //赋值语句
+            | T_RETURN expr ';' {$$ = new_ast_node(AST_RETURN,$2);} // return 语句
 assignstat  : expr ';'
             {
                  $$ = $1;
@@ -272,26 +254,32 @@ factor          : '(' expr ')'
                     {
                         $$ = $2;
                     }
-                | T_DIGIT
+                | num
                     {
-                        // 终结符作为抽象语法树的叶子节点进行创建
-
-                        struct ast_node_attr temp_val;
-                        temp_val.kind = DIGIT_KIND_INT;
-                        temp_val.integer_val = $1.val;
-                        temp_val.lineno = $1.lineno;
-                        printf("%d\n", temp_val.integer_val);
-                        $$ = new_ast_leaf_node(temp_val);
+                        $$ = $1;
                     }
-                | T_ID 
+                | ident 
                     {
-                        struct ast_node_attr temp_val;
-                        temp_val.kind = DIGIT_KIND_ID;
-                        temp_val.lineno = $1.lineno;
-                        strncpy(temp_val.id, $1.id, sizeof(temp_val.id));
-                        $$ = new_ast_leaf_node(temp_val);
+                        $$ = $1;
                     };
-
+ident   : T_ID
+        {
+            struct ast_node_attr temp_val;
+            temp_val.kind = DIGIT_KIND_ID;
+            temp_val.lineno = $1.lineno;
+            strncpy(temp_val.id, $1.id, sizeof(temp_val.id));
+            $$ = new_ast_leaf_node(temp_val);
+        }
+num     : T_DIGIT
+        {
+          // 终结符作为抽象语法树的叶子节点进行创建
+            struct ast_node_attr temp_val;
+            temp_val.kind = DIGIT_KIND_INT;
+            temp_val.integer_val = $1.val;
+            temp_val.lineno = $1.lineno;
+            printf("%d\n", temp_val.integer_val);
+            $$ = new_ast_leaf_node(temp_val);
+        }
 %%
 
 // 语法识别错误要调用函数的定义

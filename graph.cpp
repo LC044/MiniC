@@ -247,6 +247,12 @@ Agnode_t *graph_visit_ast_node(Agraph_t *g, struct ast_node *astnode)
         graph_node = genBlockGraphNode(g, astnode, "FARGS");
 
         break;
+    case AST_RETURN:
+
+        // 多个语句组成的块
+        graph_node = genBlockGraphNode(g, astnode, "RET");
+
+        break;
     default:
 
         // 错误，不支持

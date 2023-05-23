@@ -22,6 +22,7 @@ enum ast_operator_type {
     AST_OP_EXPR_SHOW, // 表达式语句，需要显示表达式的值
 
     // TODO 抽象语法树其它内部节点运算符追加
+    AST_RETURN,         // 返回语句
     AST_CU,             // 文件，全局声明、定义
     AST_VAR_DECL,      // 变量声明
     AST_VAR_DEF,      // 变量定义
