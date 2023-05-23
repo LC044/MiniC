@@ -1,3 +1,3 @@
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f CMakeFiles\minic.dir/objects.a
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\llvm-ar.exe qc CMakeFiles\minic.dir/objects.a @CMakeFiles\minic.dir\objects1.rsp
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe -g -Wl,--whole-archive CMakeFiles\minic.dir/objects.a -Wl,--no-whole-archive -o minic.exe -Wl,--out-implib,libminic.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\minic.dir\linkLibs.rsp
+D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f CMakeFiles\minic.dir/objects.a
+D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\ar.exe qc CMakeFiles\minic.dir/objects.a @CMakeFiles\minic.dir\objects1.rsp
+D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\minic.dir/objects.a -Wl,--no-whole-archive -o minic.exe -Wl,--out-implib,libminic.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\minic.dir\linkLibs.rsp

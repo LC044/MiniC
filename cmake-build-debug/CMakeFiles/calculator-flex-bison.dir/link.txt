@@ -1,3 +1,0 @@
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f CMakeFiles\calculator-flex-bison.dir/objects.a
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\llvm-ar.exe qc CMakeFiles\calculator-flex-bison.dir/objects.a @CMakeFiles\calculator-flex-bison.dir\objects1.rsp
-D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe -g -Wl,--whole-archive CMakeFiles\calculator-flex-bison.dir/objects.a -Wl,--no-whole-archive -o calculator-flex-bison.exe -Wl,--out-implib,libcalculator-flex-bison.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\calculator-flex-bison.dir\linkLibs.rsp

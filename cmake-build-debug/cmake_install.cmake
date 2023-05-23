@@ -1,8 +1,8 @@
-# Install script for directory: D:/Project/Compile/lab3/MiniC
+# Install script for directory: D:/Project/CppProject/Compile/lab3/MiniC
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/calculator-flex-bison")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/minic")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-objdump.exe")
+  set(CMAKE_OBJDUMP "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/objdump.exe")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Project/Compile/lab3/MiniC/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Project/CppProject/Compile/lab3/MiniC/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

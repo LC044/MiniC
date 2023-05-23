@@ -57,18 +57,24 @@ extern int yydebug;
     T_DIGIT = 258,                 /* T_DIGIT  */
     T_ID = 259,                    /* T_ID  */
     T_FLOAT = 260,                 /* T_FLOAT  */
-    T_MUL = 261,                   /* T_MUL  */
-    T_ADD = 262,                   /* T_ADD  */
-    T_DIV = 263,                   /* T_DIV  */
-    T_SUB = 264,                   /* T_SUB  */
-    T_MOD = 265,                   /* T_MOD  */
-    T_LPAREN = 266,                /* T_LPAREN  */
-    T_RPAREN = 267,                /* T_RPAREN  */
-    T_ASSIGN = 268,                /* T_ASSIGN  */
-    T_SEMICOLON = 269,             /* T_SEMICOLON  */
-    T_INT = 270,                   /* T_INT  */
-    T_VOID = 271,                  /* T_VOID  */
-    UMINUS = 272                   /* UMINUS  */
+    T_INT = 261,                   /* T_INT  */
+    T_VOID = 262,                  /* T_VOID  */
+    T_IF = 263,                    /* T_IF  */
+    T_ELSE = 264,                  /* T_ELSE  */
+    T_FOR = 265,                   /* T_FOR  */
+    T_BREAK = 266,                 /* T_BREAK  */
+    T_CONTINUE = 267,              /* T_CONTINUE  */
+    T_WHILE = 268,                 /* T_WHILE  */
+    T_MUL = 269,                   /* T_MUL  */
+    T_ADD = 270,                   /* T_ADD  */
+    T_DIV = 271,                   /* T_DIV  */
+    T_SUB = 272,                   /* T_SUB  */
+    T_MOD = 273,                   /* T_MOD  */
+    T_LPAREN = 274,                /* T_LPAREN  */
+    T_RPAREN = 275,                /* T_RPAREN  */
+    T_ASSIGN = 276,                /* T_ASSIGN  */
+    T_SEMICOLON = 277,             /* T_SEMICOLON  */
+    UMINUS = 278                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -83,8 +89,9 @@ union YYSTYPE
     digit_int_attr integer_num; // 整型字面量
     digit_real_attr float_num;  // 实数字面量
     var_id_attr var_id;         // 标识符（变量名）
+    keyword_attr keyword;
 
-#line 88 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
+#line 95 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

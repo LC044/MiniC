@@ -119,25 +119,31 @@ enum yysymbol_kind_t
   YYSYMBOL_T_DIGIT = 3,                    /* T_DIGIT  */
   YYSYMBOL_T_ID = 4,                       /* T_ID  */
   YYSYMBOL_T_FLOAT = 5,                    /* T_FLOAT  */
-  YYSYMBOL_T_MUL = 6,                      /* T_MUL  */
-  YYSYMBOL_T_ADD = 7,                      /* T_ADD  */
-  YYSYMBOL_T_DIV = 8,                      /* T_DIV  */
-  YYSYMBOL_T_SUB = 9,                      /* T_SUB  */
-  YYSYMBOL_T_MOD = 10,                     /* T_MOD  */
-  YYSYMBOL_T_LPAREN = 11,                  /* T_LPAREN  */
-  YYSYMBOL_T_RPAREN = 12,                  /* T_RPAREN  */
-  YYSYMBOL_T_ASSIGN = 13,                  /* T_ASSIGN  */
-  YYSYMBOL_T_SEMICOLON = 14,               /* T_SEMICOLON  */
-  YYSYMBOL_T_INT = 15,                     /* T_INT  */
-  YYSYMBOL_T_VOID = 16,                    /* T_VOID  */
-  YYSYMBOL_17_ = 17,                       /* '|'  */
-  YYSYMBOL_UMINUS = 18,                    /* UMINUS  */
-  YYSYMBOL_YYACCEPT = 19,                  /* $accept  */
-  YYSYMBOL_Input = 20,                     /* Input  */
-  YYSYMBOL_Block = 21,                     /* Block  */
-  YYSYMBOL_Statement = 22,                 /* Statement  */
-  YYSYMBOL_type = 23,                      /* type  */
-  YYSYMBOL_def = 24                        /* def  */
+  YYSYMBOL_T_INT = 6,                      /* T_INT  */
+  YYSYMBOL_T_VOID = 7,                     /* T_VOID  */
+  YYSYMBOL_T_IF = 8,                       /* T_IF  */
+  YYSYMBOL_T_ELSE = 9,                     /* T_ELSE  */
+  YYSYMBOL_T_FOR = 10,                     /* T_FOR  */
+  YYSYMBOL_T_BREAK = 11,                   /* T_BREAK  */
+  YYSYMBOL_T_CONTINUE = 12,                /* T_CONTINUE  */
+  YYSYMBOL_T_WHILE = 13,                   /* T_WHILE  */
+  YYSYMBOL_T_MUL = 14,                     /* T_MUL  */
+  YYSYMBOL_T_ADD = 15,                     /* T_ADD  */
+  YYSYMBOL_T_DIV = 16,                     /* T_DIV  */
+  YYSYMBOL_T_SUB = 17,                     /* T_SUB  */
+  YYSYMBOL_T_MOD = 18,                     /* T_MOD  */
+  YYSYMBOL_T_LPAREN = 19,                  /* T_LPAREN  */
+  YYSYMBOL_T_RPAREN = 20,                  /* T_RPAREN  */
+  YYSYMBOL_T_ASSIGN = 21,                  /* T_ASSIGN  */
+  YYSYMBOL_T_SEMICOLON = 22,               /* T_SEMICOLON  */
+  YYSYMBOL_23_ = 23,                       /* '|'  */
+  YYSYMBOL_UMINUS = 24,                    /* UMINUS  */
+  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
+  YYSYMBOL_Input = 26,                     /* Input  */
+  YYSYMBOL_Block = 27,                     /* Block  */
+  YYSYMBOL_Statement = 28,                 /* Statement  */
+  YYSYMBOL_T = 29,                         /* T  */
+  YYSYMBOL_DEF = 30                        /* DEF  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -463,21 +469,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  7
+#define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   5
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  19
+#define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  6
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  8
+#define YYNRULES  7
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  12
+#define YYNSTATES  11
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   272
+#define YYMAXUTOK   278
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -503,7 +509,7 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    17,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    23,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -518,14 +524,14 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    18
+      15,    16,    17,    18,    19,    20,    21,    22,    24
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    64,    64,    69,    74,    82,    87,    91,    95
+       0,    72,    72,    77,    82,    90,    94,   104
 };
 #endif
 
@@ -542,9 +548,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "T_DIGIT", "T_ID",
-  "T_FLOAT", "T_MUL", "T_ADD", "T_DIV", "T_SUB", "T_MOD", "T_LPAREN",
-  "T_RPAREN", "T_ASSIGN", "T_SEMICOLON", "T_INT", "T_VOID", "'|'",
-  "UMINUS", "$accept", "Input", "Block", "Statement", "type", "def", YY_NULLPTR
+  "T_FLOAT", "T_INT", "T_VOID", "T_IF", "T_ELSE", "T_FOR", "T_BREAK",
+  "T_CONTINUE", "T_WHILE", "T_MUL", "T_ADD", "T_DIV", "T_SUB", "T_MOD",
+  "T_LPAREN", "T_RPAREN", "T_ASSIGN", "T_SEMICOLON", "'|'", "UMINUS",
+  "$accept", "Input", "Block", "Statement", "T", "DEF", YY_NULLPTR
 };
 
 static const char *
@@ -554,7 +561,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-20)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -568,8 +575,8 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -15,   -16,   -16,     2,   -15,   -16,    -1,   -16,   -16,   -16,
-     -10,   -16
+      -6,   -20,     1,    -6,   -20,    -2,   -20,   -20,   -20,   -19,
+     -20
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -577,20 +584,20 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     6,     7,     0,     2,     3,     0,     1,     4,     8,
-       0,     5
+       0,     6,     0,     2,     3,     0,     1,     4,     7,     0,
+       5
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -16,     1,   -16,   -16
+     -20,   -20,   -20,     2,   -20,   -20
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,     5,     6,    10
+       0,     2,     3,     4,     5,     9
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -598,32 +605,32 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     2,     7,     9,    11,     8
+       1,     6,     8,    10,     0,     7
 };
 
 static const yytype_int8 yycheck[] =
 {
-      15,    16,     0,     4,    14,     4
+       6,     0,     4,    22,    -1,     3
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    15,    16,    20,    21,    22,    23,     0,    22,     4,
-      24,    14
+       0,     6,    26,    27,    28,    29,     0,    28,     4,    30,
+      22
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    19,    20,    21,    21,    22,    23,    23,    24
+       0,    25,    26,    27,    27,    28,    29,    30
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     3,     1,     1,     1
+       0,     2,     1,     1,     2,     3,     1,     1
 };
 
 
@@ -1087,61 +1094,59 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* Input: Block  */
-#line 65 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 73 "D:/Project/Compile/lab3/MiniC/calculator.y"
             {
                 // Statements归约到Input时要执行的语义动作程序，C语言编写
                 ast_root = (yyvsp[0].node);
             }
-#line 1096 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1103 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
   case 3: /* Block: Statement  */
-#line 70 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 78 "D:/Project/Compile/lab3/MiniC/calculator.y"
             {
                 // 创建一个AST_OP_BLOCK类型的中间节点，孩子为Statement($1)
                 (yyval.node) = new_ast_node(AST_OP_BLOCK, (yyvsp[0].node));
             }
-#line 1105 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1112 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
   case 4: /* Block: Block Statement  */
-#line 75 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 83 "D:/Project/Compile/lab3/MiniC/calculator.y"
                 {
                     // Statement($2)作为Block($1)的孩子 
                     (yyvsp[0].node)->parent = (yyvsp[-1].node);
                     (yyvsp[-1].node)->sons.push_back((yyvsp[0].node));
                     (yyval.node) = (yyvsp[-1].node);
                 }
-#line 1116 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1123 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 5: /* Statement: type def T_SEMICOLON  */
-#line 83 "D:/Project/Compile/lab3/MiniC/calculator.y"
+  case 5: /* Statement: T DEF T_SEMICOLON  */
+#line 91 "D:/Project/Compile/lab3/MiniC/calculator.y"
             {
-                // 创建一个AST_OP_EXPR类型的中间节点，孩子为Expr($1)
                 (yyval.node) = new_ast_node(AST_DEF, (yyvsp[-2].node),(yyvsp[-1].node));
             }
-#line 1125 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1131 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 6: /* type: T_INT  */
-#line 88 "D:/Project/Compile/lab3/MiniC/calculator.y"
-            {
+  case 6: /* T: T_INT  */
+#line 94 "D:/Project/Compile/lab3/MiniC/calculator.y"
+             {
                 // 终结符作为抽象语法树的叶子节点进行创建
+                struct ast_node_attr temp_val;
+                temp_val.kind = KEYWORD_ID;
+                temp_val.lineno = (yyvsp[0].var_id).lineno;
+                strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
+                printf("%s\n", temp_val.id);
+                (yyval.node) = new_ast_leaf_node(temp_val);
+                // $$ = $1;
             }
-#line 1133 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1146 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 7: /* type: T_VOID  */
-#line 92 "D:/Project/Compile/lab3/MiniC/calculator.y"
-            {
-                // 终结符作为抽象语法树的叶子节点进行创建
-            }
-#line 1141 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
-    break;
-
-  case 8: /* def: T_ID  */
-#line 95 "D:/Project/Compile/lab3/MiniC/calculator.y"
+  case 7: /* DEF: T_ID  */
+#line 104 "D:/Project/Compile/lab3/MiniC/calculator.y"
               {
                 struct ast_node_attr temp_val;
                 temp_val.kind = DIGIT_KIND_ID;
@@ -1149,11 +1154,11 @@ yyreduce:
                 strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
                 (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1153 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1158 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
 
-#line 1157 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1162 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
 
       default: break;
     }
@@ -1346,7 +1351,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 104 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 113 "D:/Project/Compile/lab3/MiniC/calculator.y"
 
 
 // 语法识别错误要调用函数的定义
