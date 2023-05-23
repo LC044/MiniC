@@ -1,0 +1,6 @@
+int b;
+int a12;
+int main(int e){
+    a = (4);
+    b = 5;
+}

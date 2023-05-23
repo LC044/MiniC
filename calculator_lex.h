@@ -2,9 +2,9 @@
 #define yyHEADER_H 1
 #define yyIN_HEADER 1
 
-#line 5 "D:/Project/Compile/lab3/MiniC/calculator_lex.h"
+#line 5 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h"
 
-#line 7 "D:/Project/Compile/lab3/MiniC/calculator_lex.h"
+#line 7 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -470,9 +470,9 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 124 "D:/Project/Compile/lab3/MiniC/calculator.l"
+#line 129 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.l"
 
 
-#line 476 "D:/Project/Compile/lab3/MiniC/calculator_lex.h"
+#line 476 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */

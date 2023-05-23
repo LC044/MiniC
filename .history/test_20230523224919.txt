@@ -1,0 +1,6 @@
+int a;
+int b;
+int main(int f){
+    c=2;
+    d = 2+2;
+}

@@ -67,7 +67,7 @@
 
 
 /* First part of user prologue.  */
-#line 1 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 1 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
 
 #include <cstdio>
 #include <cstring>
@@ -85,7 +85,7 @@
 void yyerror(char * msg);
 
 
-#line 89 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 89 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -127,23 +127,50 @@ enum yysymbol_kind_t
   YYSYMBOL_T_BREAK = 11,                   /* T_BREAK  */
   YYSYMBOL_T_CONTINUE = 12,                /* T_CONTINUE  */
   YYSYMBOL_T_WHILE = 13,                   /* T_WHILE  */
-  YYSYMBOL_T_MUL = 14,                     /* T_MUL  */
-  YYSYMBOL_T_ADD = 15,                     /* T_ADD  */
-  YYSYMBOL_T_DIV = 16,                     /* T_DIV  */
-  YYSYMBOL_T_SUB = 17,                     /* T_SUB  */
-  YYSYMBOL_T_MOD = 18,                     /* T_MOD  */
-  YYSYMBOL_T_LPAREN = 19,                  /* T_LPAREN  */
-  YYSYMBOL_T_RPAREN = 20,                  /* T_RPAREN  */
-  YYSYMBOL_T_ASSIGN = 21,                  /* T_ASSIGN  */
-  YYSYMBOL_T_SEMICOLON = 22,               /* T_SEMICOLON  */
-  YYSYMBOL_23_ = 23,                       /* '|'  */
-  YYSYMBOL_UMINUS = 24,                    /* UMINUS  */
-  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
-  YYSYMBOL_Input = 26,                     /* Input  */
-  YYSYMBOL_Block = 27,                     /* Block  */
-  YYSYMBOL_Statement = 28,                 /* Statement  */
-  YYSYMBOL_T = 29,                         /* T  */
-  YYSYMBOL_DEF = 30                        /* DEF  */
+  YYSYMBOL_T_RETURN = 14,                  /* T_RETURN  */
+  YYSYMBOL_T_MUL = 15,                     /* T_MUL  */
+  YYSYMBOL_T_ADD = 16,                     /* T_ADD  */
+  YYSYMBOL_T_DIV = 17,                     /* T_DIV  */
+  YYSYMBOL_T_SUB = 18,                     /* T_SUB  */
+  YYSYMBOL_T_MOD = 19,                     /* T_MOD  */
+  YYSYMBOL_T_LPAREN = 20,                  /* T_LPAREN  */
+  YYSYMBOL_T_RPAREN = 21,                  /* T_RPAREN  */
+  YYSYMBOL_T_ASSIGN = 22,                  /* T_ASSIGN  */
+  YYSYMBOL_T_SEMICOLON = 23,               /* T_SEMICOLON  */
+  YYSYMBOL_T_LC = 24,                      /* T_LC  */
+  YYSYMBOL_T_RC = 25,                      /* T_RC  */
+  YYSYMBOL_T_LB = 26,                      /* T_LB  */
+  YYSYMBOL_T_RB = 27,                      /* T_RB  */
+  YYSYMBOL_28_ = 28,                       /* '('  */
+  YYSYMBOL_29_ = 29,                       /* ')'  */
+  YYSYMBOL_30_ = 30,                       /* ';'  */
+  YYSYMBOL_31_ = 31,                       /* ','  */
+  YYSYMBOL_32_ = 32,                       /* '{'  */
+  YYSYMBOL_33_ = 33,                       /* '}'  */
+  YYSYMBOL_34_ = 34,                       /* '='  */
+  YYSYMBOL_35_ = 35,                       /* '+'  */
+  YYSYMBOL_36_ = 36,                       /* '-'  */
+  YYSYMBOL_37_ = 37,                       /* '*'  */
+  YYSYMBOL_38_ = 38,                       /* '/'  */
+  YYSYMBOL_YYACCEPT = 39,                  /* $accept  */
+  YYSYMBOL_Input = 40,                     /* Input  */
+  YYSYMBOL_program = 41,                   /* program  */
+  YYSYMBOL_segment = 42,                   /* segment  */
+  YYSYMBOL_type = 43,                      /* type  */
+  YYSYMBOL_def = 44,                       /* def  */
+  YYSYMBOL_idtail = 45,                    /* idtail  */
+  YYSYMBOL_deflist = 46,                   /* deflist  */
+  YYSYMBOL_functail = 47,                  /* functail  */
+  YYSYMBOL_para = 48,                      /* para  */
+  YYSYMBOL_paras = 49,                     /* paras  */
+  YYSYMBOL_onepara = 50,                   /* onepara  */
+  YYSYMBOL_blockstat = 51,                 /* blockstat  */
+  YYSYMBOL_subprogram = 52,                /* subprogram  */
+  YYSYMBOL_onestatement = 53,              /* onestatement  */
+  YYSYMBOL_statement = 54,                 /* statement  */
+  YYSYMBOL_assignstat = 55,                /* assignstat  */
+  YYSYMBOL_expr = 56,                      /* expr  */
+  YYSYMBOL_factor = 57                     /* factor  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -471,19 +498,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   5
+#define YYLAST   57
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  25
+#define YYNTOKENS  39
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  19
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  7
+#define YYNRULES  34
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  11
+#define YYNSTATES  51
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   278
+#define YYMAXUTOK   282
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -501,15 +528,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      28,    29,    37,    35,    31,    36,     2,    38,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    30,
+       2,    34,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    23,     2,     2,     2,     2,     2,
+       2,     2,     2,    32,     2,    33,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -524,14 +551,18 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    24
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    72,    72,    77,    82,    90,    94,   104
+       0,    76,    76,    81,    86,    94,   109,   119,   143,   149,
+     156,   158,   159,   161,   167,   187,   191,   198,   206,   210,
+     211,   216,   223,   228,   232,   236,   241,   246,   251,   256,
+     261,   266,   271,   275,   286
 };
 #endif
 
@@ -549,9 +580,13 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "T_DIGIT", "T_ID",
   "T_FLOAT", "T_INT", "T_VOID", "T_IF", "T_ELSE", "T_FOR", "T_BREAK",
-  "T_CONTINUE", "T_WHILE", "T_MUL", "T_ADD", "T_DIV", "T_SUB", "T_MOD",
-  "T_LPAREN", "T_RPAREN", "T_ASSIGN", "T_SEMICOLON", "'|'", "UMINUS",
-  "$accept", "Input", "Block", "Statement", "T", "DEF", YY_NULLPTR
+  "T_CONTINUE", "T_WHILE", "T_RETURN", "T_MUL", "T_ADD", "T_DIV", "T_SUB",
+  "T_MOD", "T_LPAREN", "T_RPAREN", "T_ASSIGN", "T_SEMICOLON", "T_LC",
+  "T_RC", "T_LB", "T_RB", "'('", "')'", "';'", "','", "'{'", "'}'", "'='",
+  "'+'", "'-'", "'*'", "'/'", "$accept", "Input", "program", "segment",
+  "type", "def", "idtail", "deflist", "functail", "para", "paras",
+  "onepara", "blockstat", "subprogram", "onestatement", "statement",
+  "assignstat", "expr", "factor", YY_NULLPTR
 };
 
 static const char *
@@ -561,7 +596,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-20)
+#define YYPACT_NINF (-25)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -575,8 +610,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -6,   -20,     1,    -6,   -20,    -2,   -20,   -20,   -20,   -19,
-     -20
+       0,   -25,    10,     0,   -25,     9,   -25,   -25,   -19,   -25,
+       0,   -25,   -25,   -25,    18,   -15,   -25,    -8,   -25,   -11,
+       0,   -25,    -1,   -25,   -25,   -25,   -25,   -25,     4,   -25,
+      -3,   -25,   -25,   -25,    14,   -25,     5,   -25,   -25,   -25,
+       4,     4,     4,     4,     4,   -25,    19,    19,    19,    19,
+      19
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -584,20 +623,26 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     6,     0,     2,     3,     0,     1,     4,     7,     0,
-       5
+       0,     6,     0,     2,     3,     0,     1,     4,     0,     5,
+      13,    10,     7,     8,     0,     0,    14,    15,    17,     0,
+       0,    12,    19,     9,    11,    16,    33,    34,     0,    23,
+       0,    20,    22,    24,     0,    31,     0,    18,    21,    25,
+       0,     0,     0,     0,     0,    32,    26,    27,    28,    29,
+      30
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -20,   -20,   -20,     2,   -20,   -20
+     -25,   -25,   -25,    21,    -5,   -25,   -25,   -25,   -25,   -25,
+       6,   -25,    16,   -25,    -2,   -25,   -25,   -24,   -25
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     4,     5,     9
+       0,     2,     3,     4,     5,     9,    12,    13,    23,    15,
+      16,    17,    29,    30,    31,    32,    33,    34,    35
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -605,32 +650,52 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     6,     8,    10,     0,     7
+      26,    27,    26,    27,    36,    14,     1,    26,    27,    10,
+       6,    11,    21,     8,    19,    14,    46,    47,    48,    49,
+      50,    22,    18,    20,     7,    28,    25,    28,    38,    22,
+      37,    22,    28,     0,    45,    24,     0,     0,     0,    40,
+      41,    42,    43,    44,    39,     0,     0,     0,    40,    41,
+      42,    43,    44,    40,    41,    42,    43,    44
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,     0,     4,    22,    -1,     3
+       3,     4,     3,     4,    28,    10,     6,     3,     4,    28,
+       0,    30,    23,     4,    29,    20,    40,    41,    42,    43,
+      44,    32,     4,    31,     3,    28,    20,    28,    30,    32,
+      33,    32,    28,    -1,    29,    19,    -1,    -1,    -1,    34,
+      35,    36,    37,    38,    30,    -1,    -1,    -1,    34,    35,
+      36,    37,    38,    34,    35,    36,    37,    38
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     6,    26,    27,    28,    29,     0,    28,     4,    30,
-      22
+       0,     6,    40,    41,    42,    43,     0,    42,     4,    44,
+      28,    30,    45,    46,    43,    48,    49,    50,     4,    29,
+      31,    23,    32,    47,    51,    49,     3,     4,    28,    51,
+      52,    53,    54,    55,    56,    57,    56,    33,    53,    30,
+      34,    35,    36,    37,    38,    29,    56,    56,    56,    56,
+      56
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    25,    26,    27,    27,    28,    29,    30
+       0,    39,    40,    41,    41,    42,    43,    44,    45,    45,
+      46,    47,    47,    48,    48,    49,    49,    50,    51,    52,
+      52,    52,    53,    54,    54,    55,    56,    56,    56,    56,
+      56,    56,    57,    57,    57
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1,     2,     3,     1,     1
+       0,     2,     1,     1,     2,     2,     1,     2,     1,     4,
+       1,     1,     1,     0,     1,     1,     3,     2,     3,     0,
+       1,     2,     1,     1,     1,     2,     3,     3,     3,     3,
+       3,     1,     3,     1,     1
 };
 
 
@@ -1093,46 +1158,56 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* Input: Block  */
-#line 73 "D:/Project/Compile/lab3/MiniC/calculator.y"
+  case 2: /* Input: program  */
+#line 77 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
             {
                 // Statements归约到Input时要执行的语义动作程序，C语言编写
                 ast_root = (yyvsp[0].node);
             }
-#line 1103 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1168 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 3: /* Block: Statement  */
-#line 78 "D:/Project/Compile/lab3/MiniC/calculator.y"
+  case 3: /* program: segment  */
+#line 82 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
             {
                 // 创建一个AST_OP_BLOCK类型的中间节点，孩子为Statement($1)
-                (yyval.node) = new_ast_node(AST_OP_BLOCK, (yyvsp[0].node));
+                (yyval.node) = new_ast_node(AST_CU, (yyvsp[0].node));
             }
-#line 1112 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1177 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 4: /* Block: Block Statement  */
-#line 83 "D:/Project/Compile/lab3/MiniC/calculator.y"
-                {
-                    // Statement($2)作为Block($1)的孩子 
-                    (yyvsp[0].node)->parent = (yyvsp[-1].node);
-                    (yyvsp[-1].node)->sons.push_back((yyvsp[0].node));
-                    (yyval.node) = (yyvsp[-1].node);
-                }
-#line 1123 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
-    break;
-
-  case 5: /* Statement: T DEF T_SEMICOLON  */
-#line 91 "D:/Project/Compile/lab3/MiniC/calculator.y"
+  case 4: /* program: program segment  */
+#line 87 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
             {
-                (yyval.node) = new_ast_node(AST_DEF, (yyvsp[-2].node),(yyvsp[-1].node));
+                // Statement($2)作为Block($1)的孩子 
+                (yyvsp[0].node)->parent = (yyvsp[-1].node);
+                (yyvsp[-1].node)->sons.push_back((yyvsp[0].node));
+                (yyval.node) = (yyvsp[-1].node);
             }
-#line 1131 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1188 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 6: /* T: T_INT  */
-#line 94 "D:/Project/Compile/lab3/MiniC/calculator.y"
-             {
+  case 5: /* segment: type def  */
+#line 95 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                if ((yyvsp[0].node)->type == AST_OP_NULL) {
+                    (yyval.node) = new_ast_node(AST_VAR_DECL, (yyvsp[-1].node),(yyvsp[0].node));
+                }
+                // else if ($2->type == AST_FUNC_DEF
+                else{
+                    (yyval.node) = new_ast_node((yyvsp[0].node)->type, (yyvsp[-1].node),(yyvsp[0].node)->sons[0],(yyvsp[0].node)->sons[1],(yyvsp[0].node)->sons[2]);
+                    // 删除该节点
+                    (yyvsp[0].node)->sons.clear();
+                    free_ast_node((yyvsp[0].node));
+                }
+                // $$ = $2;
+            }
+#line 1206 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 6: /* type: T_INT  */
+#line 109 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                {
                 // 终结符作为抽象语法树的叶子节点进行创建
                 struct ast_node_attr temp_val;
                 temp_val.kind = KEYWORD_ID;
@@ -1140,25 +1215,290 @@ yyreduce:
                 strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
                 printf("%s\n", temp_val.id);
                 (yyval.node) = new_ast_leaf_node(temp_val);
-                // $$ = $1;
             }
-#line 1146 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1220 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
-  case 7: /* DEF: T_ID  */
-#line 104 "D:/Project/Compile/lab3/MiniC/calculator.y"
-              {
+  case 7: /* def: T_ID idtail  */
+#line 120 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                struct ast_node_attr temp_val;
+                struct ast_node *temp_node;
+                temp_val.kind = DIGIT_KIND_ID;
+                temp_val.lineno = (yyvsp[-1].var_id).lineno;
+                strncpy(temp_val.id, (yyvsp[-1].var_id).id, sizeof(temp_val.id));
+                // 判断是函数还是变量
+                if ((yyvsp[0].node)->type == AST_VAR_DECL){
+                    temp_node = new_ast_leaf_node(temp_val);
+                    // temp_node->type = AST_VAR_DECL;
+                    (yyval.node) = temp_node;
+                }
+                else if ((yyvsp[0].node)->type == AST_FUNC_DEF){
+                    temp_node = new_ast_node(AST_OP_BLOCK,new_ast_leaf_node(temp_val), (yyvsp[0].node)->sons[0],(yyvsp[0].node)->sons[1]);
+                    temp_node->type = AST_FUNC_DEF;
+                    // 删除该节点
+                    (yyvsp[0].node)->sons.clear();
+                    free_ast_node((yyvsp[0].node));
+                    (yyval.node) = temp_node;
+                }
+                
+            }
+#line 1247 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 8: /* idtail: deflist  */
+#line 144 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+        { 
+            struct ast_node * nd = new struct ast_node();
+            nd->type = AST_VAR_DECL;
+            (yyval.node) = nd;
+        }
+#line 1257 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 9: /* idtail: '(' para ')' functail  */
+#line 150 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+        {  
+            // $$ = new_ast_node(AST_OP_SUB, $4);
+            (yyval.node) = new_ast_node(AST_FUNC_DEF,(yyvsp[-2].node),(yyvsp[0].node));
+            // $$ = $4;
+             }
+#line 1267 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 10: /* deflist: ';'  */
+#line 156 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+              { (yyval.node) = NULL; }
+#line 1273 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 11: /* functail: blockstat  */
+#line 158 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                     {(yyval.node) = (yyvsp[0].node);}
+#line 1279 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 12: /* functail: T_SEMICOLON  */
+#line 159 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                      {}
+#line 1285 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 13: /* para: %empty  */
+#line 161 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+          {
+            // 参数为空
+            struct ast_node * nd = new struct ast_node();
+            nd->type = AST_FARGS;
+            (yyval.node) = nd;
+            }
+#line 1296 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 14: /* para: paras  */
+#line 168 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+        {   
+            struct ast_node * nd = new struct ast_node();
+            nd->type = AST_FARGS;
+            nd->sons.push_back((yyvsp[0].node));
+            std::vector<struct ast_node *>::iterator pIter;
+            // 第一个参数的第三个孩子节点开始是后面的参数
+            for (pIter = (yyvsp[0].node)->sons.begin()+2; pIter != (yyvsp[0].node)->sons.end(); ++pIter) {
+                nd->sons.push_back(*pIter);
+            }
+            // 删除参数之间的关系
+            for (pIter = (yyvsp[0].node)->sons.begin()+2; pIter != (yyvsp[0].node)->sons.end(); ++pIter) {
+                (yyvsp[0].node)->sons.pop_back();
+            }
+            (yyvsp[0].node)->sons.pop_back();
+            // $1->sons.clear();
+            // 删除完之后nd节点的所有孩子节点就是函数的参数列表
+            (yyval.node) = nd;
+        }
+#line 1319 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 15: /* paras: onepara  */
+#line 188 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+        {
+            (yyval.node) = (yyvsp[0].node);
+        }
+#line 1327 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 16: /* paras: onepara ',' paras  */
+#line 192 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 递归的添加参数，后面的参数为第一个参数的孩子节点
+                (yyvsp[-2].node)->parent = (yyvsp[0].node);
+                (yyvsp[0].node)->sons.push_back((yyvsp[-2].node));
+                (yyval.node) = (yyvsp[0].node);
+            }
+#line 1338 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 17: /* onepara: type T_ID  */
+#line 199 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
                 struct ast_node_attr temp_val;
                 temp_val.kind = DIGIT_KIND_ID;
                 temp_val.lineno = (yyvsp[0].var_id).lineno;
                 strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
-                (yyval.node) = new_ast_leaf_node(temp_val);
-        }
-#line 1158 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+                (yyval.node) = new_ast_node(AST_VAR_DECL, (yyvsp[-1].node),new_ast_leaf_node(temp_val));
+            }
+#line 1350 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 18: /* blockstat: '{' subprogram '}'  */
+#line 207 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                (yyval.node) = (yyvsp[-1].node);
+                }
+#line 1358 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 20: /* subprogram: onestatement  */
+#line 212 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                {
+                    // 创建一个AST_OP_BLOCK类型的中间节点，孩子为Statement($1)
+                (yyval.node) = new_ast_node(AST_OP_BLOCK, (yyvsp[0].node));
+                }
+#line 1367 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 21: /* subprogram: subprogram onestatement  */
+#line 217 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                {
+                    // Statement($2)作为Block($1)的孩子 
+                    (yyvsp[0].node)->parent = (yyvsp[-1].node);
+                    (yyvsp[-1].node)->sons.push_back((yyvsp[0].node));
+                    (yyval.node) = (yyvsp[-1].node);
+                }
+#line 1378 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 22: /* onestatement: statement  */
+#line 224 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                (yyval.node) = (yyvsp[0].node);
+            }
+#line 1386 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 23: /* statement: blockstat  */
+#line 229 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                (yyval.node) = (yyvsp[0].node);
+            }
+#line 1394 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 24: /* statement: assignstat  */
+#line 233 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                (yyval.node) = (yyvsp[0].node);
+            }
+#line 1402 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 25: /* assignstat: expr ';'  */
+#line 237 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                 (yyval.node) = (yyvsp[-1].node);
+            }
+#line 1410 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 26: /* expr: expr '=' expr  */
+#line 242 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 创建一个AST_OP_ASSIGN类型的中间节点，孩子为Id和Expr($3)
+                (yyval.node) = new_ast_node(AST_OP_ASSIGN, (yyvsp[-2].node), (yyvsp[0].node));
+            }
+#line 1419 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 27: /* expr: expr '+' expr  */
+#line 247 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 创建一个AST_OP_ADD类型的中间节点，孩子为Expr($1)和Term($3)
+                (yyval.node) = new_ast_node(AST_OP_ADD, (yyvsp[-2].node), (yyvsp[0].node));
+            }
+#line 1428 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 28: /* expr: expr '-' expr  */
+#line 252 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 创建一个AST_OP_ADD类型的中间节点，孩子为Expr($1)和Term($3)
+                (yyval.node) = new_ast_node(AST_OP_SUB, (yyvsp[-2].node), (yyvsp[0].node));
+            }
+#line 1437 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 29: /* expr: expr '*' expr  */
+#line 257 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 创建一个AST_OP_ADD类型的中间节点，孩子为Expr($1)和Term($3)
+                (yyval.node) = new_ast_node(AST_OP_MUL, (yyvsp[-2].node), (yyvsp[0].node));
+            }
+#line 1446 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 30: /* expr: expr '/' expr  */
+#line 262 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+            {
+                // 创建一个AST_OP_ADD类型的中间节点，孩子为Expr($1)和Term($3)
+                (yyval.node) = new_ast_node(AST_OP_DIV, (yyvsp[-2].node), (yyvsp[0].node));
+            }
+#line 1455 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 31: /* expr: factor  */
+#line 267 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                {
+                    (yyval.node) = (yyvsp[0].node);
+                }
+#line 1463 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 32: /* factor: '(' expr ')'  */
+#line 272 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                    {
+                        (yyval.node) = (yyvsp[-1].node);
+                    }
+#line 1471 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 33: /* factor: T_DIGIT  */
+#line 276 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                    {
+                        // 终结符作为抽象语法树的叶子节点进行创建
+
+                        struct ast_node_attr temp_val;
+                        temp_val.kind = DIGIT_KIND_INT;
+                        temp_val.integer_val = (yyvsp[0].integer_num).val;
+                        temp_val.lineno = (yyvsp[0].integer_num).lineno;
+                        printf("%d\n", temp_val.integer_val);
+                        (yyval.node) = new_ast_leaf_node(temp_val);
+                    }
+#line 1486 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
+    break;
+
+  case 34: /* factor: T_ID  */
+#line 287 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
+                    {
+                        struct ast_node_attr temp_val;
+                        temp_val.kind = DIGIT_KIND_ID;
+                        temp_val.lineno = (yyvsp[0].var_id).lineno;
+                        strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
+                        (yyval.node) = new_ast_leaf_node(temp_val);
+                    }
+#line 1498 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
     break;
 
 
-#line 1162 "D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp"
+#line 1502 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp"
 
       default: break;
     }
@@ -1351,7 +1691,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 113 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 295 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
 
 
 // 语法识别错误要调用函数的定义

@@ -1,0 +1,7 @@
+int b;
+int a12;
+b = 1;
+int main(){
+    a = (4);
+    b = 5;
+}

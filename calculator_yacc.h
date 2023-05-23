@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED
-# define YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED
+#ifndef YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED
+# define YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -65,16 +65,20 @@ extern int yydebug;
     T_BREAK = 266,                 /* T_BREAK  */
     T_CONTINUE = 267,              /* T_CONTINUE  */
     T_WHILE = 268,                 /* T_WHILE  */
-    T_MUL = 269,                   /* T_MUL  */
-    T_ADD = 270,                   /* T_ADD  */
-    T_DIV = 271,                   /* T_DIV  */
-    T_SUB = 272,                   /* T_SUB  */
-    T_MOD = 273,                   /* T_MOD  */
-    T_LPAREN = 274,                /* T_LPAREN  */
-    T_RPAREN = 275,                /* T_RPAREN  */
-    T_ASSIGN = 276,                /* T_ASSIGN  */
-    T_SEMICOLON = 277,             /* T_SEMICOLON  */
-    UMINUS = 278                   /* UMINUS  */
+    T_RETURN = 269,                /* T_RETURN  */
+    T_MUL = 270,                   /* T_MUL  */
+    T_ADD = 271,                   /* T_ADD  */
+    T_DIV = 272,                   /* T_DIV  */
+    T_SUB = 273,                   /* T_SUB  */
+    T_MOD = 274,                   /* T_MOD  */
+    T_LPAREN = 275,                /* T_LPAREN  */
+    T_RPAREN = 276,                /* T_RPAREN  */
+    T_ASSIGN = 277,                /* T_ASSIGN  */
+    T_SEMICOLON = 278,             /* T_SEMICOLON  */
+    T_LC = 279,                    /* T_LC  */
+    T_RC = 280,                    /* T_RC  */
+    T_LB = 281,                    /* T_LB  */
+    T_RB = 282                     /* T_RB  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -83,7 +87,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "D:/Project/Compile/lab3/MiniC/calculator.y"
+#line 20 "D:/Project/CppProject/Compile/lab3/MiniC/calculator.y"
 
     struct ast_node * node;
     digit_int_attr integer_num; // 整型字面量
@@ -91,7 +95,7 @@ union YYSTYPE
     var_id_attr var_id;         // 标识符（变量名）
     keyword_attr keyword;
 
-#line 95 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
+#line 99 "D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -106,4 +110,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED  */
+#endif /* !YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_CALCULATOR_YACC_H_INCLUDED  */

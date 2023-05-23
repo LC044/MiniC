@@ -9,7 +9,7 @@
             "name": "GDB for Windows or Linux to IR",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cmake-build-debug/calculator-flex-bison",
+            "program": "${workspaceFolder}/cmake-build-debug/minic",
             "args": [
                 "-r",
                 "test.txt"
@@ -37,7 +37,7 @@
             "name": "GDB for Windows or Linux to Calculation",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cmake-build-debug/calculator-flex-bison",
+            "program": "${workspaceFolder}/cmake-build-debug/minic",
             "args": [
                 "-R",
                 "test.txt"
@@ -65,7 +65,7 @@
             "name": "GDB for Windows or Linux to AST",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cmake-build-debug/calculator-flex-bison",
+            "program": "${workspaceFolder}/cmake-build-debug/minic",
             "args": [
                 "-a",
                 "test.txt"
@@ -93,7 +93,7 @@
             "name": "LLDB for Mac to Calculation",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cmake-build-debug/calculator-flex-bison",
+            "program": "${workspaceFolder}/cmake-build-debug/minic",
             "args": [
                 "-R",
                 "test.txt"
