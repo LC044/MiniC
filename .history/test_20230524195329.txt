@@ -1,0 +1,3 @@
+int a,b[2],c,d;
+int b;
+int p[3];
