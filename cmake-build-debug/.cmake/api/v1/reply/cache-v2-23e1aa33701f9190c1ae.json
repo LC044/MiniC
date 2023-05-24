@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/usr/bin/bison.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/usr/bin/bison.exe"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -27,7 +27,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/addr2line.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-addr2line.exe"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -43,7 +43,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/ar.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-ar.exe"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -67,7 +67,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "d:/Project/CppProject/Compile/lab3/MiniC/cmake-build-debug"
+			"value" : "d:/Project/Compile/lab3/MiniC/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -131,7 +131,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/cmake.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -143,7 +143,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/cpack.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -155,7 +155,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/ctest.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -171,7 +171,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/g++.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/clang++.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -183,11 +183,27 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+					"value" : "LLVM archiver"
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/gcc-ar.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-ar.exe"
+		},
+		{
+			"name" : "CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "`clang-scan-deps` dependency scanner"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/clang-scan-deps.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_RANLIB",
@@ -199,11 +215,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+					"value" : "Generate index for LLVM archive"
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/gcc-ranlib.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -311,7 +327,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/gcc.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/clang.exe"
 		},
 		{
 			"name" : "CMAKE_DLLTOOL",
@@ -327,7 +343,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/dlltool.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EDIT_COMMAND",
@@ -339,7 +355,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/ccmake.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/ccmake.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -467,7 +483,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/Project/CppProject/Compile/lab3/MiniC/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "D:/Project/Compile/lab3/MiniC/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -539,7 +555,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/lab3/MiniC"
+			"value" : "D:/Project/Compile/lab3/MiniC"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -567,7 +583,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/ld.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/ld.exe"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -583,7 +599,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/mingw32-make.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/mingw32-make.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -679,7 +695,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/nm.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-nm.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -707,7 +723,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/objcopy.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-objcopy.exe"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -723,7 +739,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/objdump.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-objdump.exe"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -847,7 +863,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/ranlib.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-ranlib.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER",
@@ -863,7 +879,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/windres.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/windres.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -971,7 +987,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/readelf.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-readelf.exe"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -983,7 +999,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/share/cmake"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/share/cmake"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1191,7 +1207,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/bin/strip.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/bin/llvm-strip.exe"
 		},
 		{
 			"name" : "CMAKE_VERBOSE_MAKEFILE",
@@ -1219,7 +1235,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/include/graphviz][D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a][D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a][D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a][D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a][v()]"
+			"value" : "[D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz][D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a][D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a][D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a][D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a][v()]"
 		},
 		{
 			"name" : "FLEX_EXECUTABLE",
@@ -1231,7 +1247,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/usr/bin/flex.exe"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/usr/bin/flex.exe"
 		},
 		{
 			"name" : "Graphviz_CDT_LIBRARY",
@@ -1247,7 +1263,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a"
 		},
 		{
 			"name" : "Graphviz_CGRAPH_LIBRARY",
@@ -1263,7 +1279,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a"
 		},
 		{
 			"name" : "Graphviz_GVC_LIBRARY",
@@ -1279,7 +1295,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a"
 		},
 		{
 			"name" : "Graphviz_INCLUDE_DIR",
@@ -1295,7 +1311,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/include/graphviz"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz"
 		},
 		{
 			"name" : "Graphviz_PATHPLAN_LIBRARY",
@@ -1311,7 +1327,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a"
+			"value" : "D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
@@ -1335,7 +1351,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/Project/CppProject/Compile/lab3/MiniC/cmake-build-debug"
+			"value" : "D:/Project/Compile/lab3/MiniC/cmake-build-debug"
 		},
 		{
 			"name" : "minic_IS_TOP_LEVEL",
@@ -1359,7 +1375,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "D:/Project/CppProject/Compile/lab3/MiniC"
+			"value" : "D:/Project/Compile/lab3/MiniC"
 		}
 	],
 	"kind" : "cache",

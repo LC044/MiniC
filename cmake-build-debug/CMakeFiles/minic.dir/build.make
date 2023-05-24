@@ -43,19 +43,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe
+CMAKE_COMMAND = D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe
 
 # The command to remove a file.
-RM = D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f
+RM = D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Project\CppProject\Compile\lab3\MiniC
+CMAKE_SOURCE_DIR = D:\Project\Compile\lab3\MiniC
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug
+CMAKE_BINARY_DIR = D:\Project\Compile\lab3\MiniC\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/minic.dir/depend.make
@@ -68,184 +68,184 @@ include CMakeFiles/minic.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/minic.dir/flags.make
 
-D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp: D:/Project/CppProject/Compile/lab3/MiniC/calculator.l
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp, D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\usr\bin\flex.exe -o D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp --header-file=D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h D:/Project/CppProject/Compile/lab3/MiniC/calculator.l
+D:/Project/Compile/lab3/MiniC/calculator_lex.cpp: D:/Project/Compile/lab3/MiniC/calculator.l
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating D:/Project/Compile/lab3/MiniC/calculator_lex.cpp, D:/Project/Compile/lab3/MiniC/calculator_lex.h"
+	D:\Project\Compile\CompilerTools\msys64\usr\bin\flex.exe -o D:/Project/Compile/lab3/MiniC/calculator_lex.cpp --header-file=D:/Project/Compile/lab3/MiniC/calculator_lex.h D:/Project/Compile/lab3/MiniC/calculator.l
 
-D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h: D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp
-	@$(CMAKE_COMMAND) -E touch_nocreate D:\Project\CppProject\Compile\lab3\MiniC\calculator_lex.h
+D:/Project/Compile/lab3/MiniC/calculator_lex.h: D:/Project/Compile/lab3/MiniC/calculator_lex.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate D:\Project\Compile\lab3\MiniC\calculator_lex.h
 
-D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp: D:/Project/CppProject/Compile/lab3/MiniC/calculator.y
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp, D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.h"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\usr\bin\bison.exe -d -o D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp --header=D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.h D:/Project/CppProject/Compile/lab3/MiniC/calculator.y
+D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp: D:/Project/Compile/lab3/MiniC/calculator.y
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp, D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
+	D:\Project\Compile\CompilerTools\msys64\usr\bin\bison.exe -d -o D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp --header=D:/Project/Compile/lab3/MiniC/calculator_yacc.h D:/Project/Compile/lab3/MiniC/calculator.y
 
-D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.h: D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp
-	@$(CMAKE_COMMAND) -E touch_nocreate D:\Project\CppProject\Compile\lab3\MiniC\calculator_yacc.h
+D:/Project/Compile/lab3/MiniC/calculator_yacc.h: D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp
+	@$(CMAKE_COMMAND) -E touch_nocreate D:\Project\Compile\lab3\MiniC\calculator_yacc.h
 
 CMakeFiles/minic.dir/calculator_lex.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/calculator_lex.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/calculator_lex.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp
+CMakeFiles/minic.dir/calculator_lex.cpp.obj: D:/Project/Compile/lab3/MiniC/calculator_lex.cpp
 CMakeFiles/minic.dir/calculator_lex.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/minic.dir/calculator_lex.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/calculator_lex.cpp.obj -MF CMakeFiles\minic.dir\calculator_lex.cpp.obj.d -o CMakeFiles\minic.dir\calculator_lex.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\calculator_lex.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/minic.dir/calculator_lex.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/calculator_lex.cpp.obj -MF CMakeFiles\minic.dir\calculator_lex.cpp.obj.d -o CMakeFiles\minic.dir\calculator_lex.cpp.obj -c D:\Project\Compile\lab3\MiniC\calculator_lex.cpp
 
 CMakeFiles/minic.dir/calculator_lex.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/calculator_lex.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\calculator_lex.cpp > CMakeFiles\minic.dir\calculator_lex.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\calculator_lex.cpp > CMakeFiles\minic.dir\calculator_lex.cpp.i
 
 CMakeFiles/minic.dir/calculator_lex.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/calculator_lex.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\calculator_lex.cpp -o CMakeFiles\minic.dir\calculator_lex.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\calculator_lex.cpp -o CMakeFiles\minic.dir\calculator_lex.cpp.s
 
 CMakeFiles/minic.dir/calculator_yacc.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/calculator_yacc.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/calculator_yacc.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp
+CMakeFiles/minic.dir/calculator_yacc.cpp.obj: D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp
 CMakeFiles/minic.dir/calculator_yacc.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/minic.dir/calculator_yacc.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/calculator_yacc.cpp.obj -MF CMakeFiles\minic.dir\calculator_yacc.cpp.obj.d -o CMakeFiles\minic.dir\calculator_yacc.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\calculator_yacc.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/minic.dir/calculator_yacc.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/calculator_yacc.cpp.obj -MF CMakeFiles\minic.dir\calculator_yacc.cpp.obj.d -o CMakeFiles\minic.dir\calculator_yacc.cpp.obj -c D:\Project\Compile\lab3\MiniC\calculator_yacc.cpp
 
 CMakeFiles/minic.dir/calculator_yacc.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/calculator_yacc.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\calculator_yacc.cpp > CMakeFiles\minic.dir\calculator_yacc.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\calculator_yacc.cpp > CMakeFiles\minic.dir\calculator_yacc.cpp.i
 
 CMakeFiles/minic.dir/calculator_yacc.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/calculator_yacc.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\calculator_yacc.cpp -o CMakeFiles\minic.dir\calculator_yacc.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\calculator_yacc.cpp -o CMakeFiles\minic.dir\calculator_yacc.cpp.s
 
 CMakeFiles/minic.dir/ast.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/ast.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/ast.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/ast.cpp
+CMakeFiles/minic.dir/ast.cpp.obj: D:/Project/Compile/lab3/MiniC/ast.cpp
 CMakeFiles/minic.dir/ast.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/minic.dir/ast.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/ast.cpp.obj -MF CMakeFiles\minic.dir\ast.cpp.obj.d -o CMakeFiles\minic.dir\ast.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\ast.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/minic.dir/ast.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/ast.cpp.obj -MF CMakeFiles\minic.dir\ast.cpp.obj.d -o CMakeFiles\minic.dir\ast.cpp.obj -c D:\Project\Compile\lab3\MiniC\ast.cpp
 
 CMakeFiles/minic.dir/ast.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/ast.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\ast.cpp > CMakeFiles\minic.dir\ast.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\ast.cpp > CMakeFiles\minic.dir\ast.cpp.i
 
 CMakeFiles/minic.dir/ast.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/ast.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\ast.cpp -o CMakeFiles\minic.dir\ast.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\ast.cpp -o CMakeFiles\minic.dir\ast.cpp.s
 
 CMakeFiles/minic.dir/expr.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/expr.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/expr.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/expr.cpp
+CMakeFiles/minic.dir/expr.cpp.obj: D:/Project/Compile/lab3/MiniC/expr.cpp
 CMakeFiles/minic.dir/expr.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/minic.dir/expr.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/expr.cpp.obj -MF CMakeFiles\minic.dir\expr.cpp.obj.d -o CMakeFiles\minic.dir\expr.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\expr.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/minic.dir/expr.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/expr.cpp.obj -MF CMakeFiles\minic.dir\expr.cpp.obj.d -o CMakeFiles\minic.dir\expr.cpp.obj -c D:\Project\Compile\lab3\MiniC\expr.cpp
 
 CMakeFiles/minic.dir/expr.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/expr.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\expr.cpp > CMakeFiles\minic.dir\expr.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\expr.cpp > CMakeFiles\minic.dir\expr.cpp.i
 
 CMakeFiles/minic.dir/expr.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/expr.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\expr.cpp -o CMakeFiles\minic.dir\expr.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\expr.cpp -o CMakeFiles\minic.dir\expr.cpp.s
 
 CMakeFiles/minic.dir/main.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/main.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/main.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/main.cpp
+CMakeFiles/minic.dir/main.cpp.obj: D:/Project/Compile/lab3/MiniC/main.cpp
 CMakeFiles/minic.dir/main.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/minic.dir/main.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/main.cpp.obj -MF CMakeFiles\minic.dir\main.cpp.obj.d -o CMakeFiles\minic.dir\main.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/minic.dir/main.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/main.cpp.obj -MF CMakeFiles\minic.dir\main.cpp.obj.d -o CMakeFiles\minic.dir\main.cpp.obj -c D:\Project\Compile\lab3\MiniC\main.cpp
 
 CMakeFiles/minic.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/main.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\main.cpp > CMakeFiles\minic.dir\main.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\main.cpp > CMakeFiles\minic.dir\main.cpp.i
 
 CMakeFiles/minic.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/main.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\main.cpp -o CMakeFiles\minic.dir\main.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\main.cpp -o CMakeFiles\minic.dir\main.cpp.s
 
 CMakeFiles/minic.dir/graph.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/graph.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/graph.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/graph.cpp
+CMakeFiles/minic.dir/graph.cpp.obj: D:/Project/Compile/lab3/MiniC/graph.cpp
 CMakeFiles/minic.dir/graph.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/minic.dir/graph.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/graph.cpp.obj -MF CMakeFiles\minic.dir\graph.cpp.obj.d -o CMakeFiles\minic.dir\graph.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/minic.dir/graph.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/graph.cpp.obj -MF CMakeFiles\minic.dir\graph.cpp.obj.d -o CMakeFiles\minic.dir\graph.cpp.obj -c D:\Project\Compile\lab3\MiniC\graph.cpp
 
 CMakeFiles/minic.dir/graph.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/graph.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\graph.cpp > CMakeFiles\minic.dir\graph.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\graph.cpp > CMakeFiles\minic.dir\graph.cpp.i
 
 CMakeFiles/minic.dir/graph.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/graph.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\graph.cpp -o CMakeFiles\minic.dir\graph.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\graph.cpp -o CMakeFiles\minic.dir\graph.cpp.s
 
 CMakeFiles/minic.dir/common.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/common.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/common.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/common.cpp
+CMakeFiles/minic.dir/common.cpp.obj: D:/Project/Compile/lab3/MiniC/common.cpp
 CMakeFiles/minic.dir/common.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/minic.dir/common.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/common.cpp.obj -MF CMakeFiles\minic.dir\common.cpp.obj.d -o CMakeFiles\minic.dir\common.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\common.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/minic.dir/common.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/common.cpp.obj -MF CMakeFiles\minic.dir\common.cpp.obj.d -o CMakeFiles\minic.dir\common.cpp.obj -c D:\Project\Compile\lab3\MiniC\common.cpp
 
 CMakeFiles/minic.dir/common.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/common.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\common.cpp > CMakeFiles\minic.dir\common.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\common.cpp > CMakeFiles\minic.dir\common.cpp.i
 
 CMakeFiles/minic.dir/common.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/common.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\common.cpp -o CMakeFiles\minic.dir\common.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\common.cpp -o CMakeFiles\minic.dir\common.cpp.s
 
 CMakeFiles/minic.dir/symbol.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/symbol.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/symbol.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/symbol.cpp
+CMakeFiles/minic.dir/symbol.cpp.obj: D:/Project/Compile/lab3/MiniC/symbol.cpp
 CMakeFiles/minic.dir/symbol.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/minic.dir/symbol.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/symbol.cpp.obj -MF CMakeFiles\minic.dir\symbol.cpp.obj.d -o CMakeFiles\minic.dir\symbol.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\symbol.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/minic.dir/symbol.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/symbol.cpp.obj -MF CMakeFiles\minic.dir\symbol.cpp.obj.d -o CMakeFiles\minic.dir\symbol.cpp.obj -c D:\Project\Compile\lab3\MiniC\symbol.cpp
 
 CMakeFiles/minic.dir/symbol.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/symbol.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\symbol.cpp > CMakeFiles\minic.dir\symbol.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\symbol.cpp > CMakeFiles\minic.dir\symbol.cpp.i
 
 CMakeFiles/minic.dir/symbol.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/symbol.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\symbol.cpp -o CMakeFiles\minic.dir\symbol.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\symbol.cpp -o CMakeFiles\minic.dir\symbol.cpp.s
 
 CMakeFiles/minic.dir/IRInst.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/IRInst.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/IRInst.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/IRInst.cpp
+CMakeFiles/minic.dir/IRInst.cpp.obj: D:/Project/Compile/lab3/MiniC/IRInst.cpp
 CMakeFiles/minic.dir/IRInst.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/minic.dir/IRInst.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/IRInst.cpp.obj -MF CMakeFiles\minic.dir\IRInst.cpp.obj.d -o CMakeFiles\minic.dir\IRInst.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\IRInst.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/minic.dir/IRInst.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/IRInst.cpp.obj -MF CMakeFiles\minic.dir\IRInst.cpp.obj.d -o CMakeFiles\minic.dir\IRInst.cpp.obj -c D:\Project\Compile\lab3\MiniC\IRInst.cpp
 
 CMakeFiles/minic.dir/IRInst.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/IRInst.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\IRInst.cpp > CMakeFiles\minic.dir\IRInst.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\IRInst.cpp > CMakeFiles\minic.dir\IRInst.cpp.i
 
 CMakeFiles/minic.dir/IRInst.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/IRInst.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\IRInst.cpp -o CMakeFiles\minic.dir\IRInst.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\IRInst.cpp -o CMakeFiles\minic.dir\IRInst.cpp.s
 
 CMakeFiles/minic.dir/IRCode.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/IRCode.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/IRCode.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/IRCode.cpp
+CMakeFiles/minic.dir/IRCode.cpp.obj: D:/Project/Compile/lab3/MiniC/IRCode.cpp
 CMakeFiles/minic.dir/IRCode.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/minic.dir/IRCode.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/IRCode.cpp.obj -MF CMakeFiles\minic.dir\IRCode.cpp.obj.d -o CMakeFiles\minic.dir\IRCode.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\IRCode.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/minic.dir/IRCode.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/IRCode.cpp.obj -MF CMakeFiles\minic.dir\IRCode.cpp.obj.d -o CMakeFiles\minic.dir\IRCode.cpp.obj -c D:\Project\Compile\lab3\MiniC\IRCode.cpp
 
 CMakeFiles/minic.dir/IRCode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/IRCode.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\IRCode.cpp > CMakeFiles\minic.dir\IRCode.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\IRCode.cpp > CMakeFiles\minic.dir\IRCode.cpp.i
 
 CMakeFiles/minic.dir/IRCode.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/IRCode.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\IRCode.cpp -o CMakeFiles\minic.dir\IRCode.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\IRCode.cpp -o CMakeFiles\minic.dir\IRCode.cpp.s
 
 CMakeFiles/minic.dir/genIR.cpp.obj: CMakeFiles/minic.dir/flags.make
 CMakeFiles/minic.dir/genIR.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/genIR.cpp.obj: D:/Project/CppProject/Compile/lab3/MiniC/genIR.cpp
+CMakeFiles/minic.dir/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/genIR.cpp
 CMakeFiles/minic.dir/genIR.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/minic.dir/genIR.cpp.obj"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/genIR.cpp.obj -MF CMakeFiles\minic.dir\genIR.cpp.obj.d -o CMakeFiles\minic.dir\genIR.cpp.obj -c D:\Project\CppProject\Compile\lab3\MiniC\genIR.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/minic.dir/genIR.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/genIR.cpp.obj -MF CMakeFiles\minic.dir\genIR.cpp.obj.d -o CMakeFiles\minic.dir\genIR.cpp.obj -c D:\Project\Compile\lab3\MiniC\genIR.cpp
 
 CMakeFiles/minic.dir/genIR.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/genIR.cpp.i"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\CppProject\Compile\lab3\MiniC\genIR.cpp > CMakeFiles\minic.dir\genIR.cpp.i
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\genIR.cpp > CMakeFiles\minic.dir\genIR.cpp.i
 
 CMakeFiles/minic.dir/genIR.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/genIR.cpp.s"
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\CppProject\Compile\lab3\MiniC\genIR.cpp -o CMakeFiles\minic.dir\genIR.cpp.s
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\genIR.cpp -o CMakeFiles\minic.dir\genIR.cpp.s
 
 # Object files for target minic
 minic_OBJECTS = \
@@ -276,14 +276,14 @@ minic.exe: CMakeFiles/minic.dir/IRInst.cpp.obj
 minic.exe: CMakeFiles/minic.dir/IRCode.cpp.obj
 minic.exe: CMakeFiles/minic.dir/genIR.cpp.obj
 minic.exe: CMakeFiles/minic.dir/build.make
-minic.exe: D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a
-minic.exe: D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a
-minic.exe: D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a
-minic.exe: D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a
+minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a
+minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a
+minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcgraph.dll.a
+minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libpathplan.dll.a
 minic.exe: CMakeFiles/minic.dir/linkLibs.rsp
 minic.exe: CMakeFiles/minic.dir/objects1.rsp
 minic.exe: CMakeFiles/minic.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable minic.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable minic.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\minic.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -294,10 +294,10 @@ CMakeFiles/minic.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles\minic.dir\cmake_clean.cmake
 .PHONY : CMakeFiles/minic.dir/clean
 
-CMakeFiles/minic.dir/depend: D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.cpp
-CMakeFiles/minic.dir/depend: D:/Project/CppProject/Compile/lab3/MiniC/calculator_lex.h
-CMakeFiles/minic.dir/depend: D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.cpp
-CMakeFiles/minic.dir/depend: D:/Project/CppProject/Compile/lab3/MiniC/calculator_yacc.h
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Project\CppProject\Compile\lab3\MiniC D:\Project\CppProject\Compile\lab3\MiniC D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles\minic.dir\DependInfo.cmake --color=$(COLOR)
+CMakeFiles/minic.dir/depend: D:/Project/Compile/lab3/MiniC/calculator_lex.cpp
+CMakeFiles/minic.dir/depend: D:/Project/Compile/lab3/MiniC/calculator_lex.h
+CMakeFiles/minic.dir/depend: D:/Project/Compile/lab3/MiniC/calculator_yacc.cpp
+CMakeFiles/minic.dir/depend: D:/Project/Compile/lab3/MiniC/calculator_yacc.h
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Project\Compile\lab3\MiniC D:\Project\Compile\lab3\MiniC D:\Project\Compile\lab3\MiniC\cmake-build-debug D:\Project\Compile\lab3\MiniC\cmake-build-debug D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles\minic.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/minic.dir/depend
 

@@ -1,0 +1,12 @@
+int a[5][2][3];
+int b;
+int add(int a, int b)
+{
+    q = m+n;
+    return 2+3;
+}
+int main(int f,int p,int g){
+    c=2;
+    d = 2+2;
+    return d;
+}

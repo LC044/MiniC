@@ -106,14 +106,14 @@
 			"includes" : 
 			[
 				{
-					"path" : "D:/Project/CppProject/Compile/lab3/MiniC/cmake-build-debug"
+					"path" : "D:/Project/Compile/lab3/MiniC/cmake-build-debug"
 				},
 				{
-					"path" : "D:/Project/CppProject/Compile/lab3/MiniC"
+					"path" : "D:/Project/Compile/lab3/MiniC"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "D:/Project/CppProject/Compile/CompilerTools/msys64/mingw64/include/graphviz"
+					"path" : "D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz"
 				}
 			],
 			"language" : "CXX",
@@ -156,22 +156,22 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "D:\\Project\\CppProject\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libcdt.dll.a",
+				"fragment" : "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libcdt.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "D:\\Project\\CppProject\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libgvc.dll.a",
+				"fragment" : "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libgvc.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "D:\\Project\\CppProject\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libcgraph.dll.a",
+				"fragment" : "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libcgraph.dll.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "D:\\Project\\CppProject\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libpathplan.dll.a",
+				"fragment" : "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\lib\\libpathplan.dll.a",
 				"role" : "libraries"
 			},
 			{

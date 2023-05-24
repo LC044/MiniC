@@ -47,19 +47,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe
+CMAKE_COMMAND = D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe
 
 # The command to remove a file.
-RM = D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f
+RM = D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Project\CppProject\Compile\lab3\MiniC
+CMAKE_SOURCE_DIR = D:\Project\Compile\lab3\MiniC
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug
+CMAKE_BINARY_DIR = D:\Project\Compile\lab3\MiniC\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -67,7 +67,7 @@ CMAKE_BINARY_DIR = D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\ccmake.exe -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\ccmake.exe -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -77,7 +77,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	D:\Project\CppProject\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\cmake.exe --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles D:\Project\Compile\lab3\MiniC\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\CppProject\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
