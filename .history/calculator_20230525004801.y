@@ -69,19 +69,10 @@ void yyerror(char * msg);
 %type <node> funccall realarg elem literal 
 %type <node> itemtail cmptail andtail alotail
 %type <node> ident num
+%left T_ADD T_SUB
+%left T_MUL T_DIV T_MOD
 
-%left '='
-%left "||"
-%left "&&"
-/* %left RELOP */
-%left "++" "--"
-/* %left MINUSASS PLUSASS */
-%left '+' '-'
-%left '*' '/'
-%right UMINUS '!' 
 
-%nonassoc LOWER_THEN_ELSE
-%nonassoc ELSE
 %%
 Input   : program
             {
@@ -326,16 +317,19 @@ localdef    : type defdata deflist
                 $$ = temp_node;
                 // $$ = new_ast_node(AST_DEF_LIST, $1, $2, $3);
             }
-/* 单条语句 */
+
 statement   : blockstat{$$ = $1;}       //另一个语句块
-            | expr ';'{$$ = $1;}      //赋值语句
-            | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}          //if语句
-            | T_IF '(' expr ')' statement T_ELSE statement {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}          //if语句
-            | T_BREAK ';' {$$ = new_ast_node(AST_OP_BREAK);}       //break语句
-            | T_CONTINUE ';'{$$ = new_ast_node(AST_OP_CONTINUE);}    //continue语句
+            | assignstat{$$ = $1;}      //赋值语句
+            | ifstat{$$ = $1;}          //if语句
+            | T_BREAK ';' {$$ = $1;}       //break语句
+            | T_CONTINUE ';'{$$ = $1;}    //continue语句
             | ';'{$$ = NULL;}             //空语句
             | T_RETURN expr ';' {$$ = new_ast_node(AST_RETURN,$2);} // return 语句
 
+assignstat  : expr ';'
+            {
+                 $$ = $1;
+            };
             
 expr        : expr '=' expr
             {

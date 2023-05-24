@@ -71,10 +71,10 @@ void yyerror(char * msg);
 %type <node> ident num
 
 %left '='
-%left "||"
-%left "&&"
+%left '||'
+%left '&&'
 /* %left RELOP */
-%left "++" "--"
+%left '++' '--'
 /* %left MINUSASS PLUSASS */
 %left '+' '-'
 %left '*' '/'
