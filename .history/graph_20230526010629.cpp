@@ -93,7 +93,8 @@ Agnode_t *genLeafGraphNode(Agraph_t *g, struct ast_node *astnode)
             id = int2str(astnode->attr.integer_val);
         } else if (astnode->attr.kind == DIGIT_KIND_REAL) {
             id = double2str(astnode->attr.real_val);
-        } else {
+        } else(astnode->attr.kind == DIGIT_KIND_ID)
+        {
             id = astnode->attr.id;
         }
         // 填充红色,必须加这一句，否则下面的fillcolor属性设置无效
