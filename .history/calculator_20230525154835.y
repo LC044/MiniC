@@ -220,6 +220,7 @@ idtail : varrdef deflist
 deflist : ';' { $$ = new_ast_node(AST_DEF_LIST);}
         | ',' defdata deflist
         {
+            // $$ = new_ast_node(AST_DEF_LIST,$2,$3);
             // 递归的添加参数，后面的参数为第一个参数的孩子节点
             $2->parent = $3;
             $3->sons.push_back($2);

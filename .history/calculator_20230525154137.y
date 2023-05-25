@@ -196,30 +196,34 @@ def    :  ident idtail
             };
 
 idtail : varrdef deflist 
-            { 
-                if($1==NULL) {
-                    // int a,b;
-                    // a不是数组
-                    $$ = $2;
-                }
-                else {
-                    // int a[5],b,c[4];
-                    // 第一个变量是数组
-                    $$=new_ast_node(AST_ARRAY_LIST,$1,$2);
-                }
+        { 
+            if($1==NULL) {
+                // int a,b;
+                // a不是数组
+                $$ = $2;
             }
+            else {
+                // int a[5],b,c[4];
+                // 第一个变量是数组
+                $$=new_ast_node(AST_ARRAY_LIST,$1,$2);
+            }
+        }
         | '(' para ')' functail 
             {  
-                // 函数定义
-                $$ = new_ast_node(AST_FUNC_DEF,$2,$4);
-            };
+            // 函数定义
+            $$ = new_ast_node(AST_FUNC_DEF,$2,$4);
+             };
 
 /* ********该部分为变量定义******* */
 
 /* 已完成 增加多变量声明和定义：如 int a,b=1,c[4]; */
-deflist : ';' { $$ = new_ast_node(AST_DEF_LIST);}
+deflist : ';' { 
+        // $$ = NULL; 
+            $$ = new_ast_node(AST_DEF_LIST);
+        };
         | ',' defdata deflist
         {
+            // $$ = new_ast_node(AST_DEF_LIST,$2,$3);
             // 递归的添加参数，后面的参数为第一个参数的孩子节点
             $2->parent = $3;
             $3->sons.push_back($2);
@@ -289,10 +293,15 @@ subprogram : {$$=NULL;}
                 $1->sons.push_back($2);
                 $$ = $1;
             };
-
 /* 一条语句 */
-onestatement : statement{$$ = $1;} // 表达式语句
-            | localdef{$$ = $1;}   // 局部变量定义
+onestatement : statement
+            {
+                $$ = $1;
+            }
+            | localdef
+            {
+                $$ = $1;
+            }
 
 /* 局部变量定义 */
 localdef    : type defdata deflist
@@ -312,31 +321,31 @@ localdef    : type defdata deflist
                 // $$ = new_ast_node(AST_DEF_LIST, $1, $2, $3);
             }
 /* 单条语句 */
-statement   : blockstat                                         {$$ = $1;}                              //另一个语句块
-            | expr ';'                                          {$$ = $1;}                              //表达式语句
-            | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}   //if语句
-            | T_IF '(' expr ')' statement T_ELSE statement      {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}//if,else语句
-            | T_WHILE '(' expr ')' statement                    {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}//while语句
-            | T_BREAK ';'                                       {$$ = new_ast_node(AST_OP_BREAK);}      //break语句
-            | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}   //continue语句
-            | ';'                                               {$$ = NULL;}                            //空语句
-            | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}     // return 语句
+statement   : blockstat{$$ = $1;}       //另一个语句块
+            | expr ';'{$$ = $1;}       //表达式语句
+            | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}          //if语句
+            | T_IF '(' expr ')' statement T_ELSE statement {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}          //if,else语句
+            | T_WHILE '(' expr ')' statement {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}
+            | T_BREAK ';' {$$ = new_ast_node(AST_OP_BREAK);}       //break语句
+            | T_CONTINUE ';'{$$ = new_ast_node(AST_OP_CONTINUE);}    //continue语句
+            | ';'{$$ = NULL;}             //空语句
+            | T_RETURN expr ';' {$$ = new_ast_node(AST_RETURN,$2);} // return 语句
 
 /* 表达式语句 */
-expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
-            | expr T_AND expr   {$$ = new_ast_node(AST_OP_AND, $1, $3);}     // 逻辑与语句
-            | expr T_OR expr    {$$ = new_ast_node(AST_OP_OR, $1, $3);}      // 逻辑或
-            | expr '+' expr     {$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法
-            | expr '-' expr     {$$ = new_ast_node(AST_OP_SUB, $1, $3);}     // 减法
-            | expr '*' expr     { $$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
-            | expr '/' expr     {$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
-            | expr '%' expr     {$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
+expr        : expr '=' expr{$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
+            | expr T_AND expr{$$ = new_ast_node(AST_OP_AND, $1, $3);}   // 逻辑与语句
+            | expr T_OR expr{$$ = new_ast_node(AST_OP_OR, $1, $3);}     // 逻辑或
+            | expr '+' expr{$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法
+            | expr '-' expr{$$ = new_ast_node(AST_OP_SUB, $1, $3);}     // 减法
+            | expr '*' expr{ $$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
+            | expr '/' expr{$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
+            | expr '%' expr{$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
             | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}/* 关系运算符 */
-            //一元运算,优先级高
-            | '-' expr %prec UMINUS         {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
-            | '!' expr          {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
-            | factor            {$$ = $1;};  // 符号，数字，括号
-/* 关系运算 */
+            //一元运算
+            | '-' expr %prec UMINUS   {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
+            | '!' expr       {$$ = new_ast_node(AST_OP_NOT, $2);}           //
+            | factor{$$ = $1;};  // 符号，数字，括号
+
 cmp     : T_CMP{
             {
             struct ast_node_attr temp_val;
@@ -347,9 +356,18 @@ cmp     : T_CMP{
             $$ = new_ast_leaf_node(temp_val);
         }
         }
-factor          : '(' expr ')'  {$$ = $2;}
-                | num           {$$ = $1;}
-                | ident         {$$ = $1;};
+factor          : '(' expr ')'
+                    {
+                        $$ = $2;
+                    }
+                | num
+                    {
+                        $$ = $1;
+                    }
+                | ident 
+                    {
+                        $$ = $1;
+                    };
 ident   : T_ID
         {
             struct ast_node_attr temp_val;

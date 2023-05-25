@@ -82,7 +82,7 @@ extern int yydebug;
     T_AND = 283,                   /* T_AND  */
     T_OR = 284,                    /* T_OR  */
     T_CMP = 285,                   /* T_CMP  */
-    UMINUSs = 286,                 /* UMINUSs  */
+    CMP_PREC = 286,                /* CMP_PREC  */
     UMINUS = 289,                  /* UMINUS  */
     LOWER_THEN_ELSE = 290          /* LOWER_THEN_ELSE  */
   };

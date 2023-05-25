@@ -217,9 +217,12 @@ idtail : varrdef deflist
 /* ********该部分为变量定义******* */
 
 /* 已完成 增加多变量声明和定义：如 int a,b=1,c[4]; */
-deflist : ';' { $$ = new_ast_node(AST_DEF_LIST);}
+deflist : ';' { 
+            $$ = new_ast_node(AST_DEF_LIST);
+        }
         | ',' defdata deflist
         {
+            // $$ = new_ast_node(AST_DEF_LIST,$2,$3);
             // 递归的添加参数，后面的参数为第一个参数的孩子节点
             $2->parent = $3;
             $3->sons.push_back($2);
