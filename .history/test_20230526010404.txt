@@ -4,7 +4,7 @@ int main(int f,int p,int g){
     if(--a)d = -2+2;
     while(a[0]++>=1 && a<10){
         if(a>5) break;
-        else a[0]=a[1]+2;
+        else a=a+2;
     }
     return d;
 }
