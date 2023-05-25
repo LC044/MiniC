@@ -280,9 +280,6 @@ Agnode_t *graph_visit_ast_node(Agraph_t *g, struct ast_node *astnode)
     case AST_OP_RDEC:
         graph_node = genBlockGraphNode(g, astnode, "RDEC");
         break;
-    case AST_OP_INDEX:
-        graph_node = genBlockGraphNode(g, astnode, "[]");
-        break;
     default:
         // 错误，不支持
         graph_node = nullptr;

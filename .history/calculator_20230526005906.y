@@ -65,7 +65,7 @@ void yyerror(char * msg);
 // 指定文法的非终结符号，<>可指定文法属性
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
-%type <node> expr lval elem
+%type <node> expr
 %type <node> factor
 %type <node> ident num
 %type <node> cmp

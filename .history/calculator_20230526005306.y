@@ -65,7 +65,7 @@ void yyerror(char * msg);
 // 指定文法的非终结符号，<>可指定文法属性
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
-%type <node> expr lval elem
+%type <node> expr
 %type <node> factor
 %type <node> ident num
 %type <node> cmp
@@ -332,6 +332,8 @@ expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 
             | expr '/' expr     {$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
             | expr '%' expr     {$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
             | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}/* 关系运算符 */
+            | expr T_DEC        {$$ = new_ast_node(AST_OP_DEC,$2);}
+            | expr T_INC        {$$ = new_ast_node(AST_OP_INC,$2);}
             | factor            {$$ = $1;};  // 符号，数字，括号
 /* 关系运算 */
 cmp     : T_CMP{
@@ -347,15 +349,9 @@ cmp     : T_CMP{
 factor      : '(' expr ')'  {$$ = $2;}
             //一元运算,优先级高
             | '-' expr %prec UMINUS         {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
-            | '!' expr      {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
-            | lval T_DEC    {$$ = new_ast_node(AST_OP_LDEC,$1);}
-            | lval T_INC    {$$ = new_ast_node(AST_OP_LINC,$1);}
-            | T_DEC lval    {$$ = new_ast_node(AST_OP_RDEC,$2);}
-            | T_INC lval    {$$ = new_ast_node(AST_OP_RINC,$2);}
+            | '!' expr          {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
             | num           {$$ = $1;}
             | ident         {$$ = $1;};
-lval    : ident {$$ = $1;}
-        | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
 ident   : T_ID
         {
             struct ast_node_attr temp_val;

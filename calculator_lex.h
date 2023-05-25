@@ -470,7 +470,7 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 167 "D:/Project/Compile/lab3/MiniC/calculator.l"
+#line 169 "D:/Project/Compile/lab3/MiniC/calculator.l"
 
 
 #line 476 "D:/Project/Compile/lab3/MiniC/calculator_lex.h"

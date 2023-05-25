@@ -77,8 +77,7 @@ white_line  [\r\n]
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
             }
-"++"         {return T_INC;}
-"--"         {return T_DEC;}
+
 "int"        {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
 "void"       {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_VOID;}
 
@@ -103,7 +102,6 @@ white_line  [\r\n]
                 return T_FLOAT;
             }
  
-
 "("			|
 ")"			|
 "*"			|

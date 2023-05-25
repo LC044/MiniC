@@ -65,7 +65,7 @@ void yyerror(char * msg);
 // 指定文法的非终结符号，<>可指定文法属性
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
-%type <node> expr lval elem
+%type <node> expr
 %type <node> factor
 %type <node> ident num
 %type <node> cmp
@@ -347,15 +347,13 @@ cmp     : T_CMP{
 factor      : '(' expr ')'  {$$ = $2;}
             //一元运算,优先级高
             | '-' expr %prec UMINUS         {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
-            | '!' expr      {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
-            | lval T_DEC    {$$ = new_ast_node(AST_OP_LDEC,$1);}
-            | lval T_INC    {$$ = new_ast_node(AST_OP_LINC,$1);}
-            | T_DEC lval    {$$ = new_ast_node(AST_OP_RDEC,$2);}
-            | T_INC lval    {$$ = new_ast_node(AST_OP_RINC,$2);}
+            | '!' expr          {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
+            | expr T_DEC        {$$ = new_ast_node(AST_OP_DEC,$1);}
+            | expr T_INC        {$$ = new_ast_node(AST_OP_INC,$1);}
             | num           {$$ = $1;}
             | ident         {$$ = $1;};
 lval    : ident {$$ = $1;}
-        | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
+        : ident '[' expr ']' {$$ = new_ast_node(AST_OP_INC,$1);}
 ident   : T_ID
         {
             struct ast_node_attr temp_val;

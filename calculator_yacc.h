@@ -81,10 +81,12 @@ extern int yydebug;
     T_RB = 282,                    /* T_RB  */
     T_AND = 283,                   /* T_AND  */
     T_OR = 284,                    /* T_OR  */
-    T_CMP = 285,                   /* T_CMP  */
-    CMP_PREC = 286,                /* CMP_PREC  */
-    UMINUS = 289,                  /* UMINUS  */
-    LOWER_THEN_ELSE = 290          /* LOWER_THEN_ELSE  */
+    T_INC = 285,                   /* T_INC  */
+    T_DEC = 286,                   /* T_DEC  */
+    T_CMP = 287,                   /* T_CMP  */
+    CMP_PREC = 288,                /* CMP_PREC  */
+    UMINUS = 291,                  /* UMINUS  */
+    LOWER_THEN_ELSE = 292          /* LOWER_THEN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -101,7 +103,7 @@ union YYSTYPE
     var_id_attr var_id;         // 标识符（变量名）
     cmp_attr   cmp_attr;
 
-#line 105 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
+#line 107 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
