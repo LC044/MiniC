@@ -79,9 +79,11 @@ extern int yydebug;
     T_RC = 280,                    /* T_RC  */
     T_LB = 281,                    /* T_LB  */
     T_RB = 282,                    /* T_RB  */
-    UMINUS = 287,                  /* UMINUS  */
-    LOWER_THEN_ELSE = 288,         /* LOWER_THEN_ELSE  */
-    ELSE = 289                     /* ELSE  */
+    T_AND = 283,                   /* T_AND  */
+    T_OR = 284,                    /* T_OR  */
+    T_CMP = 285,                   /* T_CMP  */
+    UMINUS = 290,                  /* UMINUS  */
+    LOWER_THEN_ELSE = 291          /* LOWER_THEN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -96,9 +98,9 @@ union YYSTYPE
     digit_int_attr integer_num; // 整型字面量
     digit_real_attr float_num;  // 实数字面量
     var_id_attr var_id;         // 标识符（变量名）
-    keyword_attr keyword;
+    cmp_attr   cmp_attr;
 
-#line 102 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
+#line 104 "D:/Project/Compile/lab3/MiniC/calculator_yacc.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

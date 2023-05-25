@@ -42,7 +42,6 @@ CMakeFiles/minic.dir/calculator_yacc.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/getopt.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread_unistd.h \
   D:/Project/Compile/lab3/MiniC/parser.h \
-  D:/Project/Compile/lab3/MiniC/calculator_yacc.h \
   D:/Project/Compile/lab3/MiniC/ast.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_algobase.h \
@@ -115,4 +114,5 @@ CMakeFiles/minic.dir/calculator_yacc.cpp.obj: \
   D:/Project/Compile/lab3/MiniC/IRCode.h \
   D:/Project/Compile/lab3/MiniC/IRInst.h \
   D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h
+  D:/Project/Compile/lab3/MiniC/common.h \
+  D:/Project/Compile/lab3/MiniC/calculator_yacc.h
