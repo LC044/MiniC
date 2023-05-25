@@ -22,8 +22,7 @@ enum ast_operator_type {
     AST_OP_EXPR_SHOW, // 表达式语句，需要显示表达式的值
 
     // TODO 抽象语法树其它内部节点运算符追加
-    AST_FUNC_CALL,
-    AST_REAL_ARGS,
+    AST_OP_FUNC_CALL,
     AST_OP_LDEC,
     AST_OP_LINC,
     AST_OP_RDEC,

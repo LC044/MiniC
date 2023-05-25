@@ -23,7 +23,6 @@ enum ast_operator_type {
 
     // TODO 抽象语法树其它内部节点运算符追加
     AST_FUNC_CALL,
-    AST_REAL_ARGS,
     AST_OP_LDEC,
     AST_OP_LINC,
     AST_OP_RDEC,

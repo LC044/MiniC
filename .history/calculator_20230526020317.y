@@ -357,14 +357,14 @@ rval    : lval  {$$=$1;}
 lval    : ident {$$ = $1;}
         | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
 realarg     :  { $$ = NULL; }
-            | realargs {$$ = $1;}
+            | realargs
 
 realargs    : expr { $$ = new_ast_node(AST_REAL_ARGS,$1);}
-            | realargs ',' expr 
+            | ',' expr realargs
             {
-            $3->parent = $1;
-            $1->sons.push_back($3);
-            $$ = $1;
+            $1->parent = $3;
+            $3->sons.push_back($1);
+            $$ = $3;
             }
 
 /* realarg : {

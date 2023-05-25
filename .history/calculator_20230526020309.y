@@ -66,7 +66,7 @@ void yyerror(char * msg);
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
 %type <node> expr lval rval  // 表达式, 左值,右值
-%type <node> factor realarg realargs
+%type <node> factor realarg
 %type <node> ident num
 %type <node> cmp
 %left '='
@@ -357,14 +357,14 @@ rval    : lval  {$$=$1;}
 lval    : ident {$$ = $1;}
         | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
 realarg     :  { $$ = NULL; }
-            | realargs {$$ = $1;}
+            | realargs
 
 realargs    : expr { $$ = new_ast_node(AST_REAL_ARGS,$1);}
-            | realargs ',' expr 
+            | ',' expr realargs
             {
-            $3->parent = $1;
-            $1->sons.push_back($3);
-            $$ = $1;
+            $1->parent = $3;
+            $3->sons.push_back($1);
+            $$ = $3;
             }
 
 /* realarg : {

@@ -360,11 +360,11 @@ realarg     :  { $$ = NULL; }
             | realargs {$$ = $1;}
 
 realargs    : expr { $$ = new_ast_node(AST_REAL_ARGS,$1);}
-            | realargs ',' expr 
+            | ',' expr realargs
             {
-            $3->parent = $1;
-            $1->sons.push_back($3);
-            $$ = $1;
+            $2->parent = $3;
+            $3->sons.push_back($2);
+            $$ = $3;
             }
 
 /* realarg : {

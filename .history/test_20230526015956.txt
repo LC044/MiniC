@@ -1,7 +1,7 @@
 int a,b[2];
 int main(int f,int p){
     int a[2];
-    if(--a) d = add(-2+2,3);
+    if(--a)d = add(-2+2,3);
     while(a[0]++>=1 && a<10){
         if(a>5) break;
         else a[0]-1=a[1]+2;

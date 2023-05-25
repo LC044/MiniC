@@ -65,8 +65,8 @@ void yyerror(char * msg);
 // 指定文法的非终结符号，<>可指定文法属性
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
-%type <node> expr lval rval  // 表达式, 左值,右值
-%type <node> factor realarg realargs
+%type <node> expr lval rval
+%type <node> factor
 %type <node> ident num
 %type <node> cmp
 %left '='
@@ -328,13 +328,14 @@ expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 
             | expr T_OR expr    {$$ = new_ast_node(AST_OP_OR, $1, $3);}      // 逻辑或
             | expr '+' expr     {$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法
             | expr '-' expr     {$$ = new_ast_node(AST_OP_SUB, $1, $3);}     // 减法
-            | expr '*' expr     {$$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
+            | expr '*' expr     { $$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
             | expr '/' expr     {$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
             | expr '%' expr     {$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
             | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}/* 关系运算符 */
             | factor            {$$ = $1;};  // 符号，数字，括号
 /* 关系运算 */
 cmp     : T_CMP{
+            {
             struct ast_node_attr temp_val;
             temp_val.kind = CMP_KIND;
             temp_val.lineno = $1.lineno;
@@ -342,44 +343,21 @@ cmp     : T_CMP{
             printf("%s\n", temp_val.id);
             $$ = new_ast_leaf_node(temp_val);
         }
-factor      : '-' factor %prec UMINUS {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
-            | '!' factor    {$$ = new_ast_node(AST_OP_NOT, $2);}            //逻辑非
+        }
+factor      : 
+            //一元运算,优先级高
+            | '-' expr %prec UMINUS         {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
+            | '!' expr      {$$ = new_ast_node(AST_OP_NOT, $2);}              //逻辑非
             | lval T_DEC    {$$ = new_ast_node(AST_OP_LDEC,$1);}
             | lval T_INC    {$$ = new_ast_node(AST_OP_LINC,$1);}
             | T_DEC lval    {$$ = new_ast_node(AST_OP_RDEC,$2);}
             | T_INC lval    {$$ = new_ast_node(AST_OP_RINC,$2);}
-            | rval          {$$ = $1;};
-
+            | rval         {$$ = $1;};
 rval    : lval  {$$=$1;}
         | '(' expr ')'  {$$ = $2;}
-        | ident '(' realarg ')' {$$ = new_ast_node(AST_FUNC_CALL,$1,$3);} // 函数调用
         | num           {$$ = $1;}
 lval    : ident {$$ = $1;}
         | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
-realarg     :  { $$ = NULL; }
-            | realargs {$$ = $1;}
-
-realargs    : expr { $$ = new_ast_node(AST_REAL_ARGS,$1);}
-            | realargs ',' expr 
-            {
-            $3->parent = $1;
-            $1->sons.push_back($3);
-            $$ = $1;
-            }
-
-/* realarg : {
-            $$ = new_ast_node(AST_REAL_ARGS);
-            }
-        | expr
-        {
-            $$ = new_ast_node(AST_REAL_ARGS,$1);
-        }
-        | expr ',' realarg
-        {
-            $1->parent = $3;
-            $3->sons.push_back($1);
-            $$ = $3;
-        } */
 ident   : T_ID
         {
             struct ast_node_attr temp_val;
