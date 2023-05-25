@@ -73,9 +73,8 @@ void yyerror(char * msg);
 %type <node> ident num
 %type <node> cmp
 %left '='
-%left T_OR
-%left T_AND
-%left CMP_PREC  // 比较运算符优先级大于逻辑运算符
+%left "||"
+%left "&&"
 /* %left RELOP */
 %left "++" "--"
 /* %left MINUSASS PLUSASS */
@@ -351,7 +350,7 @@ expr        : expr '=' expr{$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}
             | expr '*' expr{ $$ = new_ast_node(AST_OP_MUL, $1, $3);}
             | expr '/' expr{$$ = new_ast_node(AST_OP_DIV, $1, $3);}
             /* 关系运算符 */
-            | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}
+            | expr cmp expr {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}
             //一元运算
             | '-' expr %prec UMINUS   {$$ = new_ast_node(AST_OP_NEG, $2);}//取负
             | '!' expr       {$$ = new_ast_node(AST_OP_NOT, $2);}//

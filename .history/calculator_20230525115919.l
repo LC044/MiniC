@@ -115,10 +115,10 @@ white_line  [\r\n]
 "}"			|
 "["         |
 "]"         |
-"!"         |
 ","         {return yytext[0];}
 "&&"        {return T_AND;}
 "||"        {return T_OR;}
+"!"         {return T_NEG;}
 ">"         {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;

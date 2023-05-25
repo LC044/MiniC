@@ -259,9 +259,6 @@ Agnode_t *graph_visit_ast_node(Agraph_t *g, struct ast_node *astnode)
     case AST_OP_CMP:
         graph_node = genBlockGraphNode(g, astnode, "CMP");
         break;
-    case AST_OP_NEG:
-        graph_node = genBlockGraphNode(g, astnode, "NEG");
-        break;
     case AST_OP_AND:
         graph_node = genBlockGraphNode(g, astnode, "AND");
         break;

@@ -115,7 +115,6 @@ white_line  [\r\n]
 "}"			|
 "["         |
 "]"         |
-"!"         |
 ","         {return yytext[0];}
 "&&"        {return T_AND;}
 "||"        {return T_OR;}

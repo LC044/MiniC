@@ -75,7 +75,8 @@ void yyerror(char * msg);
 %left '='
 %left T_OR
 %left T_AND
-%left CMP_PREC  // 比较运算符优先级大于逻辑运算符
+%left T_CMP
+%left CMP_PREC
 /* %left RELOP */
 %left "++" "--"
 /* %left MINUSASS PLUSASS */
