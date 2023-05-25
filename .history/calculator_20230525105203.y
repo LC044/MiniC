@@ -333,7 +333,7 @@ statement   : blockstat{$$ = $1;}       //另一个语句块
             | expr ';'{$$ = $1;}      //赋值语句
             | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}          //if语句
             | T_IF '(' expr ')' statement T_ELSE statement {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}          //if,else语句
-            | T_WHILE '(' expr ')' statement {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}
+
             | T_BREAK ';' {$$ = new_ast_node(AST_OP_BREAK);}       //break语句
             | T_CONTINUE ';'{$$ = new_ast_node(AST_OP_CONTINUE);}    //continue语句
             | ';'{$$ = NULL;}             //空语句
