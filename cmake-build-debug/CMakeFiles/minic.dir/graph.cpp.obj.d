@@ -176,8 +176,8 @@ CMakeFiles/minic.dir/graph.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
-  D:/Project/Compile/lab3/MiniC/ast.h \
-  D:/Project/Compile/lab3/MiniC/IRCode.h \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h
+  D:/Project/Compile/lab3/MiniC/include/ast.h \
+  D:/Project/Compile/lab3/MiniC/include/IRCode.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/common.h

@@ -372,19 +372,19 @@ CMakeFiles/minic.dir/main.cpp.obj: D:/Project/Compile/lab3/MiniC/main.cpp \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsvc.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/mcx.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/imm.h \
-  D:/Project/Compile/lab3/MiniC/lexer.h \
+  D:/Project/Compile/lab3/MiniC/include/lexer.h \
   D:/Project/Compile/lab3/MiniC/calculator_lex.h \
-  D:/Project/Compile/lab3/MiniC/parser.h \
-  D:/Project/Compile/lab3/MiniC/ast.h \
+  D:/Project/Compile/lab3/MiniC/include/parser.h \
+  D:/Project/Compile/lab3/MiniC/include/ast.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
-  D:/Project/Compile/lab3/MiniC/IRCode.h \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h \
+  D:/Project/Compile/lab3/MiniC/include/IRCode.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/calculator_yacc.h \
-  D:/Project/Compile/lab3/MiniC/expr.h \
-  D:/Project/Compile/lab3/MiniC/graph.h
+  D:/Project/Compile/lab3/MiniC/include/expr.h \
+  D:/Project/Compile/lab3/MiniC/include/graph.h

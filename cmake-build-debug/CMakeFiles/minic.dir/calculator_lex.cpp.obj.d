@@ -32,8 +32,8 @@ CMakeFiles/minic.dir/calculator_lex.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/std_abs.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdio \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstring \
-  D:/Project/Compile/lab3/MiniC/parser.h \
-  D:/Project/Compile/lab3/MiniC/ast.h \
+  D:/Project/Compile/lab3/MiniC/include/parser.h \
+  D:/Project/Compile/lab3/MiniC/include/ast.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_algobase.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/functexcept.h \
@@ -102,10 +102,10 @@ CMakeFiles/minic.dir/calculator_lex.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cerrno \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
-  D:/Project/Compile/lab3/MiniC/IRCode.h \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h \
+  D:/Project/Compile/lab3/MiniC/include/IRCode.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/calculator_yacc.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/unistd.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/io.h \

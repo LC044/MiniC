@@ -21,7 +21,7 @@ CMakeFiles/minic.dir/calculator_yacc.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/crtdefs.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h \
-  D:/Project/Compile/lab3/MiniC/lexer.h \
+  D:/Project/Compile/lab3/MiniC/include/lexer.h \
   D:/Project/Compile/lab3/MiniC/calculator_lex.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stdlib.h \
@@ -41,8 +41,8 @@ CMakeFiles/minic.dir/calculator_yacc.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/sys/types.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/getopt.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread_unistd.h \
-  D:/Project/Compile/lab3/MiniC/parser.h \
-  D:/Project/Compile/lab3/MiniC/ast.h \
+  D:/Project/Compile/lab3/MiniC/include/parser.h \
+  D:/Project/Compile/lab3/MiniC/include/ast.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_algobase.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/functexcept.h \
@@ -111,8 +111,8 @@ CMakeFiles/minic.dir/calculator_yacc.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cerrno \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
-  D:/Project/Compile/lab3/MiniC/IRCode.h \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h \
+  D:/Project/Compile/lab3/MiniC/include/IRCode.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/calculator_yacc.h

@@ -48,7 +48,7 @@ CMakeFiles/minic.dir/symbol.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/range_access.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdint \
   D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stdint.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdint.h \
@@ -103,4 +103,4 @@ CMakeFiles/minic.dir/symbol.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
-  D:/Project/Compile/lab3/MiniC/common.h
+  D:/Project/Compile/lab3/MiniC/include/common.h

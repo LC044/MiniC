@@ -1,6 +1,6 @@
 CMakeFiles/minic.dir/expr.cpp.obj: D:/Project/Compile/lab3/MiniC/expr.cpp \
-  D:/Project/Compile/lab3/MiniC/expr.h \
-  D:/Project/Compile/lab3/MiniC/ast.h \
+  D:/Project/Compile/lab3/MiniC/include/expr.h \
+  D:/Project/Compile/lab3/MiniC/include/ast.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdio \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/c++config.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/os_defines.h \
@@ -98,7 +98,7 @@ CMakeFiles/minic.dir/expr.cpp.obj: D:/Project/Compile/lab3/MiniC/expr.cpp \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
-  D:/Project/Compile/lab3/MiniC/IRCode.h \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
-  D:/Project/Compile/lab3/MiniC/common.h
+  D:/Project/Compile/lab3/MiniC/include/IRCode.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/common.h

@@ -128,269 +128,269 @@ minic/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/build
 .PHONY : minic/fast
 
-IRCode.obj: IRCode.cpp.obj
-.PHONY : IRCode.obj
+src/IRCode.obj: src/IRCode.cpp.obj
+.PHONY : src/IRCode.obj
 
 # target to build an object file
-IRCode.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRCode.cpp.obj
-.PHONY : IRCode.cpp.obj
+src/IRCode.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.obj
+.PHONY : src/IRCode.cpp.obj
 
-IRCode.i: IRCode.cpp.i
-.PHONY : IRCode.i
+src/IRCode.i: src/IRCode.cpp.i
+.PHONY : src/IRCode.i
 
 # target to preprocess a source file
-IRCode.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRCode.cpp.i
-.PHONY : IRCode.cpp.i
+src/IRCode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.i
+.PHONY : src/IRCode.cpp.i
 
-IRCode.s: IRCode.cpp.s
-.PHONY : IRCode.s
+src/IRCode.s: src/IRCode.cpp.s
+.PHONY : src/IRCode.s
 
 # target to generate assembly for a file
-IRCode.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRCode.cpp.s
-.PHONY : IRCode.cpp.s
+src/IRCode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.s
+.PHONY : src/IRCode.cpp.s
 
-IRInst.obj: IRInst.cpp.obj
-.PHONY : IRInst.obj
+src/IRInst.obj: src/IRInst.cpp.obj
+.PHONY : src/IRInst.obj
 
 # target to build an object file
-IRInst.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRInst.cpp.obj
-.PHONY : IRInst.cpp.obj
+src/IRInst.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.obj
+.PHONY : src/IRInst.cpp.obj
 
-IRInst.i: IRInst.cpp.i
-.PHONY : IRInst.i
+src/IRInst.i: src/IRInst.cpp.i
+.PHONY : src/IRInst.i
 
 # target to preprocess a source file
-IRInst.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRInst.cpp.i
-.PHONY : IRInst.cpp.i
+src/IRInst.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.i
+.PHONY : src/IRInst.cpp.i
 
-IRInst.s: IRInst.cpp.s
-.PHONY : IRInst.s
+src/IRInst.s: src/IRInst.cpp.s
+.PHONY : src/IRInst.s
 
 # target to generate assembly for a file
-IRInst.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/IRInst.cpp.s
-.PHONY : IRInst.cpp.s
+src/IRInst.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.s
+.PHONY : src/IRInst.cpp.s
 
-ast.obj: ast.cpp.obj
-.PHONY : ast.obj
+src/ast.obj: src/ast.cpp.obj
+.PHONY : src/ast.obj
 
 # target to build an object file
-ast.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/ast.cpp.obj
-.PHONY : ast.cpp.obj
+src/ast.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/ast.cpp.obj
+.PHONY : src/ast.cpp.obj
 
-ast.i: ast.cpp.i
-.PHONY : ast.i
+src/ast.i: src/ast.cpp.i
+.PHONY : src/ast.i
 
 # target to preprocess a source file
-ast.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/ast.cpp.i
-.PHONY : ast.cpp.i
+src/ast.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/ast.cpp.i
+.PHONY : src/ast.cpp.i
 
-ast.s: ast.cpp.s
-.PHONY : ast.s
+src/ast.s: src/ast.cpp.s
+.PHONY : src/ast.s
 
 # target to generate assembly for a file
-ast.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/ast.cpp.s
-.PHONY : ast.cpp.s
+src/ast.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/ast.cpp.s
+.PHONY : src/ast.cpp.s
 
-calculator_lex.obj: calculator_lex.cpp.obj
-.PHONY : calculator_lex.obj
+src/common.obj: src/common.cpp.obj
+.PHONY : src/common.obj
 
 # target to build an object file
-calculator_lex.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_lex.cpp.obj
-.PHONY : calculator_lex.cpp.obj
+src/common.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/common.cpp.obj
+.PHONY : src/common.cpp.obj
 
-calculator_lex.i: calculator_lex.cpp.i
-.PHONY : calculator_lex.i
+src/common.i: src/common.cpp.i
+.PHONY : src/common.i
 
 # target to preprocess a source file
-calculator_lex.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_lex.cpp.i
-.PHONY : calculator_lex.cpp.i
+src/common.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/common.cpp.i
+.PHONY : src/common.cpp.i
 
-calculator_lex.s: calculator_lex.cpp.s
-.PHONY : calculator_lex.s
+src/common.s: src/common.cpp.s
+.PHONY : src/common.s
 
 # target to generate assembly for a file
-calculator_lex.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_lex.cpp.s
-.PHONY : calculator_lex.cpp.s
+src/common.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/common.cpp.s
+.PHONY : src/common.cpp.s
 
-calculator_yacc.obj: calculator_yacc.cpp.obj
-.PHONY : calculator_yacc.obj
+src/expr.obj: src/expr.cpp.obj
+.PHONY : src/expr.obj
 
 # target to build an object file
-calculator_yacc.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_yacc.cpp.obj
-.PHONY : calculator_yacc.cpp.obj
+src/expr.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/expr.cpp.obj
+.PHONY : src/expr.cpp.obj
 
-calculator_yacc.i: calculator_yacc.cpp.i
-.PHONY : calculator_yacc.i
+src/expr.i: src/expr.cpp.i
+.PHONY : src/expr.i
 
 # target to preprocess a source file
-calculator_yacc.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_yacc.cpp.i
-.PHONY : calculator_yacc.cpp.i
+src/expr.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/expr.cpp.i
+.PHONY : src/expr.cpp.i
 
-calculator_yacc.s: calculator_yacc.cpp.s
-.PHONY : calculator_yacc.s
+src/expr.s: src/expr.cpp.s
+.PHONY : src/expr.s
 
 # target to generate assembly for a file
-calculator_yacc.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/calculator_yacc.cpp.s
-.PHONY : calculator_yacc.cpp.s
+src/expr.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/expr.cpp.s
+.PHONY : src/expr.cpp.s
 
-common.obj: common.cpp.obj
-.PHONY : common.obj
+src/genIR.obj: src/genIR.cpp.obj
+.PHONY : src/genIR.obj
 
 # target to build an object file
-common.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/common.cpp.obj
-.PHONY : common.cpp.obj
+src/genIR.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.obj
+.PHONY : src/genIR.cpp.obj
 
-common.i: common.cpp.i
-.PHONY : common.i
+src/genIR.i: src/genIR.cpp.i
+.PHONY : src/genIR.i
 
 # target to preprocess a source file
-common.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/common.cpp.i
-.PHONY : common.cpp.i
+src/genIR.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.i
+.PHONY : src/genIR.cpp.i
 
-common.s: common.cpp.s
-.PHONY : common.s
+src/genIR.s: src/genIR.cpp.s
+.PHONY : src/genIR.s
 
 # target to generate assembly for a file
-common.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/common.cpp.s
-.PHONY : common.cpp.s
+src/genIR.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.s
+.PHONY : src/genIR.cpp.s
 
-expr.obj: expr.cpp.obj
-.PHONY : expr.obj
+src/graph.obj: src/graph.cpp.obj
+.PHONY : src/graph.obj
 
 # target to build an object file
-expr.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/expr.cpp.obj
-.PHONY : expr.cpp.obj
+src/graph.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/graph.cpp.obj
+.PHONY : src/graph.cpp.obj
 
-expr.i: expr.cpp.i
-.PHONY : expr.i
+src/graph.i: src/graph.cpp.i
+.PHONY : src/graph.i
 
 # target to preprocess a source file
-expr.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/expr.cpp.i
-.PHONY : expr.cpp.i
+src/graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/graph.cpp.i
+.PHONY : src/graph.cpp.i
 
-expr.s: expr.cpp.s
-.PHONY : expr.s
+src/graph.s: src/graph.cpp.s
+.PHONY : src/graph.s
 
 # target to generate assembly for a file
-expr.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/expr.cpp.s
-.PHONY : expr.cpp.s
+src/graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/graph.cpp.s
+.PHONY : src/graph.cpp.s
 
-genIR.obj: genIR.cpp.obj
-.PHONY : genIR.obj
+src/main.obj: src/main.cpp.obj
+.PHONY : src/main.obj
 
 # target to build an object file
-genIR.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/genIR.cpp.obj
-.PHONY : genIR.cpp.obj
+src/main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
 
-genIR.i: genIR.cpp.i
-.PHONY : genIR.i
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-genIR.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/genIR.cpp.i
-.PHONY : genIR.cpp.i
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-genIR.s: genIR.cpp.s
-.PHONY : genIR.s
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-genIR.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/genIR.cpp.s
-.PHONY : genIR.cpp.s
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
-graph.obj: graph.cpp.obj
-.PHONY : graph.obj
+src/minic/calculator_lex.obj: src/minic/calculator_lex.cpp.obj
+.PHONY : src/minic/calculator_lex.obj
 
 # target to build an object file
-graph.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/graph.cpp.obj
-.PHONY : graph.cpp.obj
+src/minic/calculator_lex.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.obj
+.PHONY : src/minic/calculator_lex.cpp.obj
 
-graph.i: graph.cpp.i
-.PHONY : graph.i
+src/minic/calculator_lex.i: src/minic/calculator_lex.cpp.i
+.PHONY : src/minic/calculator_lex.i
 
 # target to preprocess a source file
-graph.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/graph.cpp.i
-.PHONY : graph.cpp.i
+src/minic/calculator_lex.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.i
+.PHONY : src/minic/calculator_lex.cpp.i
 
-graph.s: graph.cpp.s
-.PHONY : graph.s
+src/minic/calculator_lex.s: src/minic/calculator_lex.cpp.s
+.PHONY : src/minic/calculator_lex.s
 
 # target to generate assembly for a file
-graph.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/graph.cpp.s
-.PHONY : graph.cpp.s
+src/minic/calculator_lex.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.s
+.PHONY : src/minic/calculator_lex.cpp.s
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+src/minic/calculator_yacc.obj: src/minic/calculator_yacc.cpp.obj
+.PHONY : src/minic/calculator_yacc.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+src/minic/calculator_yacc.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.obj
+.PHONY : src/minic/calculator_yacc.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/minic/calculator_yacc.i: src/minic/calculator_yacc.cpp.i
+.PHONY : src/minic/calculator_yacc.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/minic/calculator_yacc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.i
+.PHONY : src/minic/calculator_yacc.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/minic/calculator_yacc.s: src/minic/calculator_yacc.cpp.s
+.PHONY : src/minic/calculator_yacc.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/minic/calculator_yacc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.s
+.PHONY : src/minic/calculator_yacc.cpp.s
 
-symbol.obj: symbol.cpp.obj
-.PHONY : symbol.obj
+src/symbol.obj: src/symbol.cpp.obj
+.PHONY : src/symbol.obj
 
 # target to build an object file
-symbol.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/symbol.cpp.obj
-.PHONY : symbol.cpp.obj
+src/symbol.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/symbol.cpp.obj
+.PHONY : src/symbol.cpp.obj
 
-symbol.i: symbol.cpp.i
-.PHONY : symbol.i
+src/symbol.i: src/symbol.cpp.i
+.PHONY : src/symbol.i
 
 # target to preprocess a source file
-symbol.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/symbol.cpp.i
-.PHONY : symbol.cpp.i
+src/symbol.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/symbol.cpp.i
+.PHONY : src/symbol.cpp.i
 
-symbol.s: symbol.cpp.s
-.PHONY : symbol.s
+src/symbol.s: src/symbol.cpp.s
+.PHONY : src/symbol.s
 
 # target to generate assembly for a file
-symbol.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/symbol.cpp.s
-.PHONY : symbol.cpp.s
+src/symbol.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/symbol.cpp.s
+.PHONY : src/symbol.cpp.s
 
 # Help Target
 help:
@@ -401,39 +401,39 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... minic
-	@echo ... IRCode.obj
-	@echo ... IRCode.i
-	@echo ... IRCode.s
-	@echo ... IRInst.obj
-	@echo ... IRInst.i
-	@echo ... IRInst.s
-	@echo ... ast.obj
-	@echo ... ast.i
-	@echo ... ast.s
-	@echo ... calculator_lex.obj
-	@echo ... calculator_lex.i
-	@echo ... calculator_lex.s
-	@echo ... calculator_yacc.obj
-	@echo ... calculator_yacc.i
-	@echo ... calculator_yacc.s
-	@echo ... common.obj
-	@echo ... common.i
-	@echo ... common.s
-	@echo ... expr.obj
-	@echo ... expr.i
-	@echo ... expr.s
-	@echo ... genIR.obj
-	@echo ... genIR.i
-	@echo ... genIR.s
-	@echo ... graph.obj
-	@echo ... graph.i
-	@echo ... graph.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
-	@echo ... symbol.obj
-	@echo ... symbol.i
-	@echo ... symbol.s
+	@echo ... src/IRCode.obj
+	@echo ... src/IRCode.i
+	@echo ... src/IRCode.s
+	@echo ... src/IRInst.obj
+	@echo ... src/IRInst.i
+	@echo ... src/IRInst.s
+	@echo ... src/ast.obj
+	@echo ... src/ast.i
+	@echo ... src/ast.s
+	@echo ... src/common.obj
+	@echo ... src/common.i
+	@echo ... src/common.s
+	@echo ... src/expr.obj
+	@echo ... src/expr.i
+	@echo ... src/expr.s
+	@echo ... src/genIR.obj
+	@echo ... src/genIR.i
+	@echo ... src/genIR.s
+	@echo ... src/graph.obj
+	@echo ... src/graph.i
+	@echo ... src/graph.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
+	@echo ... src/minic/calculator_lex.obj
+	@echo ... src/minic/calculator_lex.i
+	@echo ... src/minic/calculator_lex.s
+	@echo ... src/minic/calculator_yacc.obj
+	@echo ... src/minic/calculator_yacc.i
+	@echo ... src/minic/calculator_yacc.s
+	@echo ... src/symbol.obj
+	@echo ... src/symbol.i
+	@echo ... src/symbol.s
 .PHONY : help
 
 

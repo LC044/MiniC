@@ -1,6 +1,6 @@
 CMakeFiles/minic.dir/IRInst.cpp.obj: \
   D:/Project/Compile/lab3/MiniC/IRInst.cpp \
-  D:/Project/Compile/lab3/MiniC/IRInst.h \
+  D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_algobase.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -45,7 +45,7 @@ CMakeFiles/minic.dir/IRInst.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/backward/binders.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/range_access.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc \
-  D:/Project/Compile/lab3/MiniC/symbol.h \
+  D:/Project/Compile/lab3/MiniC/include/symbol.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdint \
   D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stdint.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdint.h \
@@ -99,4 +99,4 @@ CMakeFiles/minic.dir/IRInst.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
-  D:/Project/Compile/lab3/MiniC/common.h
+  D:/Project/Compile/lab3/MiniC/include/common.h
