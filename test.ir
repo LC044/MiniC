@@ -1,1 +1,5 @@
-call void @printI(i32 int)
+declare i32 @a
+declare i32 @b[2][5][3]
+declare i32 @q[5]
+declare i32 @c
+declare i32 @d

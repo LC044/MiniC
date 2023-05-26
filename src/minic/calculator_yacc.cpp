@@ -1347,7 +1347,7 @@ yyreduce:
                 temp_val.kind = KEYWORD_ID;
                 temp_val.lineno = (yyvsp[0].var_id).lineno;
                 strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
-                printf("%s\n", temp_val.id);
+                // printf("%s\n", temp_val.id);
                 (yyval.node) = new_ast_leaf_node(temp_val);
             }
 #line 1354 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
@@ -1704,7 +1704,7 @@ yyreduce:
             temp_val.kind = CMP_KIND;
             temp_val.lineno = (yyvsp[0].var_id).lineno;
             strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
-            printf("%s\n", temp_val.id);
+            // printf("%s\n", temp_val.id);
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
 #line 1711 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
@@ -1836,7 +1836,7 @@ yyreduce:
             temp_val.kind = DIGIT_KIND_INT;
             temp_val.integer_val = (yyvsp[0].integer_num).val;
             temp_val.lineno = (yyvsp[0].integer_num).lineno;
-            printf("%d\n", temp_val.integer_val);
+            // printf("%d\n", temp_val.integer_val);
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
 #line 1843 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"

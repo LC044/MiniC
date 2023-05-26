@@ -705,7 +705,9 @@ CMakeFiles/minic.dir/src/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/src/genIR.
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
-  D:/Project/Compile/lab3/MiniC/include/common.h
+  D:/Project/Compile/lab3/MiniC/include/common.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
 
 CMakeFiles/minic.dir/src/graph.cpp.obj: D:/Project/Compile/lab3/MiniC/src/graph.cpp \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/gvc.h \
@@ -2340,6 +2342,12 @@ D:/Project/Compile/lab3/MiniC/src/expr.cpp:
 
 D:/Project/Compile/lab3/MiniC/include/expr.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/char_traits.h:
+
+D:/Project/Compile/lab3/MiniC/include/IRInst.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/types.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/alloc_traits.h:
@@ -2403,12 +2411,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512v
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/inttypes.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/cdt.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/char_traits.h:
-
-D:/Project/Compile/lab3/MiniC/include/IRInst.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/gvplugin.h:
 

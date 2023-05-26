@@ -101,4 +101,6 @@ CMakeFiles/minic.dir/src/genIR.cpp.obj: \
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
-  D:/Project/Compile/lab3/MiniC/include/common.h
+  D:/Project/Compile/lab3/MiniC/include/common.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
