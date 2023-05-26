@@ -167,7 +167,7 @@ void DeclearIRInst::toString(std::string &str)
 {
     // todo 暂时只考虑int型，以后可以继续添加
     Value *result = dstValue;
-    std::string type;
+    std::string type = "i32";
     if (result->type == ValueType::ValueType_Int) {
         type = "i32";
     }
