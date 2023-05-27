@@ -131,7 +131,7 @@ protected:
 public:
     bool IsGlobal = true;
     bool IsArray = false;
-    ValueType ret_type;  // 返回值类型
+    ValueType ret_type;
     /// @brief 构造函数
     /// @param result
     /// @param 是否是全局变量
@@ -144,7 +144,6 @@ public:
     /// @brief 转换成字符串
     void toString(std::string &str) override;
 };
-
 /// @brief 函数调用指令
 class FuncCallIRInst : public IRInst {
 

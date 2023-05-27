@@ -135,8 +135,7 @@ static bool ir_def_func(struct ast_node *node)
             new FuncDefIRInst(func_name->val, fargs)
     );
     // 第四个孩子是语句块
-    struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
-    node->blockInsts.addInst(func_block->blockInsts);
+    struct ast_node *func_block = node->sons[3];
     return true;
 }
 // 产生IR显示的IR指令

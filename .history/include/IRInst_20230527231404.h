@@ -14,8 +14,6 @@ enum IRInstOperator {
     IRINST_OP_MOD,       // 取余指令，二元运算
     IRINST_OP_ASSIGN,    // 赋值指令，一元运算
     IRINST_OP_TYPECOV,   // 类型转换指令
-    IRINST_OP_FUNC_DEF,  // 函数定义指令
-    IRINST_OP_VAR_DEF,   // 变量定义指令
     IRINST_OP_FUNC_CALL, // 函数调用，多目运算，个数不限
 
     IRINST_OP_MAX  // 最大指令码，也是无效指令
@@ -123,28 +121,22 @@ public:
 /*  修改  */
 /// @brief 函数定义指令
 class FuncDefIRInst : public IRInst {
-protected:
-
-    /// @brief 函数名
-    std::string name;
 
 public:
     bool IsGlobal = true;
     bool IsArray = false;
-    ValueType ret_type;  // 返回值类型
     /// @brief 构造函数
     /// @param result
     /// @param 是否是全局变量
     /// @param 是否是数组
-    FuncDefIRInst(Value *func_name, Value *paras, ValueType ret_type = ValueType::ValueType_Int);
-    FuncDefIRInst(Value *func_name, std::vector<Value *> &paras, ValueType ret_type = ValueType::ValueType_Int);
+    FuncDefIRInst(Value *result, bool IsGlobal = true, bool IsArray = false);
+
     /// @brief 析构函数
     virtual ~FuncDefIRInst() override;
 
     /// @brief 转换成字符串
     void toString(std::string &str) override;
 };
-
 /// @brief 函数调用指令
 class FuncCallIRInst : public IRInst {
 

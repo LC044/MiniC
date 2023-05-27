@@ -130,13 +130,10 @@ static bool ir_def_func(struct ast_node *node)
         Value *fargsValue = newTempValue(ValueType::ValueType_Int);
         fargs.push_back(fargsValue);
     }
-
+    // 第四个孩子是语句块
     node->blockInsts.addInst(
             new FuncDefIRInst(func_name->val, fargs)
     );
-    // 第四个孩子是语句块
-    struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
-    node->blockInsts.addInst(func_block->blockInsts);
     return true;
 }
 // 产生IR显示的IR指令

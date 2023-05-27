@@ -187,18 +187,16 @@ void DeclearIRInst::toString(std::string &str)
 }
 
 /* 修改 */
-// 函数定义指令
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *_paras, ValueType _ret_type) :
-    IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
+// 变量声明指令
+FuncDefIRInst::FuncDefIRInst(Value *_result, bool _IsGlobal, bool _IsArray) :
+    IRInst(IRINST_OP_VAR_DEF, _result)
 {
-    srcValues.push_back(_paras);
+    IsGlobal = _IsGlobal;
+    IsArray = _IsArray;
+    srcValues.push_back(_result);
+    // srcValues.push_back(_srcVal2);
 }
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, std::vector<Value *> &_paras, ValueType _ret_type) :
-    IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
-{
-    // 形参拷贝
-    srcValues = _paras;
-}
+
 /// @brief 析构函数
 FuncDefIRInst::~FuncDefIRInst()
 {
@@ -207,22 +205,24 @@ FuncDefIRInst::~FuncDefIRInst()
 void FuncDefIRInst::toString(std::string &str)
 {
     // todo 暂时只考虑int型，以后可以继续添加
-    Value *func_name = dstValue;
+    Value *result = dstValue;
     std::string type;
-    if (ret_type == ValueType::ValueType_Int) {
+    if (result->type == ValueType::ValueType_Int) {
         type = "i32";
     }
-    str = "define " + type + "@" + func_name->getName() + "(";
-    for (size_t k = 0; k < srcValues.size(); ++k) {
-
-        str += "i32 " + srcValues[k]->getName();
-
-        if (k != (srcValues.size() - 1)) {
-
-            str += ", ";
+    if (IsGlobal) {
+        // 全局变量用@符号
+        str = +"declare " + type + " @" + result->getName();
+    } else {
+        // 局部变量用%l符号
+        str = +"declare " + type + " %l" + result->getName();
+    }
+    if (IsArray) {
+        // 数组
+        for (int i = 0; result->dims[i] != 0; i++) {
+            str += "[" + int2str(result->dims[i]) + "]";
         }
     }
-    str += ")";
 }
 
 /// @brief 无参数的函数调用

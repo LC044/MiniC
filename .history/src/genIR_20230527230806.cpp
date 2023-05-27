@@ -51,6 +51,9 @@ static bool ir_def_array(struct ast_node *node)
         }
         i++;
     }
+    // for (int i = 0; i < 10;i++) {
+    //     printf("%d ", val->dims[i]);
+    // }
     node->val = val;
     return true;
 }
@@ -99,46 +102,8 @@ static bool ir_def_list(struct ast_node *node)
     return true;
 }
 
-// 函数定义IR
-static bool ir_def_func(struct ast_node *node)
-{
-    // struct ast_node *func_type = node->sons[0];
-    // 第一个孩子是函数返回类型
-    struct ast_node *func_name = node->sons[1];
-    Value *val = nullptr;
-    // 第二个孩子是函数名
-    if (!IsExist(func_name->attr.id)) {
-        // 变量名没有找到
-        val = newVarValue(func_name->attr.id);
-    } else {
-        // 若变量名已存在，则报错重定义
-        std::string error = std::string("error: redefinition of") + std::string(func_name->attr.id);
-        printError(func_name->attr.lineno, error);
-        return false;
-    }
-    func_name->val = val;
-    // 第三个孩子是参数列表
-    struct ast_node *func_paras = node->sons[2];
-    std::vector<struct ast_node *>::iterator pIter;
-    std::vector<Value *> fargs;
-    for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
-        // 获取参数类型
-        // struct ast_node *arg_type = (*pIter)->sons[0];
-        // 获取参数名
-        // struct ast_node *arg_name = (*pIter)->sons[1];
-        // todo 暂时只考虑int类型
-        Value *fargsValue = newTempValue(ValueType::ValueType_Int);
-        fargs.push_back(fargsValue);
-    }
 
-    node->blockInsts.addInst(
-            new FuncDefIRInst(func_name->val, fargs)
-    );
-    // 第四个孩子是语句块
-    struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
-    node->blockInsts.addInst(func_block->blockInsts);
-    return true;
-}
+
 // 产生IR显示的IR指令
 static bool ir_show(struct ast_node *node, bool show)
 {

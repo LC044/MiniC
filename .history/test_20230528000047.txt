@@ -1,6 +1,5 @@
 int a,b[2][5][3];
 int q[5],c,d;
 int main(int a,int b){
-    b = 1+2;
-    a = 1;
+    ;
 }

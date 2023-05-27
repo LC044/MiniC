@@ -589,7 +589,7 @@ static const yytype_int16 yyrline[] =
      316,   317,   318,   319,   320,   321,   322,   323,   326,   327,
      328,   329,   330,   331,   332,   333,   334,   335,   337,   345,
      346,   347,   348,   349,   350,   351,   353,   354,   355,   356,
-     357,   358,   359,   360,   362,   363,   383,   391
+     357,   358,   359,   360,   362,   363,   370,   378
 };
 #endif
 
@@ -1817,7 +1817,7 @@ yyreduce:
     break;
 
   case 66: /* ident: T_ID  */
-#line 384 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 371 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             struct ast_node_attr temp_val;
             temp_val.kind = DIGIT_KIND_ID;
@@ -1829,7 +1829,7 @@ yyreduce:
     break;
 
   case 67: /* num: T_DIGIT  */
-#line 392 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 379 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
           // 终结符作为抽象语法树的叶子节点进行创建
             struct ast_node_attr temp_val;
@@ -2036,7 +2036,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 401 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 388 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
 
 
 // 语法识别错误要调用函数的定义

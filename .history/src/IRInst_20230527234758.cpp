@@ -188,12 +188,12 @@ void DeclearIRInst::toString(std::string &str)
 
 /* 修改 */
 // 函数定义指令
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *_paras, ValueType _ret_type) :
+FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *_paras, ValueType _ret_type = ValueType::ValueType_Int) :
     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
 {
     srcValues.push_back(_paras);
 }
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, std::vector<Value *> &_paras, ValueType _ret_type) :
+FuncDefIRInst::FuncDefIRInst(Value *_func_name, std::vector<Value *> &_paras, ValueType _ret_type = ValueType::ValueType_Int) :
     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
 {
     // 形参拷贝

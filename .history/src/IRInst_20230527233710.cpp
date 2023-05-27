@@ -188,17 +188,13 @@ void DeclearIRInst::toString(std::string &str)
 
 /* 修改 */
 // 函数定义指令
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *_paras, ValueType _ret_type) :
+FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *paras, ValueType _ret_type = ValueType::ValueType_Int) :
     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
 {
+    srcValues.push_back(_func_name);
     srcValues.push_back(_paras);
 }
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, std::vector<Value *> &_paras, ValueType _ret_type) :
-    IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
-{
-    // 形参拷贝
-    srcValues = _paras;
-}
+
 /// @brief 析构函数
 FuncDefIRInst::~FuncDefIRInst()
 {
@@ -207,22 +203,13 @@ FuncDefIRInst::~FuncDefIRInst()
 void FuncDefIRInst::toString(std::string &str)
 {
     // todo 暂时只考虑int型，以后可以继续添加
-    Value *func_name = dstValue;
+    Value *ret_type = dstValue;
     std::string type;
-    if (ret_type == ValueType::ValueType_Int) {
+    if (ret_type->type == ValueType::ValueType_Int) {
         type = "i32";
     }
-    str = "define " + type + "@" + func_name->getName() + "(";
-    for (size_t k = 0; k < srcValues.size(); ++k) {
+    str = "define " + type + "@" + ret_type->getName();
 
-        str += "i32 " + srcValues[k]->getName();
-
-        if (k != (srcValues.size() - 1)) {
-
-            str += ", ";
-        }
-    }
-    str += ")";
 }
 
 /// @brief 无参数的函数调用

@@ -4,6 +4,3 @@ declare i32 @q[5]
 declare i32 @c
 declare i32 @d
 define i32@main(i32 %t0, i32 %t1)
-%t2 = add 1, 2
-b = assign %t2
-a = assign 1

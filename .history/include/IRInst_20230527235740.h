@@ -136,8 +136,8 @@ public:
     /// @param result
     /// @param 是否是全局变量
     /// @param 是否是数组
-    FuncDefIRInst(Value *func_name, Value *paras, ValueType ret_type = ValueType::ValueType_Int);
-    FuncDefIRInst(Value *func_name, std::vector<Value *> &paras, ValueType ret_type = ValueType::ValueType_Int);
+    FuncDefIRInst(Value *func_name, Value *paras, ValueType _ret_type = ValueType::ValueType_Int);
+    FuncDefIRInst(Value *func_name, std::vector<Value *> &paras, ValueType _ret_type = ValueType::ValueType_Int);
     /// @brief 析构函数
     virtual ~FuncDefIRInst() override;
 
