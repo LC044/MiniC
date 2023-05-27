@@ -202,50 +202,50 @@ CMakeFiles/minic.dir/src/symbol.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/symbol.cpp.s"
 	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\symbol.cpp -o CMakeFiles\minic.dir\src\symbol.cpp.s
 
-CMakeFiles/minic.dir/src/IRInst.cpp.obj: CMakeFiles/minic.dir/flags.make
-CMakeFiles/minic.dir/src/IRInst.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/src/IRInst.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IRInst.cpp
-CMakeFiles/minic.dir/src/IRInst.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/minic.dir/src/IRInst.cpp.obj"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/IRInst.cpp.obj -MF CMakeFiles\minic.dir\src\IRInst.cpp.obj.d -o CMakeFiles\minic.dir\src\IRInst.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\IRInst.cpp
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: CMakeFiles/minic.dir/flags.make
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/IRInst.cpp
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj -MF CMakeFiles\minic.dir\src\IR\IRInst.cpp.obj.d -o CMakeFiles\minic.dir\src\IR\IRInst.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\IR\IRInst.cpp
 
-CMakeFiles/minic.dir/src/IRInst.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/IRInst.cpp.i"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\IRInst.cpp > CMakeFiles\minic.dir\src\IRInst.cpp.i
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/IR/IRInst.cpp.i"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\IR\IRInst.cpp > CMakeFiles\minic.dir\src\IR\IRInst.cpp.i
 
-CMakeFiles/minic.dir/src/IRInst.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/IRInst.cpp.s"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\IRInst.cpp -o CMakeFiles\minic.dir\src\IRInst.cpp.s
+CMakeFiles/minic.dir/src/IR/IRInst.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/IR/IRInst.cpp.s"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\IR\IRInst.cpp -o CMakeFiles\minic.dir\src\IR\IRInst.cpp.s
 
-CMakeFiles/minic.dir/src/IRCode.cpp.obj: CMakeFiles/minic.dir/flags.make
-CMakeFiles/minic.dir/src/IRCode.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/src/IRCode.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IRCode.cpp
-CMakeFiles/minic.dir/src/IRCode.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/minic.dir/src/IRCode.cpp.obj"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/IRCode.cpp.obj -MF CMakeFiles\minic.dir\src\IRCode.cpp.obj.d -o CMakeFiles\minic.dir\src\IRCode.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\IRCode.cpp
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj: CMakeFiles/minic.dir/flags.make
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/IRCode.cpp
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj -MF CMakeFiles\minic.dir\src\IR\IRCode.cpp.obj.d -o CMakeFiles\minic.dir\src\IR\IRCode.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\IR\IRCode.cpp
 
-CMakeFiles/minic.dir/src/IRCode.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/IRCode.cpp.i"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\IRCode.cpp > CMakeFiles\minic.dir\src\IRCode.cpp.i
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/IR/IRCode.cpp.i"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\IR\IRCode.cpp > CMakeFiles\minic.dir\src\IR\IRCode.cpp.i
 
-CMakeFiles/minic.dir/src/IRCode.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/IRCode.cpp.s"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\IRCode.cpp -o CMakeFiles\minic.dir\src\IRCode.cpp.s
+CMakeFiles/minic.dir/src/IR/IRCode.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/IR/IRCode.cpp.s"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\IR\IRCode.cpp -o CMakeFiles\minic.dir\src\IR\IRCode.cpp.s
 
-CMakeFiles/minic.dir/src/genIR.cpp.obj: CMakeFiles/minic.dir/flags.make
-CMakeFiles/minic.dir/src/genIR.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
-CMakeFiles/minic.dir/src/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/src/genIR.cpp
-CMakeFiles/minic.dir/src/genIR.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/minic.dir/src/genIR.cpp.obj"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/genIR.cpp.obj -MF CMakeFiles\minic.dir\src\genIR.cpp.obj.d -o CMakeFiles\minic.dir\src\genIR.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\genIR.cpp
+CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: CMakeFiles/minic.dir/flags.make
+CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: CMakeFiles/minic.dir/includes_CXX.rsp
+CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp
+CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: CMakeFiles/minic.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=D:\Project\Compile\lab3\MiniC\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/minic.dir/src/IR/genIR.cpp.obj"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/minic.dir/src/IR/genIR.cpp.obj -MF CMakeFiles\minic.dir\src\IR\genIR.cpp.obj.d -o CMakeFiles\minic.dir\src\IR\genIR.cpp.obj -c D:\Project\Compile\lab3\MiniC\src\IR\genIR.cpp
 
-CMakeFiles/minic.dir/src/genIR.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/genIR.cpp.i"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\genIR.cpp > CMakeFiles\minic.dir\src\genIR.cpp.i
+CMakeFiles/minic.dir/src/IR/genIR.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/minic.dir/src/IR/genIR.cpp.i"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\Compile\lab3\MiniC\src\IR\genIR.cpp > CMakeFiles\minic.dir\src\IR\genIR.cpp.i
 
-CMakeFiles/minic.dir/src/genIR.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/genIR.cpp.s"
-	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\genIR.cpp -o CMakeFiles\minic.dir\src\genIR.cpp.s
+CMakeFiles/minic.dir/src/IR/genIR.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/minic.dir/src/IR/genIR.cpp.s"
+	D:\Project\Compile\CompilerTools\msys64\mingw64\bin\clang++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\Compile\lab3\MiniC\src\IR\genIR.cpp -o CMakeFiles\minic.dir\src\IR\genIR.cpp.s
 
 # Object files for target minic
 minic_OBJECTS = \
@@ -257,9 +257,9 @@ minic_OBJECTS = \
 "CMakeFiles/minic.dir/src/graph.cpp.obj" \
 "CMakeFiles/minic.dir/src/common.cpp.obj" \
 "CMakeFiles/minic.dir/src/symbol.cpp.obj" \
-"CMakeFiles/minic.dir/src/IRInst.cpp.obj" \
-"CMakeFiles/minic.dir/src/IRCode.cpp.obj" \
-"CMakeFiles/minic.dir/src/genIR.cpp.obj"
+"CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj" \
+"CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj" \
+"CMakeFiles/minic.dir/src/IR/genIR.cpp.obj"
 
 # External object files for target minic
 minic_EXTERNAL_OBJECTS =
@@ -272,9 +272,9 @@ minic.exe: CMakeFiles/minic.dir/src/main.cpp.obj
 minic.exe: CMakeFiles/minic.dir/src/graph.cpp.obj
 minic.exe: CMakeFiles/minic.dir/src/common.cpp.obj
 minic.exe: CMakeFiles/minic.dir/src/symbol.cpp.obj
-minic.exe: CMakeFiles/minic.dir/src/IRInst.cpp.obj
-minic.exe: CMakeFiles/minic.dir/src/IRCode.cpp.obj
-minic.exe: CMakeFiles/minic.dir/src/genIR.cpp.obj
+minic.exe: CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj
+minic.exe: CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj
+minic.exe: CMakeFiles/minic.dir/src/IR/genIR.cpp.obj
 minic.exe: CMakeFiles/minic.dir/build.make
 minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libcdt.dll.a
 minic.exe: D:/Project/Compile/CompilerTools/msys64/mingw64/lib/libgvc.dll.a

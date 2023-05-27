@@ -1,1 +1,1 @@
--I"D:/Project/Compile/lab3/MiniC/cmake-build-debug" -ID:/Project/Compile/lab3/MiniC -ID:/Project/Compile/lab3/MiniC/include -ID:/Project/Compile/lab3/MiniC/src/minic -ID:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz
+-I"D:/Project/Compile/lab3/MiniC/cmake-build-debug" -ID:/Project/Compile/lab3/MiniC -ID:/Project/Compile/lab3/MiniC/include -ID:/Project/Compile/lab3/MiniC/src/minic -ID:/Project/Compile/lab3/MiniC/src/IR -ID:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz

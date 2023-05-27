@@ -45,9 +45,6 @@ add_executable(${PROJECT_NAME}
     src/graph.cpp
     src/common.cpp
     src/symbol.cpp
-    src/IR/IRInst.cpp
-    src/IR/IRCode.cpp
-    src/IR/genIR.cpp
 )
 
 # 设置语言标准，可根据需要调整

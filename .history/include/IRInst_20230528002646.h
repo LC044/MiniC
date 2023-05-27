@@ -16,7 +16,6 @@ enum IRInstOperator {
     IRINST_OP_TYPECOV,   // 类型转换指令
     IRINST_OP_FUNC_DEF,  // 函数定义指令
     IRINST_OP_VAR_DEF,   // 变量定义指令
-    IRINST_OP_RETURN,    // 函数返回指令
     IRINST_OP_FUNC_CALL, // 函数调用，多目运算，个数不限
 
     IRINST_OP_MAX  // 最大指令码，也是无效指令

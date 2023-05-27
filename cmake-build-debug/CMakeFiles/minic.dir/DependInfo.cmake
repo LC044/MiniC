@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/Project/Compile/lab3/MiniC/src/IRCode.cpp" "CMakeFiles/minic.dir/src/IRCode.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IRCode.cpp.obj.d"
-  "D:/Project/Compile/lab3/MiniC/src/IRInst.cpp" "CMakeFiles/minic.dir/src/IRInst.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IRInst.cpp.obj.d"
+  "D:/Project/Compile/lab3/MiniC/src/IR/IRCode.cpp" "CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj.d"
+  "D:/Project/Compile/lab3/MiniC/src/IR/IRInst.cpp" "CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj.d"
+  "D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp" "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/ast.cpp" "CMakeFiles/minic.dir/src/ast.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/ast.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/common.cpp" "CMakeFiles/minic.dir/src/common.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/common.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/expr.cpp" "CMakeFiles/minic.dir/src/expr.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/expr.cpp.obj.d"
-  "D:/Project/Compile/lab3/MiniC/src/genIR.cpp" "CMakeFiles/minic.dir/src/genIR.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/genIR.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/graph.cpp" "CMakeFiles/minic.dir/src/graph.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/graph.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/main.cpp" "CMakeFiles/minic.dir/src/main.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/main.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/minic/calculator_lex.cpp" "CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.obj.d"

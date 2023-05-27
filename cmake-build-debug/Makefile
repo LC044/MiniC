@@ -128,53 +128,77 @@ minic/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/build
 .PHONY : minic/fast
 
-src/IRCode.obj: src/IRCode.cpp.obj
-.PHONY : src/IRCode.obj
+src/IR/IRCode.obj: src/IR/IRCode.cpp.obj
+.PHONY : src/IR/IRCode.obj
 
 # target to build an object file
-src/IRCode.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.obj
-.PHONY : src/IRCode.cpp.obj
+src/IR/IRCode.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj
+.PHONY : src/IR/IRCode.cpp.obj
 
-src/IRCode.i: src/IRCode.cpp.i
-.PHONY : src/IRCode.i
+src/IR/IRCode.i: src/IR/IRCode.cpp.i
+.PHONY : src/IR/IRCode.i
 
 # target to preprocess a source file
-src/IRCode.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.i
-.PHONY : src/IRCode.cpp.i
+src/IR/IRCode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRCode.cpp.i
+.PHONY : src/IR/IRCode.cpp.i
 
-src/IRCode.s: src/IRCode.cpp.s
-.PHONY : src/IRCode.s
+src/IR/IRCode.s: src/IR/IRCode.cpp.s
+.PHONY : src/IR/IRCode.s
 
 # target to generate assembly for a file
-src/IRCode.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRCode.cpp.s
-.PHONY : src/IRCode.cpp.s
+src/IR/IRCode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRCode.cpp.s
+.PHONY : src/IR/IRCode.cpp.s
 
-src/IRInst.obj: src/IRInst.cpp.obj
-.PHONY : src/IRInst.obj
+src/IR/IRInst.obj: src/IR/IRInst.cpp.obj
+.PHONY : src/IR/IRInst.obj
 
 # target to build an object file
-src/IRInst.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.obj
-.PHONY : src/IRInst.cpp.obj
+src/IR/IRInst.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj
+.PHONY : src/IR/IRInst.cpp.obj
 
-src/IRInst.i: src/IRInst.cpp.i
-.PHONY : src/IRInst.i
+src/IR/IRInst.i: src/IR/IRInst.cpp.i
+.PHONY : src/IR/IRInst.i
 
 # target to preprocess a source file
-src/IRInst.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.i
-.PHONY : src/IRInst.cpp.i
+src/IR/IRInst.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRInst.cpp.i
+.PHONY : src/IR/IRInst.cpp.i
 
-src/IRInst.s: src/IRInst.cpp.s
-.PHONY : src/IRInst.s
+src/IR/IRInst.s: src/IR/IRInst.cpp.s
+.PHONY : src/IR/IRInst.s
 
 # target to generate assembly for a file
-src/IRInst.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IRInst.cpp.s
-.PHONY : src/IRInst.cpp.s
+src/IR/IRInst.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/IRInst.cpp.s
+.PHONY : src/IR/IRInst.cpp.s
+
+src/IR/genIR.obj: src/IR/genIR.cpp.obj
+.PHONY : src/IR/genIR.obj
+
+# target to build an object file
+src/IR/genIR.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genIR.cpp.obj
+.PHONY : src/IR/genIR.cpp.obj
+
+src/IR/genIR.i: src/IR/genIR.cpp.i
+.PHONY : src/IR/genIR.i
+
+# target to preprocess a source file
+src/IR/genIR.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genIR.cpp.i
+.PHONY : src/IR/genIR.cpp.i
+
+src/IR/genIR.s: src/IR/genIR.cpp.s
+.PHONY : src/IR/genIR.s
+
+# target to generate assembly for a file
+src/IR/genIR.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genIR.cpp.s
+.PHONY : src/IR/genIR.cpp.s
 
 src/ast.obj: src/ast.cpp.obj
 .PHONY : src/ast.obj
@@ -247,30 +271,6 @@ src/expr.s: src/expr.cpp.s
 src/expr.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/expr.cpp.s
 .PHONY : src/expr.cpp.s
-
-src/genIR.obj: src/genIR.cpp.obj
-.PHONY : src/genIR.obj
-
-# target to build an object file
-src/genIR.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.obj
-.PHONY : src/genIR.cpp.obj
-
-src/genIR.i: src/genIR.cpp.i
-.PHONY : src/genIR.i
-
-# target to preprocess a source file
-src/genIR.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.i
-.PHONY : src/genIR.cpp.i
-
-src/genIR.s: src/genIR.cpp.s
-.PHONY : src/genIR.s
-
-# target to generate assembly for a file
-src/genIR.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/genIR.cpp.s
-.PHONY : src/genIR.cpp.s
 
 src/graph.obj: src/graph.cpp.obj
 .PHONY : src/graph.obj
@@ -401,12 +401,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... minic
-	@echo ... src/IRCode.obj
-	@echo ... src/IRCode.i
-	@echo ... src/IRCode.s
-	@echo ... src/IRInst.obj
-	@echo ... src/IRInst.i
-	@echo ... src/IRInst.s
+	@echo ... src/IR/IRCode.obj
+	@echo ... src/IR/IRCode.i
+	@echo ... src/IR/IRCode.s
+	@echo ... src/IR/IRInst.obj
+	@echo ... src/IR/IRInst.i
+	@echo ... src/IR/IRInst.s
+	@echo ... src/IR/genIR.obj
+	@echo ... src/IR/genIR.i
+	@echo ... src/IR/genIR.s
 	@echo ... src/ast.obj
 	@echo ... src/ast.i
 	@echo ... src/ast.s
@@ -416,9 +419,6 @@ help:
 	@echo ... src/expr.obj
 	@echo ... src/expr.i
 	@echo ... src/expr.s
-	@echo ... src/genIR.obj
-	@echo ... src/genIR.i
-	@echo ... src/genIR.s
 	@echo ... src/graph.obj
 	@echo ... src/graph.i
 	@echo ... src/graph.s
