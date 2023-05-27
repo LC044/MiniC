@@ -213,12 +213,12 @@ public:
 
 /// @brief 没啥用指令
 class UselessIRInst : public IRInst {
-private:
-    std::string useless_str;
+
 public:
     /// @brief 构造函数
-    /// @param str 没啥用字符串 
-    UselessIRInst(std::string str);
+    /// @param result 
+    /// @param srcVal1 
+    UselessIRInst(std::string &str);
 
     /// @brief 析构函数
     virtual ~UselessIRInst() override;

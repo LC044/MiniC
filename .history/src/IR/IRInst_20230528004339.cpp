@@ -344,7 +344,7 @@ void ReturnIRInst::toString(std::string &str)
 
 /// @brief 没啥用指令
 /// @param  
-UselessIRInst::UselessIRInst(std::string str) :
+UselessIRInst::UselessIRInst(std::string &str) :
     useless_str(str)
 {
     // srcValues.push_back(_srcVal1);
@@ -361,5 +361,7 @@ UselessIRInst::~UselessIRInst()
 /// @param str 转换后的字符串
 void UselessIRInst::toString(std::string &str)
 {
-    str = useless_str;
+    Value *result = dstValue;
+    str = "     ";
+    str += "exit " + result->getName();
 }

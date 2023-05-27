@@ -212,16 +212,16 @@ public:
 };
 
 /// @brief 没啥用指令
-class UselessIRInst : public IRInst {
-private:
-    std::string useless_str;
+class ReturnIRInst : public IRInst {
+
 public:
     /// @brief 构造函数
-    /// @param str 没啥用字符串 
-    UselessIRInst(std::string str);
+    /// @param result 
+    /// @param srcVal1 
+    ReturnIRInst(Value *result);
 
     /// @brief 析构函数
-    virtual ~UselessIRInst() override;
+    virtual ~ReturnIRInst() override;
 
     /// @brief 转换成字符串
     void toString(std::string &str) override;

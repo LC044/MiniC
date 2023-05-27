@@ -8,3 +8,4 @@ define i32@main(i32 %t0, i32 %t1){
      b = assign %t2
      a = assign 1
      exit b
+}

@@ -344,7 +344,7 @@ void ReturnIRInst::toString(std::string &str)
 
 /// @brief 没啥用指令
 /// @param  
-UselessIRInst::UselessIRInst(std::string str) :
+UselessIRInst::UselessIRInst(std::string &str) :
     useless_str(str)
 {
     // srcValues.push_back(_srcVal1);
