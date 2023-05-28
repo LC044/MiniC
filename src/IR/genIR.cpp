@@ -4,11 +4,12 @@
 #include "symbol.h"
 // #include <iostream>
 static struct ast_node *ir_visit_ast_node(struct ast_node *node);
-
+static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 // 从抽象语法树的根开始遍历，然后输出计算出表达式的值
-static bool ir_block(struct ast_node *node)
+static bool ir_cu(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
+    // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
 
         // 遍历Block的每个语句，进行显示或者运算
@@ -22,8 +23,69 @@ static bool ir_block(struct ast_node *node)
 
     return true;
 }
+// 从抽象语法树的根开始遍历，然后输出计算出表达式的值
+static bool ir_block(struct ast_node *node)
+{
+    std::vector<struct ast_node *>::iterator pIter;
+    // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        // 判断是否有局部变量定义
+        if ((*pIter)->type == AST_DEF_LIST) {
+            // 第一个孩子为变量类型
+            struct ast_node *temp_type = (*pIter)->sons[0];
+            ValueType type_;
+            // todo 暂时只考虑int类型
+            if (strcmp(temp_type->attr.id, "int") == 0) {
+                type_ = ValueType::ValueType_Int;
+            }
+            // 后面的孩子为变量名
+            std::vector<struct ast_node *>::iterator pIter1;
+            for (pIter1 = (*pIter)->sons.begin() + 1; pIter1 != (*pIter)->sons.end(); ++pIter1) {
+                Value *localVarValue = nullptr;
+                struct ast_node *temp = *pIter1;
+                if (temp->type == AST_ARRAY) {
+                    bool result = ir_def_array(temp, type_, true);
+                    if (!result)return false;
+                } else {
+                    printf("%s\n", temp->attr.id);
+                    if (!IsExist(temp->attr.id)) {
+                        // 变量名没有找到
+                        localVarValue = newLocalVarValue(temp->attr.id, type_);
+                    } else {
+                        // 若变量名已存在，则报错重定义
+                        std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
+                        printError(temp->attr.lineno, error);
+                        return false;
+                    }
+                    // temp->attr.kind = kind0;
+                    temp->val = localVarValue;
+                }
 
-static bool ir_def_array(struct ast_node *node)
+                printf("localVarValue:%s;%s\n", temp->val->getName().c_str(), temp->val->getName().c_str());
+                // (*pIter1)->val = localVarValue;
+                node->blockInsts.addInst(
+                    new DeclearIRInst(temp->val, false, true)
+                );
+            }
+        }
+    }
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        // 判断是否有局部变量定义
+        if ((*pIter)->type == AST_DEF_LIST) {
+            continue;
+        }
+        // 遍历Block的每个语句，进行显示或者运算
+        struct ast_node *temp = ir_visit_ast_node(*pIter);
+        if (!temp) {
+            return false;
+        }
+
+        node->blockInsts.addInst(temp->blockInsts);
+    }
+    return true;
+}
+
+static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
 
     Value *val = nullptr;
@@ -32,7 +94,14 @@ static bool ir_def_array(struct ast_node *node)
     if (!IsExist(temp_id->attr.id)) {
         // 变量名没有找到
         // 创建一个新的符号
-        val = newVarValue(temp_id->attr.id);
+        if (isLocal) {
+            val = newLocalVarValue(temp_id->attr.id, type);
+            printf("loacl Arrar\n");
+        } else {
+            val = newVarValue(temp_id->attr.id);
+            val->type = type;
+        }
+
     } else {
         // 若变量名已存在，则报错重定义
         std::string error = std::string("error: redefinition of ") + std::string(temp_id->attr.id);
@@ -74,7 +143,7 @@ static bool ir_def_list(struct ast_node *node)
         struct ast_node *temp = *pIter;
         printf("ok\n");
         if (temp->type == AST_ARRAY) {
-            bool result = ir_def_array(temp);
+            bool result = ir_def_array(temp, type);
             if (!result)return false;
         } else {
             printf("%s\n", temp->attr.id);
@@ -655,11 +724,14 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
 
         // 多个语句组成的块
         result = ir_block(node);
+        if (!result) {
+            printf("error:in block\n");
+        }
         break;
     case AST_CU:
         printf("CU\n");
         // 多个语句组成的块
-        result = ir_block(node);
+        result = ir_cu(node);
         break;
     case AST_DEF_LIST:
         printf("AST_DEF_LIST\n");

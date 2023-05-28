@@ -174,15 +174,25 @@ void DeclearIRInst::toString(std::string &str)
     }
     if (IsGlobal) {
         // 全局变量用@符号
-        str = +"declare " + type + " @" + result->getName();
+        str = "declare " + type + " @" + result->getName();
     } else {
         // 局部变量用%l符号
-        str = +"declare " + type + " %l" + result->getName();
+        str = "    declare " + type + " " + result->getName();
+
     }
     if (IsArray) {
         // 数组
         for (int i = 0; result->dims[i] != 0; i++) {
             str += "[" + int2str(result->dims[i]) + "]";
+        }
+    }
+    if (!IsGlobal) {
+        str += "; variable: " + result->id_name;
+        if (IsArray) {
+            // 数组
+            for (int i = 0; result->dims[i] != 0; i++) {
+                str += "[" + int2str(result->dims[i]) + "]";
+            }
         }
     }
 }

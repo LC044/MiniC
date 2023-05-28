@@ -30,10 +30,11 @@ protected:
 
     /// @brief 新建一个临时变量名
     /// \return
-    static std::string createTempVarName()
+
+    static std::string createTempVarName(bool isLocal = false)
     {
         static uint64_t tempVarCount = 0; // 临时变量计数，默认从0开始
-
+        if (isLocal)return "%l" + int2str(tempVarCount++);
         return "%t" + int2str(tempVarCount++);
     }
 
@@ -52,7 +53,8 @@ public:
 
     /// @brief 变量名或内部标识的名字
     std::string name;
-
+    /// @brief 变量名
+    std::string id_name;
     /// @brief 类型
     ValueType type;
 
@@ -191,7 +193,33 @@ public:
         // 如有资源清理，请这里追加代码
     }
 };
+class LocalVarValue : public Value {
+public:
 
+    /// @brief 创建变量Value，用于保存中间IR指令的值
+    /// \param val
+    LocalVarValue(std::string _name, ValueType _type) : Value(_type)
+    {
+        id_name = _name;
+        isTemp = true;
+        name = createTempVarName(true);
+    }
+
+    /// @brief 创建变量Value，用于保存中间IR指令的值
+    /// \param val
+    LocalVarValue(std::string _name) : Value(ValueType::ValueType_Real)
+    {
+        id_name = _name;
+        isTemp = true;
+        name = createTempVarName(true);
+    }
+
+    /// @brief 析构函数
+    virtual ~LocalVarValue() override
+    {
+        // 如有资源清理，请这里追加代码
+    }
+};
 /// @brief 根据变量名取得当前符号的值。若变量不存在，则说明变量之前没有定值，则创建一个未知类型的值，初值为0
 /// \param name 变量名
 /// \param checkExist 检查变量存在不？若true则检查，不存在则返回nullptr，否则创建新变量
@@ -208,7 +236,10 @@ void newVarValue(std::string name, ValueType type);
 /// \param intVal 整数值
 /// \return 常量Value
 Value *newVarValue(std::string name);
-
+/// @brief 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间
+/// \param intVal 整数值
+/// \return 常量Value
+Value *newLocalVarValue(std::string name, ValueType type);
 /// @brief 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 临时Value

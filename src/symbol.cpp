@@ -44,6 +44,17 @@ Value *newVarValue(std::string name)
     return temp;
 }
 
+/// 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间
+/// \param intVal 整数值
+/// \return 常量Value
+Value *newLocalVarValue(std::string name, ValueType type)
+{
+    // 类型待定
+    Value *temp = new LocalVarValue(name, type);
+    varsMap.emplace(temp->name, temp);
+
+    return temp;
+}
 /// 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value

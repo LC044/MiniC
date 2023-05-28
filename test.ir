@@ -4,8 +4,12 @@ declare i32 @q[5]
 declare i32 @_c
 declare i32 @d_
 define i32 @main(i32 %t0, i32 %t1){
-    %t2 = add 1, 2
-    b = assign %t2
+    declare i32 %l2; variable: k
+    declare i32 %l3[5]; variable: i[5]
+    declare i32 %l4; variable: f
+    declare i32 %l5; variable: t
+    %t6 = add 1, 2
+    b = assign %t6
     a = assign 1
     exit b
 }

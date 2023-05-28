@@ -2,6 +2,8 @@ int a,b[2][5][3];
 int q[5],_c,d_;
 int main(int a_,int b){
     b = 1+2;
+    int k,i[5],f;
     a = 1;
+    int t;
     return b;
 }
