@@ -1,7 +1,0 @@
-int a,b[2][3],c;
-int main(int f,int p,int g){
-    int a,b,c,d;
-    c=2;
-    d = 2+2;
-    return d;
-}

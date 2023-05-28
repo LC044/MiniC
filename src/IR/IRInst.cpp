@@ -77,7 +77,7 @@ void BinaryIRInst::toString(std::string &str)
     Value *src1 = srcValues[0], *src2 = srcValues[1], *result = dstValue;
     /*   新增   */
     // 只需要判断结果类型即可判断是浮点运算还是整数运算
-    str = "     ";
+    str = "    ";
     switch (op) {
     case IRINST_OP_ADD:
         // 加法指令，二元运算
@@ -213,7 +213,7 @@ void FuncDefIRInst::toString(std::string &str)
     if (ret_type == ValueType::ValueType_Int) {
         type = "i32";
     }
-    str = "define " + type + "@" + func_name->getName() + "(";
+    str = "define " + type + " @" + func_name->getName() + "(";
     for (size_t k = 0; k < srcValues.size(); ++k) {
 
         str += "i32 " + srcValues[k]->getName();
@@ -268,7 +268,7 @@ void FuncCallIRInst::toString(std::string &str)
     // TODO 这里应该根据函数名查找函数定义或者声明获取函数的类型
     // 这里假定所有函数返回类型要么是i32，要么是void
     // 函数参数的类型是i32
-    str = "     ";
+    str = "    ";
     if (!dstValue) {
 
         // 函数没有返回值设置
@@ -313,7 +313,7 @@ AssignIRInst::~AssignIRInst()
 void AssignIRInst::toString(std::string &str)
 {
     Value *src1 = srcValues[0], *result = dstValue;
-    str = "     ";
+    str = "    ";
     str += result->getName() + " = assign " + src1->getName();
 }
 
@@ -338,7 +338,7 @@ ReturnIRInst::~ReturnIRInst()
 void ReturnIRInst::toString(std::string &str)
 {
     Value *result = dstValue;
-    str = "     ";
+    str = "    ";
     str += "exit " + result->getName();
 }
 

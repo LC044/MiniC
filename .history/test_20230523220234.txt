@@ -1,6 +1,0 @@
-int a;
-int b;
-int main(int c){
-    c=2;
-    d = 2+2;
-}

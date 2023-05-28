@@ -10,6 +10,10 @@ git config --global --unset http.proxy
 
 git push -u origin main
 
+老师写好的程序运行方式
+
+.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir test.txt
+
 ## 主要功能
 
 选项-a可产生抽象语法树AST

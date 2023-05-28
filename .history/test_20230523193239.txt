@@ -1,6 +1,0 @@
-int b;
-int a12;
-int main(){
-    a = (4);
-    b = 5;
-}

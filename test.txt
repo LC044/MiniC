@@ -1,6 +1,6 @@
 int a,b[2][5][3];
-int q[5],c,d;
-int main(int a,int b){
+int q[5],_c,d_;
+int main(int a_,int b){
     b = 1+2;
     a = 1;
     return b;

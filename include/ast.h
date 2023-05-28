@@ -22,34 +22,34 @@ enum ast_operator_type {
     AST_OP_EXPR_SHOW, // 表达式语句，需要显示表达式的值
 
     // TODO 抽象语法树其它内部节点运算符追加
-    AST_FUNC_CALL,
-    AST_REAL_ARGS,
-    AST_OP_LDEC,
-    AST_OP_LINC,
-    AST_OP_RDEC,
-    AST_OP_RINC,
-    AST_OP_AND,
-    AST_OP_INDEX,
-    AST_OP_OR,
-    AST_OP_NEG,
-    AST_OP_NOT,
-    AST_OP_CMP,
-    AST_OP_IF,
-    AST_OP_WHILE,
-    AST_OP_BREAK,
-    AST_OP_CONTINUE,
-    AST_ARRAY,
+    AST_FUNC_CALL,    // 函数调用
+    AST_REAL_ARGS,    // 实参
+    AST_OP_LDEC,      // 左自减 --a
+    AST_OP_LINC,      // 左自增 ++a
+    AST_OP_RDEC,      // 右自减
+    AST_OP_RINC,      // 右自增
+    AST_OP_AND,       // 逻辑与
+    AST_OP_INDEX,     // 数组索引
+    AST_OP_OR,        // 逻辑或
+    AST_OP_NEG,       // 取负
+    AST_OP_NOT,       // 逻辑非
+    AST_OP_CMP,       // 比较运算
+    AST_OP_IF,        // IF语句
+    AST_OP_WHILE,     // While 语句
+    AST_OP_BREAK,     // break 语句
+    AST_OP_CONTINUE,  // continue 语句
+    AST_ARRAY,        // 数组定义
     AST_ARRAY_LIST,
     AST_DEF_LIST,
     AST_DEC_LIST,
-    AST_DIMS,           // 数组维度
-    AST_RETURN,         // 返回语句
-    AST_CU,             // 文件，全局声明、定义
-    AST_VAR_DECL,      // 变量声明
+    AST_DIMS,         // 数组维度
+    AST_RETURN,       // 返回语句
+    AST_CU,           // 文件，全局声明、定义
+    AST_VAR_DECL,     // 变量声明
     AST_VAR_DEF,      // 变量定义
     AST_FUNC_DEF,     // 函数定义  
     AST_FUNC_DECL,    // 函数声明
-    AST_FARGS,       // 参数列表
+    AST_FARGS,        // 参数列表
     AST_OP_MAX,       // 非法运算符
 };
 

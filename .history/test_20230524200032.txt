@@ -1,5 +1,0 @@
-int main(int f,int p,int g){
-    c=2;
-    d = 2+2;
-    return d;
-}

@@ -33,7 +33,7 @@
 /* 辅助定义式或者宏，后面使用时带上大括号 */
 
 d			[0-9]
-l           [a-zA-Z]
+l           [a-zA-Z|_]
 h           [0-9a-fA-F]
 white		[\t\040]
 white_line  [\r\n]
