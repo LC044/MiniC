@@ -6,12 +6,18 @@
 #include "symbol.h"
 
 using namespace std;
+struct FuncSymbol {
+    Value FuncValue;
+    // 用来保存所有的局部变量信息
+    std::unordered_map<std::string, Value *> localVarsMap;
+    /* data */
+};
 
 // 用来保存所有的变量信息
 static std::unordered_map<std::string, Value *> varsMap;
 
 // 用来保存所有的函数信息
-static std::unordered_map<std::string, Value *> funcsMap;
+static std::unordered_map<std::string, FuncSymbol *> funcsMap;
 
 /// @brief 新建变量型Value
 /// @param name 变量ID
