@@ -44,10 +44,10 @@ static bool ir_block(struct ast_node *node)
                 Value *localVarValue = nullptr;
                 struct ast_node *temp = *pIter1;
                 if (temp->type == AST_ARRAY) {
+                    // 数组变量
                     bool result = ir_def_array(temp, type_, true);
                     if (!result)return false;
                 } else {
-                    printf("%s\n", temp->attr.id);
                     if (!IsExist(temp->attr.id)) {
                         // 变量名没有找到
                         localVarValue = newLocalVarValue(temp->attr.id, type_);
@@ -57,7 +57,6 @@ static bool ir_block(struct ast_node *node)
                         printError(temp->attr.lineno, error);
                         return false;
                     }
-                    // temp->attr.kind = kind0;
                     temp->val = localVarValue;
                 }
 
@@ -69,6 +68,11 @@ static bool ir_block(struct ast_node *node)
             }
         }
     }
+    // 函数进入语句
+    node->blockInsts.addInst(
+        new UselessIRInst("    entry")
+    );
+    // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
         if ((*pIter)->type == AST_DEF_LIST) {
@@ -202,6 +206,27 @@ static bool ir_def_func(struct ast_node *node)
 
     node->blockInsts.addInst(
             new FuncDefIRInst(func_name->val, fargs)
+    );
+    // 形参定义
+    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
+        // 获取参数类型
+        // struct ast_node *arg_type = (*pIter)->sons[0];
+        // 获取参数名
+        struct ast_node *arg_name = (*pIter)->sons[1];
+        Value *localVarValue = nullptr;
+        // todo 暂时只考虑int类型
+        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int);
+        arg_name->val = localVarValue;
+        node->blockInsts.addInst(
+            new DeclearIRInst(arg_name->val, false, true)
+        );
+    }
+    // 返回值定义
+    Value *localVarValue = nullptr;
+    // todo 暂时只考虑int类型
+    localVarValue = newLocalVarValue("", ValueType::ValueType_Int);
+    node->blockInsts.addInst(
+        new DeclearIRInst(localVarValue, false, true)
     );
     // 第四个孩子是语句块
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);

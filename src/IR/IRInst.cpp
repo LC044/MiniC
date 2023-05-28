@@ -187,7 +187,7 @@ void DeclearIRInst::toString(std::string &str)
         }
     }
     if (!IsGlobal) {
-        str += "; variable: " + result->id_name;
+        str += " ; variable: " + result->id_name;
         if (IsArray) {
             // 数组
             for (int i = 0; result->dims[i] != 0; i++) {
