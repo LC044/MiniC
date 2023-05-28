@@ -1,5 +1,6 @@
 int a,b[2][5][3];
 int q[5],_c,d_;
+int aqt;
 int main(int a_,int b){
     b = 1+2;
     int k,i[5],f;
@@ -7,3 +8,4 @@ int main(int a_,int b){
     int t;
     return b;
 }
+int ght;

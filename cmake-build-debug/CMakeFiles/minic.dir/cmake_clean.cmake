@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj.d"
   "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj"
   "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj.d"
+  "CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj"
+  "CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj.d"
   "CMakeFiles/minic.dir/src/ast.cpp.obj"
   "CMakeFiles/minic.dir/src/ast.cpp.obj.d"
   "CMakeFiles/minic.dir/src/common.cpp.obj"

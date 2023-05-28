@@ -10,6 +10,9 @@ using namespace std;
 // 用来保存所有的变量信息
 static std::unordered_map<std::string, Value *> varsMap;
 
+// 用来保存所有的函数信息
+static std::unordered_map<std::string, Value *> funcsMap;
+
 /// @brief 新建变量型Value
 /// @param name 变量ID
 /// @param type 变量类型

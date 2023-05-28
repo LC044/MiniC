@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "D:/Project/Compile/lab3/MiniC/src/IR/IRCode.cpp" "CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/IR/IRInst.cpp" "CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp" "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj.d"
+  "D:/Project/Compile/lab3/MiniC/src/IR/genSymbol.cpp" "CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/ast.cpp" "CMakeFiles/minic.dir/src/ast.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/ast.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/common.cpp" "CMakeFiles/minic.dir/src/common.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/common.cpp.obj.d"
   "D:/Project/Compile/lab3/MiniC/src/expr.cpp" "CMakeFiles/minic.dir/src/expr.cpp.obj" "gcc" "CMakeFiles/minic.dir/src/expr.cpp.obj.d"

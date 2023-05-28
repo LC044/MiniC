@@ -200,6 +200,30 @@ src/IR/genIR.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genIR.cpp.s
 .PHONY : src/IR/genIR.cpp.s
 
+src/IR/genSymbol.obj: src/IR/genSymbol.cpp.obj
+.PHONY : src/IR/genSymbol.obj
+
+# target to build an object file
+src/IR/genSymbol.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj
+.PHONY : src/IR/genSymbol.cpp.obj
+
+src/IR/genSymbol.i: src/IR/genSymbol.cpp.i
+.PHONY : src/IR/genSymbol.i
+
+# target to preprocess a source file
+src/IR/genSymbol.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genSymbol.cpp.i
+.PHONY : src/IR/genSymbol.cpp.i
+
+src/IR/genSymbol.s: src/IR/genSymbol.cpp.s
+.PHONY : src/IR/genSymbol.s
+
+# target to generate assembly for a file
+src/IR/genSymbol.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\minic.dir\build.make CMakeFiles/minic.dir/src/IR/genSymbol.cpp.s
+.PHONY : src/IR/genSymbol.cpp.s
+
 src/ast.obj: src/ast.cpp.obj
 .PHONY : src/ast.obj
 
@@ -410,6 +434,9 @@ help:
 	@echo ... src/IR/genIR.obj
 	@echo ... src/IR/genIR.i
 	@echo ... src/IR/genIR.s
+	@echo ... src/IR/genSymbol.obj
+	@echo ... src/IR/genSymbol.i
+	@echo ... src/IR/genSymbol.s
 	@echo ... src/ast.obj
 	@echo ... src/ast.i
 	@echo ... src/ast.s

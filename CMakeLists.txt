@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME}
     src/IR/IRInst.cpp
     src/IR/IRCode.cpp
     src/IR/genIR.cpp
+    src/IR/genSymbol.cpp
 )
 
 # 设置语言标准，可根据需要调整

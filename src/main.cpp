@@ -130,7 +130,7 @@ lb_check:
 }
 
 extern bool genIR(struct ast_node *, InterCode &);
-
+extern bool genSymbol(struct ast_node *);
 // 计算器主程序
 int main(int argc, char *argv[])
 {
@@ -176,10 +176,16 @@ int main(int argc, char *argv[])
     if (gGenIr) {
 
         InterCode IRCode;
-
+        // 产生符号表
+        result = genSymbol(ast_root);
+        if (!result) {
+            printf("genSymbol failed\n");
+            return -1;
+        }
         // 产生IR
         result = genIR(ast_root, IRCode);
         if (!result) {
+            printf("genIR failed\n");
             return -1;
         }
 

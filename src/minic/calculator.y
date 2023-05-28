@@ -129,7 +129,7 @@ segment   : type def
                 else if ($2->type == AST_OP_NULL){
                     // 单变量定义，$2为一个叶子节点
                     // int a;
-                    $$ = new_ast_node(AST_VAR_DECL, $1,$2);
+                    $$ = new_ast_node(AST_DEF_LIST, $1,$2);
                 }
                 else{
                     // 函数定义

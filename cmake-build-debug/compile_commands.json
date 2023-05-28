@@ -64,5 +64,11 @@
   "command": "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\bin\\clang++.exe -DBISON_USE -DFLEX_USE @CMakeFiles/minic.dir/includes_CXX.rsp -g -std=c++17 -Wall -Werror -Wno-write-strings -Wno-unused-function -o CMakeFiles\\minic.dir\\src\\IR\\genIR.cpp.obj -c D:\\Project\\Compile\\lab3\\MiniC\\src\\IR\\genIR.cpp",
   "file": "D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp",
   "output": "CMakeFiles/minic.dir/src/IR/genIR.cpp.obj"
+},
+{
+  "directory": "D:/Project/Compile/lab3/MiniC/cmake-build-debug",
+  "command": "D:\\Project\\Compile\\CompilerTools\\msys64\\mingw64\\bin\\clang++.exe -DBISON_USE -DFLEX_USE @CMakeFiles/minic.dir/includes_CXX.rsp -g -std=c++17 -Wall -Werror -Wno-write-strings -Wno-unused-function -o CMakeFiles\\minic.dir\\src\\IR\\genSymbol.cpp.obj -c D:\\Project\\Compile\\lab3\\MiniC\\src\\IR\\genSymbol.cpp",
+  "file": "D:/Project/Compile/lab3/MiniC/src/IR/genSymbol.cpp",
+  "output": "CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj"
 }
 ]
