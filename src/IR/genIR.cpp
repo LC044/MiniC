@@ -50,7 +50,7 @@ static bool ir_block(struct ast_node *node)
                 } else {
                     if (!IsExist(temp->attr.id)) {
                         // 变量名没有找到
-                        localVarValue = newLocalVarValue(temp->attr.id, type_);
+                        // localVarValue = newLocalVarValue(temp->attr.id, type_);
                     } else {
                         // 若变量名已存在，则报错重定义
                         std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
@@ -99,7 +99,7 @@ static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
         // 变量名没有找到
         // 创建一个新的符号
         if (isLocal) {
-            val = newLocalVarValue(temp_id->attr.id, type);
+            // val = newLocalVarValue(temp_id->attr.id, type);
             printf("loacl Arrar\n");
         } else {
             val = newVarValue(temp_id->attr.id);
@@ -200,8 +200,8 @@ static bool ir_def_func(struct ast_node *node)
         // 获取参数名
         // struct ast_node *arg_name = (*pIter)->sons[1];
         // todo 暂时只考虑int类型
-        Value *fargsValue = newTempValue(ValueType::ValueType_Int);
-        fargs.push_back(fargsValue);
+        // Value *fargsValue = newTempValue(ValueType::ValueType_Int);
+        // fargs.push_back(fargsValue);
     }
 
     node->blockInsts.addInst(
@@ -215,7 +215,7 @@ static bool ir_def_func(struct ast_node *node)
         struct ast_node *arg_name = (*pIter)->sons[1];
         Value *localVarValue = nullptr;
         // todo 暂时只考虑int类型
-        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int);
+        // localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int);
         arg_name->val = localVarValue;
         node->blockInsts.addInst(
             new DeclearIRInst(arg_name->val, false, true)
@@ -224,7 +224,7 @@ static bool ir_def_func(struct ast_node *node)
     // 返回值定义
     Value *localVarValue = nullptr;
     // todo 暂时只考虑int类型
-    localVarValue = newLocalVarValue("", ValueType::ValueType_Int);
+    // localVarValue = newLocalVarValue("", ValueType::ValueType_Int);
     node->blockInsts.addInst(
         new DeclearIRInst(localVarValue, false, true)
     );
@@ -318,32 +318,32 @@ static bool ir_add(struct ast_node *node)
 
         // 判断是否需要类型转换
         if (leftValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, left->val, true)
-            );
-            left->val = resultValue0;
+            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
+            // node->blockInsts.addInst(
+            // new TypeCovIRInst(resultValue0, left->val, true)
+            // );
+            // left->val = resultValue0;
         }
         if (rightValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, right->val, true)
-            );
-            right->val = resultValue0;
+            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
+            // node->blockInsts.addInst(
+            // new TypeCovIRInst(resultValue0, right->val, true)
+            // );
+            // right->val = resultValue0;
         }
-        Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
-        );
-        node->val = resultValue;
+        // Value *resultValue = newTempValue(ValueType::ValueType_Real);
+        // node->blockInsts.addInst(
+        //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
+        // );
+        // node->val = resultValue;
 
     } else {
         // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
         // 创建临时变量保存IR的值，以及线性IR指令
-        Value *resultValue = newTempValue(ValueType::ValueType_Int);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val));
-        node->val = resultValue;
+        // Value *resultValue = newTempValue(ValueType::ValueType_Int);
+        // node->blockInsts.addInst(
+        //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val));
+        // node->val = resultValue;
     }
     return true;
 }
@@ -386,32 +386,32 @@ static bool ir_sub(struct ast_node *node)
 
         // 判断是否需要类型转换
         if (leftValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, left->val, true)
-            );
-            left->val = resultValue0;
+            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
+            // node->blockInsts.addInst(
+            // new TypeCovIRInst(resultValue0, left->val, true)
+            // );
+            // left->val = resultValue0;
         }
         if (rightValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, right->val, true)
-            );
-            right->val = resultValue0;
+            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
+            // node->blockInsts.addInst(
+            // new TypeCovIRInst(resultValue0, right->val, true)
+            // );
+            // right->val = resultValue0;
         }
-        Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val)
-        );
-        node->val = resultValue;
+        // Value *resultValue = newTempValue(ValueType::ValueType_Real);
+        // node->blockInsts.addInst(
+        //     new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val)
+        // );
+        // node->val = resultValue;
 
     } else {
         // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
         // 创建临时变量保存IR的值，以及线性IR指令
-        Value *resultValue = newTempValue(ValueType::ValueType_Int);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val));
-        node->val = resultValue;
+        // Value *resultValue = newTempValue(ValueType::ValueType_Int);
+        // node->blockInsts.addInst(
+        //     new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val));
+        // node->val = resultValue;
     }
     return true;
 }
@@ -419,7 +419,7 @@ static bool ir_sub(struct ast_node *node)
 static bool ir_mod(struct ast_node *node)
 {
     // TODO real number add
-
+    /*
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
 
@@ -477,6 +477,7 @@ static bool ir_mod(struct ast_node *node)
             new BinaryIRInst(IRINST_OP_MOD, resultValue, left->val, right->val));
         node->val = resultValue;
     }
+*/
     return true;
 }
 
@@ -484,7 +485,7 @@ static bool ir_mod(struct ast_node *node)
 static bool ir_mul(struct ast_node *node)
 {
     // TODO real number mul
-
+    /*
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
 
@@ -545,14 +546,14 @@ static bool ir_mul(struct ast_node *node)
             new BinaryIRInst(IRINST_OP_MUL, resultValue, left->val, right->val));
         node->val = resultValue;
     }
-
+    */
     return true;
 }
 // expresion divide
 static bool ir_div(struct ast_node *node)
 {
     // TODO real number mul
-
+/*
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
 
@@ -612,14 +613,14 @@ static bool ir_div(struct ast_node *node)
             new BinaryIRInst(IRINST_OP_DIV, resultValue, left->val, right->val));
         node->val = resultValue;
     }
-
+*/
     return true;
 }
 // 赋值操作
 static bool ir_assign(struct ast_node *node)
 {
     // TODO real number add
-
+    /*
     struct ast_node *son1_node = node->sons[0];
     struct ast_node *son2_node = node->sons[1];
 
@@ -645,7 +646,7 @@ static bool ir_assign(struct ast_node *node)
     // 创建临时变量保存IR的值，以及线性IR指令
     node->blockInsts.addInst(right->blockInsts);
     node->blockInsts.addInst(left->blockInsts);
-    /*   新增  */
+
     // 左值类型与右值类型相同
     // 加上这行代码才能判断是否要进行类型转换
     left->val->type = right->val->type;
@@ -653,12 +654,13 @@ static bool ir_assign(struct ast_node *node)
     node->blockInsts.addInst(
         new AssignIRInst(left->val, right->val));
     node->val = left->val;
-
+    */
     return true;
 }
 
 static bool ir_leaf_node(struct ast_node *node)
 {
+    /*
     Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
@@ -684,7 +686,7 @@ static bool ir_leaf_node(struct ast_node *node)
     }
 
     node->val = val;
-
+*/
     return true;
 }
 
@@ -787,7 +789,22 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
 
     return node;
 }
+extern std::unordered_map<std::string, Value *> varsMap;
 
+// 用来保存所有的函数信息
+extern std::unordered_map<std::string, FuncSymbol *> funcsMap;
+bool global_var_def(struct ast_node *node)
+{
+    printf("global variable\n");
+    printf("%d\n", varsMap.size());
+    for (auto it : varsMap) {
+        printf("global variable%s\n", it.second->getName().c_str());
+        node->blockInsts.addInst(
+        new DeclearIRInst(it.second, true, true)
+        );
+    }
+    return true;
+}
 /// @brief 遍历抽象语法树产生线性IR，保存到IRCode中
 /// @param root 抽象语法树
 /// @param IRCode 线性IR
@@ -796,11 +813,14 @@ bool genIR(struct ast_node *root, InterCode &IRCode)
 {
     bool result;
     printf("*** start genIR *** \n");
-    result = ir_visit_ast_node(root);
+    // result = ir_visit_ast_node(root);
+    // if (!result) {
+    //     return false;
+    // }
+    result = global_var_def(root);
     if (!result) {
         return false;
     }
-
     IRCode.addInst(root->blockInsts);
 
     return true;

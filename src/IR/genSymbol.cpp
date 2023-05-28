@@ -2,11 +2,98 @@
 #include "IRCode.h"
 #include <string.h>
 #include "symbol.h"
+std::string FuncName;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
+static bool sym_block(struct ast_node *node);
+static bool sym_def_list(struct ast_node *node, bool isLocal = false);
+static bool sym_def_func(struct ast_node *node);
+static struct ast_node *sym_visit_ast_node(struct ast_node *node);
+static bool sym_block(struct ast_node *node)
+{
+    std::vector<struct ast_node *>::iterator pIter;
+    // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        // 判断是否有局部变量定义
+        if ((*pIter)->type == AST_DEF_LIST) {
+            // 第一个孩子为变量类型
+            bool result = sym_def_list(*pIter, true);
+            if (!result) {
+                return false;
+            }
+        }
+    }
 
-static bool sym_def_list(struct ast_node *node);
+    // 第二步是遍历其他表达式语句
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        // 判断是否有局部变量定义
+        if ((*pIter)->type == AST_DEF_LIST) {
+            continue;
+        }
+        // 遍历Block的每个语句，进行显示或者运算
+        // struct ast_node *temp = sym_visit_ast_node(*pIter);
+        // if (!temp) {
+        //     return false;
+        // }
+    }
+    return true;
+}
+static bool sym_def_func(struct ast_node *node)
+{
+    // struct ast_node *func_type = node->sons[0];
+    // 第一个孩子是函数返回类型
+    struct ast_node *func_name = node->sons[1];
+    FuncName = func_name->attr.id;
+    Value *val = nullptr;
+    // 第二个孩子是函数名
+    if (!GlobalIsExist(func_name->attr.id)) {
+        // 变量名没有找到
+        val = newFuncValue(func_name->attr.id);
+    } else {
+        // 若变量名已存在，则报错重定义
+        std::string error = std::string("error: redefinition of") + std::string(func_name->attr.id);
+        printError(func_name->attr.lineno, error);
+        return false;
+    }
+    func_name->val = val;
+    // 第三个孩子是参数列表
+    struct ast_node *func_paras = node->sons[2];
+    std::vector<struct ast_node *>::iterator pIter;
+    std::vector<Value *> fargs;
+    for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
+        // 获取参数类型
+        // struct ast_node *arg_type = (*pIter)->sons[0];
+        // 获取参数名
+        // struct ast_node *arg_name = (*pIter)->sons[1];
+        // todo 暂时只考虑int类型
+        Value *fargsValue = newTempValue(ValueType::ValueType_Int, func_name->attr.id);
+        fargs.push_back(fargsValue);
+    }
 
+    // node->blockInsts.addInst(
+    //         new FuncDefIRInst(func_name->val, fargs)
+    // );
+    // 形参定义
+    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
+        // 获取参数类型
+        // struct ast_node *arg_type = (*pIter)->sons[0];
+        // 获取参数名
+        struct ast_node *arg_name = (*pIter)->sons[1];
+        Value *localVarValue = nullptr;
+        // todo 暂时只考虑int类型
+        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int, func_name->attr.id);
+        arg_name->val = localVarValue;
+    }
+    // 返回值定义
+    Value *localVarValue = nullptr;
+    // todo 暂时只考虑int类型
+    localVarValue = newLocalVarValue("", ValueType::ValueType_Int, func_name->attr.id);
+    node->sons[3]->val = localVarValue;
+    // 第四个孩子是语句块
+    struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
+    if (func_block == NULL) return true;
+    return true;
+}
 static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
     Value *val = nullptr;
@@ -16,7 +103,7 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
         // 变量名没有找到
         // 创建一个新的符号
         if (isLocal) {
-            val = newLocalVarValue(temp_id->attr.id, type);
+            val = newLocalVarValue(temp_id->attr.id, type, FuncName);
             printf("loacl Arrar\n");
         } else {
             val = newVarValue(temp_id->attr.id);
@@ -44,20 +131,20 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
     node->val = val;
     return true;
 }
-static bool sym_def_list(struct ast_node *node)
+static bool sym_def_list(struct ast_node *node, bool isLocal)
 {
     std::vector<struct ast_node *>::iterator pIter;
     // 第一个孩子节点是变量类型
     struct ast_node *temp_type = node->sons[0];
     enum digitnum_kind kind0;
     ValueType type;
-    // 暂时只考虑int型变量
+    // todo 暂时只考虑int型变量
     if (strcmp(temp_type->attr.id, "int") == 0) {
-        printf("int value\n");
+        // printf("int value\n");
         kind0 = DIGIT_KIND_INT;
         type = ValueType::ValueType_Int;
     }
-    // printf("other value %s\n", temp_type->attr.id);
+
     for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
         Value *val = nullptr;
         struct ast_node *temp = *pIter;
@@ -68,6 +155,7 @@ static bool sym_def_list(struct ast_node *node)
             if (!IsExist(temp->attr.id)) {
                 // 变量名没有找到
                 val = newVarValue(temp->attr.id);
+                printf("other value %s\n", temp->attr.id);
             } else {
                 // 若变量名已存在，则报错重定义
                 std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
@@ -88,40 +176,20 @@ static bool sym_cu(struct ast_node *node)
     // 第一步首先确定所有全局变量
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         if ((*pIter)->type == AST_DEF_LIST) {
-            // 第一个孩子为变量类型
-            struct ast_node *temp_type = (*pIter)->sons[0];
-            ValueType type_;
-            // todo 暂时只考虑int类型
-            if (strcmp(temp_type->attr.id, "int") == 0) {
-                type_ = ValueType::ValueType_Int;
-            }
-            // 后面的孩子为变量名
-            std::vector<struct ast_node *>::iterator pIter1;
-            for (pIter1 = (*pIter)->sons.begin() + 1; pIter1 != (*pIter)->sons.end(); ++pIter1) {
-                Value *val = nullptr;
-                struct ast_node *temp = *pIter1;
-                if (temp->type == AST_ARRAY) {
-                    // 数组变量
-                    bool result = sym_def_array(temp, type_, true);
-                    if (!result)return false;
-                } else {
-                    if (!IsExist(temp->attr.id)) {
-                        // 变量名没有找到
-                        val = newVarValue(temp->attr.id);
-                    } else {
-                        // 若变量名已存在，则报错重定义
-                        std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
-                        printError(temp->attr.lineno, error);
-                        return false;
-                    }
-                    temp->val = val;
-                }
-            }
+            struct ast_node *temp = sym_visit_ast_node(*pIter);
+            if (temp == NULL) return true;
+        }
+    }
+    // 第二步确定函数表
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        if ((*pIter)->type == AST_FUNC_DEF) {
+            struct ast_node *temp = sym_visit_ast_node(*pIter);
+            if (temp == NULL) return true;
         }
     }
     return true;
 }
-static struct ast_node *ir_visit_ast_node(struct ast_node *node)
+static struct ast_node *sym_visit_ast_node(struct ast_node *node)
 {
     // 非法节点
     if (nullptr == node) {
@@ -137,6 +205,10 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
     case AST_DEF_LIST:
         result = sym_def_list(node);
         break;
+    case AST_FUNC_DEF:
+        result = sym_def_func(node);
+    case AST_OP_BLOCK:
+        result = sym_block(node);
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
     default:
         // 错误，不支持
@@ -159,7 +231,7 @@ bool genSymbol(struct ast_node *root)
 {
     bool result = true;
     printf("*** start genSymbol *** \n");
-    // result = sym_cu(root);
+    result = sym_cu(root);
     if (!result) {
         return false;
     }

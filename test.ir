@@ -1,21 +1,11 @@
-declare i32 @a
-declare i32 @b[2][5][3]
+declare i32 @f
+declare i32 @i[5]
+declare i32 @afa
 declare i32 @q[5]
+declare i32 @t
+declare i32 @k
 declare i32 @_c
-declare i32 @d_
-declare i32 @aqt
-define i32 @main(i32 %t0, i32 %t1){
-    declare i32 %l2 ; variable: a_
-    declare i32 %l3 ; variable: b
-    declare i32 %l4 ; variable: 
-    declare i32 %l5 ; variable: k
-    declare i32 %l6[5] ; variable: i[5]
-    declare i32 %l7 ; variable: f
-    declare i32 %l8 ; variable: t
-    entry
-    %t9 = add 1, 2
-    b = assign %t9
-    a = assign 1
-    exit b
-}
+declare i32 @b[2][5][3]
 declare i32 @ght
+declare i32 @d_
+declare i32 @a

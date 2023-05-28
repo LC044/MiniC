@@ -114,5 +114,15 @@ CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.obj: \
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h

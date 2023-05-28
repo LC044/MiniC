@@ -5,7 +5,7 @@
 
 #include <cstdint>
 #include <string>
-
+#include <unordered_map>
 #include "common.h"
 
 enum class ValueType {
@@ -14,6 +14,7 @@ enum class ValueType {
     ValueType_ARRAY, // 数组
     ValueType_MAX,   // 最大值，无效值
 };
+
 
 class Value {
 
@@ -103,7 +104,26 @@ public:
         return name;
     }
 };
+class FuncSymbol : public Value {
+public:
+    /// @brief 函数名
+    // 用来保存所有的局部变量信息
+    std::unordered_map<std::string, Value *> localVarsMap;
 
+    FuncSymbol() : Value(ValueType::ValueType_Int)
+    {
+
+    }
+    FuncSymbol(std::string _name, ValueType _type) : Value(_name, _type)
+    {
+
+    }
+    /// @brief 析构函数
+    virtual ~FuncSymbol()
+    {
+        // 如有资源清理，请这里追加代码
+    }
+};
 class TempValue : public Value {
 
 public:
@@ -224,9 +244,12 @@ public:
 /// \param name 变量名
 /// \param checkExist 检查变量存在不？若true则检查，不存在则返回nullptr，否则创建新变量
 /// \return 变量对应的值
-Value *findValue(std::string name, bool checkExist = false);
 
+Value *findValue(std::string name, bool checkExist = false);
+Value *findFuncValue(std::string name);
 bool IsExist(std::string name);
+bool LocalIsExist(std::string func_name, std::string var_name);
+bool GlobalIsExist(std::string name);
 /// @brief 新建变量型Value
 /// @param name 变量ID
 /// @param type 变量类型
@@ -236,10 +259,12 @@ void newVarValue(std::string name, ValueType type);
 /// \param intVal 整数值
 /// \return 常量Value
 Value *newVarValue(std::string name);
+
 /// @brief 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newLocalVarValue(std::string name, ValueType type);
+Value *newLocalVarValue(std::string name, ValueType type, std::string func_name);
+
 /// @brief 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 临时Value
@@ -253,7 +278,12 @@ Value *newConstValue(double realVal);
 /// @brief 新建一个临时型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newTempValue(ValueType type);
+Value *newTempValue(ValueType type, std::string func_name);
 
+/// @brief 新建一个函数Value，并加入到函数表，用于后续释放空间
+/// \param name 函数名
+/// \return 函数Value
+Value *newFuncValue(std::string name);
 /// @brief 清理注册的所有Value资源
 void freeValues();
+// 用来保存所有的变量信息

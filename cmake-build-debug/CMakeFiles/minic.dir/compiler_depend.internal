@@ -103,6 +103,16 @@ CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj
@@ -206,6 +216,16 @@ CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/IR/genIR.cpp.obj
@@ -311,6 +331,16 @@ CMakeFiles/minic.dir/src/IR/genIR.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
@@ -418,6 +448,16 @@ CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
@@ -571,6 +611,16 @@ CMakeFiles/minic.dir/src/ast.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/common.cpp.obj
@@ -820,6 +870,16 @@ CMakeFiles/minic.dir/src/expr.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/graph.cpp.obj
@@ -1004,6 +1064,16 @@ CMakeFiles/minic.dir/src/graph.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/main.cpp.obj
@@ -1393,6 +1463,16 @@ CMakeFiles/minic.dir/src/main.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
  D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h
  D:/Project/Compile/lab3/MiniC/include/expr.h
@@ -1505,6 +1585,16 @@ CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
  D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/unistd.h
@@ -1631,6 +1721,16 @@ CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.obj
  D:/Project/Compile/lab3/MiniC/include/IRCode.h
  D:/Project/Compile/lab3/MiniC/include/IRInst.h
  D:/Project/Compile/lab3/MiniC/include/symbol.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
  D:/Project/Compile/lab3/MiniC/include/common.h
  D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h
 

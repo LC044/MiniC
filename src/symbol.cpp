@@ -6,18 +6,12 @@
 #include "symbol.h"
 
 using namespace std;
-struct FuncSymbol {
-    Value FuncValue;
-    // 用来保存所有的局部变量信息
-    std::unordered_map<std::string, Value *> localVarsMap;
-    /* data */
-};
 
-// 用来保存所有的变量信息
-static std::unordered_map<std::string, Value *> varsMap;
+
+std::unordered_map<std::string, Value *> varsMap;
 
 // 用来保存所有的函数信息
-static std::unordered_map<std::string, FuncSymbol *> funcsMap;
+std::unordered_map<std::string, FuncSymbol *> funcsMap;
 
 /// @brief 新建变量型Value
 /// @param name 变量ID
@@ -52,15 +46,22 @@ Value *newVarValue(std::string name)
 
     return temp;
 }
-
+Value *newFuncValue(std::string name)
+{
+    // 类型待定
+    FuncSymbol *tempSymbol = new FuncSymbol(name, ValueType::ValueType_Int);
+    funcsMap.emplace(name, tempSymbol);
+    return tempSymbol;
+}
 /// 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newLocalVarValue(std::string name, ValueType type)
+Value *newLocalVarValue(std::string name, ValueType type, std::string func_name)
 {
     // 类型待定
+    auto pIter1 = funcsMap.find(func_name);
     Value *temp = new LocalVarValue(name, type);
-    varsMap.emplace(temp->name, temp);
+    pIter1->second->localVarsMap.emplace(temp->name, temp);
 
     return temp;
 }
@@ -89,11 +90,11 @@ Value *newConstValue(double realVal)
 /// 新建一个临时型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newTempValue(ValueType type)
+Value *newTempValue(ValueType type, std::string func_name)
 {
+    auto pIter1 = funcsMap.find(func_name);
     Value *temp = new TempValue(type);
-    varsMap.emplace(temp->name, temp);
-
+    pIter1->second->localVarsMap.emplace(temp->name, temp);
     return temp;
 }
 
@@ -118,11 +119,53 @@ Value *findValue(std::string name, bool checkExist)
 
     return temp;
 }
+Value *findFuncValue(std::string name)
+{
+    Value *temp = nullptr;
+
+    auto pIter = funcsMap.find(name);
+    if (pIter == funcsMap.end()) {
+        return nullptr;
+    } else {
+        temp = pIter->second;
+    }
+    return temp;
+}
 // 查看变量名是否存在
 bool IsExist(std::string name)
 {
     auto pIter = varsMap.find(name);
     if (pIter == varsMap.end()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+// 判断全局符号是否存在(全局变量,函数名)
+bool GlobalIsExist(std::string name)
+{
+    auto pIter = varsMap.find(name);
+    if (pIter == varsMap.end()) {
+        return false;
+    } else {
+        return true;
+    }
+    auto pIter1 = funcsMap.find(name);
+    if (pIter1 == funcsMap.end()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+bool LocalIsExist(std::string func_name, std::string var_name)
+{
+    auto pIter = funcsMap.find(func_name);
+    if (pIter == funcsMap.end()) {
+        printf("function %s not found\n", func_name.c_str());
+        return false;
+    }
+    auto pIter1 = pIter->second->localVarsMap.find(var_name);
+    if (pIter1 == pIter->second->localVarsMap.end()) {
         return false;
     } else {
         return true;

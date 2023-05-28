@@ -102,6 +102,16 @@ CMakeFiles/minic.dir/src/IR/IRCode.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/IRInst.cpp \
@@ -204,6 +214,16 @@ CMakeFiles/minic.dir/src/IR/IRInst.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/errno.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/charconv.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.tcc \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp \
@@ -308,6 +328,16 @@ CMakeFiles/minic.dir/src/IR/genIR.cpp.obj: D:/Project/Compile/lab3/MiniC/src/IR/
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
@@ -414,6 +444,16 @@ CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj: D:/Project/Compile/lab3/MiniC/src
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
@@ -566,6 +606,16 @@ CMakeFiles/minic.dir/src/ast.cpp.obj: D:/Project/Compile/lab3/MiniC/src/ast.cpp 
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/common.cpp.obj: D:/Project/Compile/lab3/MiniC/src/common.cpp \
@@ -813,6 +863,16 @@ CMakeFiles/minic.dir/src/expr.cpp.obj: D:/Project/Compile/lab3/MiniC/src/expr.cp
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/graph.cpp.obj: D:/Project/Compile/lab3/MiniC/src/graph.cpp \
@@ -996,6 +1056,16 @@ CMakeFiles/minic.dir/src/graph.cpp.obj: D:/Project/Compile/lab3/MiniC/src/graph.
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 CMakeFiles/minic.dir/src/main.cpp.obj: D:/Project/Compile/lab3/MiniC/src/main.cpp \
@@ -1384,6 +1454,16 @@ CMakeFiles/minic.dir/src/main.cpp.obj: D:/Project/Compile/lab3/MiniC/src/main.cp
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h \
   D:/Project/Compile/lab3/MiniC/include/expr.h \
@@ -1495,6 +1575,16 @@ CMakeFiles/minic.dir/src/minic/calculator_lex.cpp.obj: D:/Project/Compile/lab3/M
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/unistd.h \
@@ -1620,6 +1710,16 @@ CMakeFiles/minic.dir/src/minic/calculator_yacc.cpp.obj: D:/Project/Compile/lab3/
   D:/Project/Compile/lab3/MiniC/include/IRCode.h \
   D:/Project/Compile/lab3/MiniC/include/IRInst.h \
   D:/Project/Compile/lab3/MiniC/include/symbol.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.h
 
@@ -1730,20 +1830,6 @@ CMakeFiles/minic.dir/src/symbol.cpp.obj: D:/Project/Compile/lab3/MiniC/src/symbo
   D:/Project/Compile/lab3/MiniC/include/common.h
 
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map:
-
 D:/Project/Compile/lab3/MiniC/src/symbol.cpp:
 
 D:/Project/Compile/lab3/MiniC/src/minic/calculator_lex.cpp:
@@ -1761,10 +1847,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsvc.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/stralign_s.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/stralign.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/commdlg.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/winspool.h:
 
@@ -1789,10 +1871,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/winefs.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/dpapi.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/ncrypt.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/wincrypt.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_ip_types.h:
 
@@ -1974,17 +2052,19 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512v
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vbmiintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/gthr-default.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512ifmaintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/atomicity.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_wsadata.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/rpcndr.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512erintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/pshpack8.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_ip_mreq1.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_construct.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlcdintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/nested_exception.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlbwintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvnniintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvbmi2intrin.h:
 
@@ -2020,25 +2100,47 @@ D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp:
 
 D:/Project/Compile/lab3/MiniC/include/common.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdlib:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/memoryapi.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/lwpintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/commdlg.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tbmintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/pathgeom.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/sys/timeb_s.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/poly_hermite.tcc:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/bmiintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/wincrypt.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/modified_bessel_func.tcc:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512fintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/malloc.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/profileapi.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/limits.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/objidl.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_startup.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdlib.h:
 
@@ -2067,6 +2169,8 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mi
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/rpcdcep.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/string_view:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/timeapi.h:
 
@@ -2106,23 +2210,13 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/winnls.h:
 
 D:/Project/Compile/lab3/MiniC/src/IR/IRInst.cpp:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/threadpoollegacyapiset.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/libloaderapi.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512bitalgintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/gthr.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_stat64.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/gvc.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/string:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/ios_base.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stddef.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/smmintrin.h:
 
@@ -2148,12 +2242,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_iter
 
 D:/Project/Compile/lab3/MiniC/src/IR/IRCode.cpp:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_wsa_errnos.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/process.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tmmintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/reason.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cwchar:
@@ -2178,12 +2266,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512b
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/type_traits:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/objbase.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hash_bytes.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512ifmavlintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/urlmon.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdint:
@@ -2194,9 +2276,19 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/winuser.h:
 
 D:/Project/Compile/lab3/MiniC/src/graph.cpp:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/utility.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/objbase.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sys/types.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512ifmavlintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hash_bytes.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/gthr-default.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/aligned_buffer.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/unordered_map:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/numeric_traits.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/allocator.h:
 
@@ -2204,11 +2296,15 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/range_ac
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/pstl/pstl_config.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/shellapi.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512dqintrin.h:
 
-D:/Project/Compile/lab3/MiniC/include/IRCode.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/debug/debug.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/stdlib_s.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/clwbintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/debug/assertions.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/wchar.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/excpt.h:
 
@@ -2254,8 +2350,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/mm_mall
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/error_constants.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/numeric_traits.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cpp_type_traits.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/unknwn.h:
@@ -2272,6 +2366,20 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/mmiscapi.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cerrno:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/shellapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/stdlib_s.h:
+
+D:/Project/Compile/lab3/MiniC/include/IRCode.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/threadpoollegacyapiset.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/libloaderapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512bitalgintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/gthr.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/memoryfwd.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/xmmintrin.h:
@@ -2281,8 +2389,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/synchapi.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/ctype.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512ifmaintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdint.h:
 
@@ -2304,6 +2410,14 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/oleidl.h:
 
 D:/Project/Compile/lab3/MiniC/src/IR/genSymbol.cpp:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/rpcndr.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/pshpack8.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_construct.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/atomicity.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/popcntintrin.h:
@@ -2314,13 +2428,13 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/exceptio
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/initializer_list:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/crtdefs.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/refwrap.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/invoke.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/crtdefs.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h:
 
@@ -2346,6 +2460,12 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/_timeval.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stdint.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avxvnniintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avxintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/driverspecs.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/vadefs.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt.h:
@@ -2354,6 +2474,30 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_f
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlintrin.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/nested_exception.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stddef.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/ios_base.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdlib:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/utility.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sys/types.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_wsa_errnos.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tmmintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/process.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/objidl.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_startup.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread_signal.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/servprov.h:
@@ -2361,18 +2505,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/servprov.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/time.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/sys/timeb.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlbwintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tbmintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/pathgeom.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/sys/timeb_s.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/poly_hermite.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/bmiintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/pthread_time.h:
 
@@ -2452,8 +2584,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/specstrings.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/sstream:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc:
-
 D:/Project/Compile/lab3/MiniC/src/expr.cpp:
 
 D:/Project/Compile/lab3/MiniC/include/expr.h:
@@ -2481,10 +2611,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/invpcid
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/ell_integral.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/hypergeometric.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/modified_bessel_func.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512fintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/prsht.h:
 
@@ -2514,9 +2640,9 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/hreseti
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/cgraph.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vldqintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/uses_allocator.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/inttypes.h:
 
@@ -2576,12 +2702,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/math.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/clflushoptintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/debug/assertions.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/wchar.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/clwbintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_wstdlib.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc:
@@ -2599,23 +2719,3 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512c
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/alloc_traits.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vnniintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvnniintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avxintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/driverspecs.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avxvnniintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/debug/debug.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512dqintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_ip_mreq1.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlcdintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/_wsadata.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512erintrin.h:
