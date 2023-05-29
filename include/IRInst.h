@@ -109,11 +109,12 @@ class DeclearIRInst : public IRInst {
 public:
     bool IsGlobal = true;
     bool IsArray = false;
+    bool IsTemp = false;
     /// @brief 构造函数
     /// @param result
     /// @param 是否是全局变量
     /// @param 是否是数组
-    DeclearIRInst(Value *result, bool IsGlobal = true, bool IsArray = false);
+    DeclearIRInst(Value *result, bool IsGlobal = true, bool IsArray = false, bool IsTemp = false);
 
     /// @brief 析构函数
     virtual ~DeclearIRInst() override;

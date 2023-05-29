@@ -145,7 +145,7 @@ static bool ir_def_func(struct ast_node *node)
         Value *localVarValue = nullptr;
         localVarValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
         node->blockInsts.addInst(
-            new DeclearIRInst(localVarValue, false, true)
+            new DeclearIRInst(localVarValue, false, true, true)
         );
     }
     // 函数进入IR指令

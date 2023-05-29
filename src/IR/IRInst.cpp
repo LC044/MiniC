@@ -150,11 +150,12 @@ void TypeCovIRInst::toString(std::string &str)
 
 /* 修改 */
 // 变量声明指令
-DeclearIRInst::DeclearIRInst(Value *_result, bool _IsGlobal, bool _IsArray) :
+DeclearIRInst::DeclearIRInst(Value *_result, bool _IsGlobal, bool _IsArray, bool _IsTemp) :
     IRInst(IRINST_OP_VAR_DEF, _result)
 {
     IsGlobal = _IsGlobal;
     IsArray = _IsArray;
+    IsTemp = _IsTemp;
     srcValues.push_back(_result);
     // srcValues.push_back(_srcVal2);
 }
@@ -186,7 +187,7 @@ void DeclearIRInst::toString(std::string &str)
             str += "[" + int2str(result->dims[i]) + "]";
         }
     }
-    if (!IsGlobal) {
+    if (!IsGlobal and !IsTemp) {
         str += " ; variable: " + result->id_name;
         if (IsArray) {
             // 数组
