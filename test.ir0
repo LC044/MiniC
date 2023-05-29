@@ -12,6 +12,8 @@ define i32 @add(i32 %t0, i32 %t1) {
 	declare i32 %t9
 	declare i32 %t10
 	declare i32 %t11
+	declare i32 %t12
+	declare i32 %t13
 	entry
 	%l2 = %t0
 	%l3 = %t1
@@ -22,9 +24,11 @@ define i32 @add(i32 %t0, i32 %t1) {
 	%t9 = %l2
 	%t10 = sub %t9, 1
 	%l5 = %t10
-	%l4 = %l5
-	%t11 = %l4
-	exit %t11
+	%t11 = %l5
+	%t12 = add %t11, 1
+	%l4 = %t12
+	%t13 = %l4
+	exit %t13
 }
 define i32 @sub(i32 %t0, i32 %t1) {
 	declare i32 %l2 ; variable: a

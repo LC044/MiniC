@@ -24,21 +24,8 @@ static bool sym_block(struct ast_node *node)
             }
         }
     }
-    /*
-    printf("实参赋值给临时变量 %d\n", node->parent->sons.size());
-    struct ast_node *func_paras = node->parent->sons[2];
 
-    // 实参赋值给临时变量
-    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
-
-        struct ast_node *arg_name = (*pIter)->sons[1];
-        Value *localVarValue = nullptr;
-        // todo 暂时只考虑int类型
-        localVarValue = newTempValue(ValueType::ValueType_Int, FuncName);
-        arg_name->val = localVarValue;
-    }
-*/
-// 第二步是遍历其他表达式语句
+    // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
         if ((*pIter)->type == AST_DEF_LIST) {
@@ -94,10 +81,8 @@ static bool sym_def_func(struct ast_node *node)
         arg_name->val = localVarValue;
     }
     // 返回值定义
-    Value *localVarValue = nullptr;
-    // todo 暂时只考虑int类型
-    localVarValue = newLocalVarValue("", ValueType::ValueType_Int, func_name->attr.id);
-    node->sons[3]->val = localVarValue;
+        // todo 暂时只考虑int类型
+    newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
     // 第四个孩子是语句块
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
@@ -293,6 +278,25 @@ static bool sym_assign(struct ast_node *node)
     node->val = left->val;
     return true;
 }
+static bool sym_return(struct ast_node *node)
+{
+    struct ast_node *son1_node = node->sons[0];
+
+    // 赋值节点，自右往左运算
+
+    // 赋值运算符的左侧操作数
+    struct ast_node *left = sym_visit_ast_node(son1_node, true);
+    if (!left) {
+        // 某个变量没有定值
+        // 这里缺省设置变量不存在则创建，因此这里不会错误
+        return false;
+    }
+
+    Value *val = nullptr;
+    val = newTempValue(ValueType::ValueType_Int, FuncName);
+    node->val = val;
+    return true;
+}
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
 
@@ -341,7 +345,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_RETURN:
         printf("return\n");
-        result = true;
+        result = sym_return(node);
         break;
     case AST_CU:
         result = sym_cu(node);

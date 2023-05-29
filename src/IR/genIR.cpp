@@ -183,9 +183,15 @@ static bool ir_return(struct ast_node *node)
         return false;
     }
     node->blockInsts.addInst(result->blockInsts);
-
+    Value *returnValue = findValue("return", FuncName, true);
     node->blockInsts.addInst(
-        new ReturnIRInst(result->val)
+            new AssignIRInst(returnValue, result->val)
+    );
+    node->blockInsts.addInst(
+            new AssignIRInst(node->val, returnValue)
+    );
+    node->blockInsts.addInst(
+        new ReturnIRInst(node->val)
     );
 
     node->val = result->val;
@@ -688,7 +694,11 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         // 赋值语句
         result = ir_assign(node);
         break;
+    case AST_RETURN:
 
+        // 赋值语句
+        result = ir_return(node);
+        break;
     case AST_OP_BLOCK:
 
         // 多个语句组成的块
@@ -711,12 +721,6 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         // printf("AST_DEF_array\n");
         // 数组定义
         result = ir_def_func(node);
-        break;
-    case AST_RETURN:
-        // printf("AST_DEF_array\n");
-        // 数组定义
-        // result = ir_return(node);
-        result = true;
         break;
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
     default:
