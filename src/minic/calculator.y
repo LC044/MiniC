@@ -140,8 +140,9 @@ segment   : type def
                     // 4、语句块
                     $$ = new_ast_node($2->type, $1,$2->sons[0],$2->sons[1],$2->sons[2]);
                     // 删除该节点
-                    $2->sons.clear();
-                    free_ast_node($2);
+                    // $2->sons.clear();
+                    // free_ast($2);
+                    // delete $2;
                 }
             };
 /* 类型 */
@@ -189,8 +190,10 @@ def    :  ident idtail
                     // 函数定义，孩子节点有三个，函数名、参数列表、函数语句块
                     temp_node = new_ast_node(AST_FUNC_DEF,$1, $2->sons[0],$2->sons[1]);
                     // 删除该节点
-                    $2->sons.clear();
-                    free_ast_node($2);
+                    // $2->sons[1]->parent = temp_node;
+                    // $2->sons.clear();
+                    // delete $2;
+
                     $$ = temp_node;
                 }
             };
@@ -306,8 +309,8 @@ localdef    : type defdata deflist
                     (*pIterNode)->parent = temp_node;
                 }
                 // 删除该节点
-                $3->sons.clear();
-                free_ast_node($3);
+                // $3->sons.clear();
+                // free_ast_node($3);
                 $$ = temp_node;
                 // $$ = new_ast_node(AST_DEF_LIST, $1, $2, $3);
             }

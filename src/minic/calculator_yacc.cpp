@@ -583,13 +583,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    86,    86,    91,    96,   105,   148,   159,   198,   211,
-     220,   221,   229,   235,   236,   245,   246,   248,   254,   259,
-     263,   271,   283,   284,   285,   286,   294,   295,   298,   315,
-     316,   317,   318,   319,   320,   321,   322,   323,   326,   327,
-     328,   329,   330,   331,   332,   333,   334,   335,   337,   345,
-     346,   347,   348,   349,   350,   351,   353,   354,   355,   356,
-     357,   358,   359,   360,   362,   363,   370,   378
+       0,    86,    86,    91,    96,   105,   149,   160,   201,   214,
+     223,   224,   232,   238,   239,   248,   249,   251,   257,   262,
+     266,   274,   286,   287,   288,   289,   297,   298,   301,   318,
+     319,   320,   321,   322,   323,   324,   325,   326,   329,   330,
+     331,   332,   333,   334,   335,   336,   337,   338,   340,   348,
+     349,   350,   351,   352,   353,   354,   356,   357,   358,   359,
+     360,   361,   362,   363,   365,   366,   373,   381
 };
 #endif
 
@@ -1332,15 +1332,16 @@ yyreduce:
                     // 4、语句块
                     (yyval.node) = new_ast_node((yyvsp[0].node)->type, (yyvsp[-1].node),(yyvsp[0].node)->sons[0],(yyvsp[0].node)->sons[1],(yyvsp[0].node)->sons[2]);
                     // 删除该节点
-                    (yyvsp[0].node)->sons.clear();
-                    free_ast_node((yyvsp[0].node));
+                    // $2->sons.clear();
+                    // free_ast($2);
+                    // delete $2;
                 }
             }
-#line 1340 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1341 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 6: /* type: T_INT  */
-#line 148 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 149 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                 {
                 // 终结符作为抽象语法树的叶子节点进行创建
                 struct ast_node_attr temp_val;
@@ -1350,11 +1351,11 @@ yyreduce:
                 // printf("%s\n", temp_val.id);
                 (yyval.node) = new_ast_leaf_node(temp_val);
             }
-#line 1354 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1355 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 7: /* def: ident idtail  */
-#line 160 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 161 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
                 // 判断是函数还是变量
                 if ((yyvsp[0].node)==NULL)(yyval.node) = (yyvsp[-1].node);
@@ -1387,16 +1388,18 @@ yyreduce:
                     // 函数定义，孩子节点有三个，函数名、参数列表、函数语句块
                     temp_node = new_ast_node(AST_FUNC_DEF,(yyvsp[-1].node), (yyvsp[0].node)->sons[0],(yyvsp[0].node)->sons[1]);
                     // 删除该节点
-                    (yyvsp[0].node)->sons.clear();
-                    free_ast_node((yyvsp[0].node));
+                    // $2->sons[1]->parent = temp_node;
+                    // $2->sons.clear();
+                    // delete $2;
+
                     (yyval.node) = temp_node;
                 }
             }
-#line 1396 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1399 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 8: /* idtail: varrdef deflist  */
-#line 199 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 202 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             { 
                 if((yyvsp[-1].node)==NULL) {
                     // int a,b;
@@ -1409,110 +1412,110 @@ yyreduce:
                     (yyval.node)=new_ast_node(AST_ARRAY_LIST,(yyvsp[-1].node),(yyvsp[0].node));
                 }
             }
-#line 1413 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1416 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 9: /* idtail: '(' para ')' functail  */
-#line 212 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 215 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {  
                 // 函数定义
                 (yyval.node) = new_ast_node(AST_FUNC_DEF,(yyvsp[-2].node),(yyvsp[0].node));
             }
-#line 1422 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1425 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 10: /* deflist: ';'  */
-#line 220 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 223 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
               { (yyval.node) = new_ast_node(AST_DEF_LIST);}
-#line 1428 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1431 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 11: /* deflist: ',' defdata deflist  */
-#line 222 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 225 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             // 递归的添加参数，后面的参数为第一个参数的孩子节点
             (yyvsp[-1].node)->parent = (yyvsp[0].node);
             (yyvsp[0].node)->sons.push_back((yyvsp[-1].node));
             (yyval.node) = (yyvsp[0].node);
         }
-#line 1439 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1442 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 12: /* defdata: ident varrdef  */
-#line 229 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 232 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                        {
     if((yyvsp[0].node)!=NULL) (yyval.node) = new_ast_node(AST_ARRAY,(yyvsp[-1].node),(yyvsp[0].node));
     else (yyval.node) = (yyvsp[-1].node);
     }
-#line 1448 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1451 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 13: /* varrdef: %empty  */
-#line 235 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 238 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
           {(yyval.node) = NULL; }
-#line 1454 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1457 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 14: /* varrdef: '[' num ']' varrdef  */
-#line 237 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 240 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             (yyval.node) = new_ast_node(AST_DIMS,(yyvsp[-2].node),(yyvsp[0].node));
         }
-#line 1462 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1465 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 15: /* functail: blockstat  */
-#line 245 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 248 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                      {(yyval.node) = (yyvsp[0].node);}
-#line 1468 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1471 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 16: /* functail: T_SEMICOLON  */
-#line 246 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 249 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                       {}
-#line 1474 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1477 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 17: /* para: %empty  */
-#line 248 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 251 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
           {
             // 参数为空
             struct ast_node * nd = new struct ast_node();
             nd->type = AST_FARGS;
             (yyval.node) = nd;
             }
-#line 1485 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1488 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 18: /* para: paras  */
-#line 255 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 258 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {   
             (yyval.node) = (yyvsp[0].node);
         }
-#line 1493 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1496 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 19: /* paras: onepara  */
-#line 260 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 263 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             (yyval.node) = new_ast_node(AST_FARGS,(yyvsp[0].node));
         }
-#line 1501 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1504 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 20: /* paras: onepara ',' paras  */
-#line 264 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 267 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
                 // 递归的添加参数，后面的参数为第一个参数的孩子节点
                 (yyvsp[-2].node)->parent = (yyvsp[0].node);
                 (yyvsp[0].node)->sons.push_back((yyvsp[-2].node));
                 (yyval.node) = (yyvsp[0].node);
             }
-#line 1512 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1515 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 21: /* onepara: type T_ID  */
-#line 272 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 275 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
                 struct ast_node_attr temp_val;
                 temp_val.kind = DIGIT_KIND_ID;
@@ -1520,51 +1523,51 @@ yyreduce:
                 strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
                 (yyval.node) = new_ast_node(AST_VAR_DECL, (yyvsp[-1].node),new_ast_leaf_node(temp_val));
             }
-#line 1524 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1527 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 22: /* blockstat: '{' subprogram '}'  */
-#line 283 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 286 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                               {(yyval.node) = (yyvsp[-1].node);}
-#line 1530 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1533 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 23: /* subprogram: %empty  */
-#line 284 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 287 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
              {(yyval.node)=NULL;}
-#line 1536 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1539 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 24: /* subprogram: onestatement  */
-#line 285 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 288 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                           {(yyval.node) = new_ast_node(AST_OP_BLOCK, (yyvsp[0].node));}
-#line 1542 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1545 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 25: /* subprogram: subprogram onestatement  */
-#line 287 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 290 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
                 (yyvsp[0].node)->parent = (yyvsp[-1].node);
                 (yyvsp[-1].node)->sons.push_back((yyvsp[0].node));
                 (yyval.node) = (yyvsp[-1].node);
             }
-#line 1552 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1555 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 26: /* onestatement: statement  */
-#line 294 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 297 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                         {(yyval.node) = (yyvsp[0].node);}
-#line 1558 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1561 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 27: /* onestatement: localdef  */
-#line 295 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 298 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                       {(yyval.node) = (yyvsp[0].node);}
-#line 1564 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1567 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 28: /* localdef: type defdata deflist  */
-#line 299 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 302 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
                 struct ast_node * temp_node;
                 temp_node = new_ast_node(AST_DEF_LIST,(yyvsp[-2].node),(yyvsp[-1].node));
@@ -1575,130 +1578,130 @@ yyreduce:
                     (*pIterNode)->parent = temp_node;
                 }
                 // 删除该节点
-                (yyvsp[0].node)->sons.clear();
-                free_ast_node((yyvsp[0].node));
+                // $3->sons.clear();
+                // free_ast_node($3);
                 (yyval.node) = temp_node;
                 // $$ = new_ast_node(AST_DEF_LIST, $1, $2, $3);
             }
-#line 1584 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1587 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 29: /* statement: blockstat  */
-#line 315 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 318 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = (yyvsp[0].node);}
-#line 1590 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1593 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 30: /* statement: expr ';'  */
-#line 316 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 319 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = (yyvsp[-1].node);}
-#line 1596 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1599 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 31: /* statement: T_IF '(' expr ')' statement  */
-#line 317 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 320 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_OP_IF,(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1602 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1605 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 32: /* statement: T_IF '(' expr ')' statement T_ELSE statement  */
-#line 318 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 321 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_OP_IF,(yyvsp[-4].node),(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1608 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1611 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 33: /* statement: T_WHILE '(' expr ')' statement  */
-#line 319 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 322 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_OP_WHILE,(yyvsp[-2].node),(yyvsp[0].node));}
-#line 1614 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1617 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 34: /* statement: T_BREAK ';'  */
-#line 320 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 323 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_OP_BREAK);}
-#line 1620 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1623 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 35: /* statement: T_CONTINUE ';'  */
-#line 321 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 324 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_OP_CONTINUE);}
-#line 1626 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1629 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 36: /* statement: ';'  */
-#line 322 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 325 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = NULL;}
-#line 1632 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1635 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 37: /* statement: T_RETURN expr ';'  */
-#line 323 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 326 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                                                 {(yyval.node) = new_ast_node(AST_RETURN,(yyvsp[-1].node));}
-#line 1638 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1641 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 38: /* expr: expr '=' expr  */
-#line 326 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 329 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_ASSIGN, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1644 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1647 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 39: /* expr: expr T_AND expr  */
-#line 327 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 330 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_AND, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1650 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1653 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 40: /* expr: expr T_OR expr  */
-#line 328 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 331 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_OR, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1656 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1659 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 41: /* expr: expr '+' expr  */
-#line 329 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 332 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_ADD, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1662 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1665 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 42: /* expr: expr '-' expr  */
-#line 330 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 333 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_SUB, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1668 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1671 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 43: /* expr: expr '*' expr  */
-#line 331 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 334 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_MUL, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1674 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1677 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 44: /* expr: expr '/' expr  */
-#line 332 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 335 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_DIV, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1680 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1683 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 45: /* expr: expr '%' expr  */
-#line 333 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 336 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_OP_MOD, (yyvsp[-2].node), (yyvsp[0].node));}
-#line 1686 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1689 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 46: /* expr: expr cmp expr  */
-#line 334 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 337 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                            {(yyval.node) = new_ast_node(AST_OP_CMP, (yyvsp[-2].node), (yyvsp[-1].node),(yyvsp[0].node));}
-#line 1692 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1695 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 47: /* expr: factor  */
-#line 335 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 338 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = (yyvsp[0].node);}
-#line 1698 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1701 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 48: /* cmp: T_CMP  */
-#line 337 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 340 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                {
             struct ast_node_attr temp_val;
             temp_val.kind = CMP_KIND;
@@ -1707,117 +1710,117 @@ yyreduce:
             // printf("%s\n", temp_val.id);
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1711 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1714 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 49: /* factor: '-' factor  */
-#line 345 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 348 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                       {(yyval.node) = new_ast_node(AST_OP_NEG, (yyvsp[0].node));}
-#line 1717 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1720 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 50: /* factor: '!' factor  */
-#line 346 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 349 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = new_ast_node(AST_OP_NOT, (yyvsp[0].node));}
-#line 1723 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1726 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 51: /* factor: lval T_DEC  */
-#line 347 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 350 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = new_ast_node(AST_OP_LDEC,(yyvsp[-1].node));}
-#line 1729 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1732 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 52: /* factor: lval T_INC  */
-#line 348 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 351 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = new_ast_node(AST_OP_LINC,(yyvsp[-1].node));}
-#line 1735 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1738 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 53: /* factor: T_DEC lval  */
-#line 349 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 352 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = new_ast_node(AST_OP_RDEC,(yyvsp[0].node));}
-#line 1741 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1744 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 54: /* factor: T_INC lval  */
-#line 350 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 353 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = new_ast_node(AST_OP_RINC,(yyvsp[0].node));}
-#line 1747 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1750 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 55: /* factor: rval  */
-#line 351 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 354 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                             {(yyval.node) = (yyvsp[0].node);}
-#line 1753 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1756 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 56: /* rval: lval  */
-#line 353 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 356 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                 {(yyval.node)=(yyvsp[0].node);}
-#line 1759 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1762 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 57: /* rval: '(' expr ')'  */
-#line 354 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 357 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                         {(yyval.node) = (yyvsp[-1].node);}
-#line 1765 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1768 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 58: /* rval: ident '(' realarg ')'  */
-#line 355 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 358 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                                 {(yyval.node) = new_ast_node(AST_FUNC_CALL,(yyvsp[-3].node),(yyvsp[-1].node));}
-#line 1771 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1774 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 59: /* rval: num  */
-#line 356 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 359 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                         {(yyval.node) = (yyvsp[0].node);}
-#line 1777 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1780 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 60: /* lval: ident  */
-#line 357 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 360 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                 {(yyval.node) = (yyvsp[0].node);}
-#line 1783 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1786 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 61: /* lval: ident '[' expr ']'  */
-#line 358 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 361 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                              {(yyval.node) = new_ast_node(AST_OP_INDEX,(yyvsp[-3].node),(yyvsp[-1].node));}
-#line 1789 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1792 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 62: /* realarg: %empty  */
-#line 359 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 362 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                { (yyval.node) = NULL; }
-#line 1795 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1798 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 63: /* realarg: realargs  */
-#line 360 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 363 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                        {(yyval.node) = (yyvsp[0].node);}
-#line 1801 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1804 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 64: /* realargs: expr  */
-#line 362 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 365 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                    { (yyval.node) = new_ast_node(AST_REAL_ARGS,(yyvsp[0].node));}
-#line 1807 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1810 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 65: /* realargs: realargs ',' expr  */
-#line 364 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 367 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
             (yyvsp[0].node)->parent = (yyvsp[-2].node);
             (yyvsp[-2].node)->sons.push_back((yyvsp[0].node));
             (yyval.node) = (yyvsp[-2].node);
             }
-#line 1817 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1820 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 66: /* ident: T_ID  */
-#line 371 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 374 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             struct ast_node_attr temp_val;
             temp_val.kind = DIGIT_KIND_ID;
@@ -1825,11 +1828,11 @@ yyreduce:
             strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1829 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1832 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 67: /* num: T_DIGIT  */
-#line 379 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 382 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
           // 终结符作为抽象语法树的叶子节点进行创建
             struct ast_node_attr temp_val;
@@ -1839,11 +1842,11 @@ yyreduce:
             // printf("%d\n", temp_val.integer_val);
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1843 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1846 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
 
-#line 1847 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1850 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
 
       default: break;
     }
@@ -2036,7 +2039,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 388 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 391 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
 
 
 // 语法识别错误要调用函数的定义

@@ -328,7 +328,7 @@ void AssignIRInst::toString(std::string &str)
 {
     Value *src1 = srcValues[0], *result = dstValue;
     str = "    ";
-    str += result->getName() + " = assign " + src1->getName();
+    str += result->getName() + " = " + src1->getName();
 }
 
 /// @brief 赋值IR指令

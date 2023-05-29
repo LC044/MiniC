@@ -24,7 +24,18 @@ static bool sym_block(struct ast_node *node)
             }
         }
     }
+    printf("实参赋值给临时变量 %d\n", node->parent->sons.size());
+    struct ast_node *func_paras = node->parent->sons[2];
 
+    // 实参赋值给临时变量
+    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
+
+        struct ast_node *arg_name = (*pIter)->sons[1];
+        Value *localVarValue = nullptr;
+        // todo 暂时只考虑int类型
+        localVarValue = newTempValue(ValueType::ValueType_Int, FuncName);
+        arg_name->val = localVarValue;
+    }
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
@@ -85,16 +96,9 @@ static bool sym_def_func(struct ast_node *node)
     // todo 暂时只考虑int类型
     localVarValue = newLocalVarValue("", ValueType::ValueType_Int, func_name->attr.id);
     node->sons[3]->val = localVarValue;
-    // 实参赋值给临时变量
-    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
-
-        struct ast_node *arg_name = (*pIter)->sons[1];
-        Value *localVarValue = nullptr;
-        // todo 暂时只考虑int类型
-        localVarValue = newTempValue(ValueType::ValueType_Int, func_name->attr.id);
-        arg_name->val = localVarValue;
-    }
     // 第四个孩子是语句块
+    // todo 这里有个bug，AST的parent节点有问题
+    node->sons[3]->parent = node;
     struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     if (func_block == NULL) return true;
     return true;
@@ -252,15 +256,39 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     } else {
         // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
         // 创建临时变量保存IR的值，以及线性IR指令
-
-
     }
     // todo 暂时只考虑int类型
     Value *resultValue = newTempValue(ValueType::ValueType_Int, FuncName);
-    // printf("新建临时变量%s\n", resultValue->getName().c_str());
-    // node->blockInsts.addInst(
-    //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val));
+
     node->val = resultValue;
+    printf("新建op临时变量: %s\n", node->val->getName().c_str());
+    return true;
+}
+static bool sym_assign(struct ast_node *node)
+{
+    // TODO real number add
+
+    struct ast_node *son1_node = node->sons[0];
+    struct ast_node *son2_node = node->sons[1];
+
+    // 赋值节点，自右往左运算
+
+    // 赋值运算符的左侧操作数
+    struct ast_node *left = sym_visit_ast_node(son1_node);
+    if (!left) {
+        // 某个变量没有定值
+        // 这里缺省设置变量不存在则创建，因此这里不会错误
+        return false;
+    }
+
+    // 赋值运算符的右侧操作数
+    struct ast_node *right = sym_visit_ast_node(son2_node);
+    if (!right) {
+        // 某个变量没有定值
+        return false;
+    }
+    printf("赋值指令symbol\n");
+    node->val = left->val;
     return true;
 }
 static bool sym_leaf_node(struct ast_node *node)
@@ -305,6 +333,10 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node)
     case AST_OP_NULL:
         result = sym_leaf_node(node);
         break;
+    case AST_RETURN:
+        printf("return\n");
+        result = true;
+        break;
     case AST_CU:
         result = sym_cu(node);
         break;
@@ -313,23 +345,28 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node)
         break;
     case AST_FUNC_DEF:
         result = sym_def_func(node);
+        break;
     case AST_OP_BLOCK:
         result = sym_block(node);
+        break;
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
     case AST_OP_ADD:
+        printf("binary operator add\n");
         ;
     case AST_OP_SUB:
+        printf("binary operator sub\n");
         ;
     case AST_OP_MUL:
         ;
     case AST_OP_DIV:
         ;
     case AST_OP_MOD:
-        printf("binary operator\n");
+
         result = sym_binary_op(node, node->type);
         break;
     case AST_OP_ASSIGN:
-        ;
+        result = sym_assign(node);
+        break;
     default:
         // 错误，不支持
         result = false;
@@ -356,5 +393,6 @@ bool genSymbol(struct ast_node *root)
         return false;
     }
     printf("*** end genSymbol *** \n");
+
     return true;
 }

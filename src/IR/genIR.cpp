@@ -51,50 +51,6 @@ static bool ir_block(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
     // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        // 判断是否有局部变量定义
-        if ((*pIter)->type == AST_DEF_LIST) {
-            // 第一个孩子为变量类型
-            struct ast_node *temp_type = (*pIter)->sons[0];
-            ValueType type_;
-            // todo 暂时只考虑int类型
-            if (strcmp(temp_type->attr.id, "int") == 0) {
-                type_ = ValueType::ValueType_Int;
-            }
-            // 后面的孩子为变量名
-            std::vector<struct ast_node *>::iterator pIter1;
-            for (pIter1 = (*pIter)->sons.begin() + 1; pIter1 != (*pIter)->sons.end(); ++pIter1) {
-                Value *localVarValue = nullptr;
-                struct ast_node *temp = *pIter1;
-                if (temp->type == AST_ARRAY) {
-                    // 数组变量
-                    bool result = ir_def_array(temp, type_, true);
-                    if (!result)return false;
-                } else {
-                    if (!IsExist(temp->attr.id)) {
-                        // 变量名没有找到
-                        // localVarValue = newLocalVarValue(temp->attr.id, type_);
-                    } else {
-                        // 若变量名已存在，则报错重定义
-                        std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
-                        printError(temp->attr.lineno, error);
-                        return false;
-                    }
-                    temp->val = localVarValue;
-                }
-
-                printf("localVarValue:%s;%s\n", temp->val->getName().c_str(), temp->val->getName().c_str());
-                // (*pIter1)->val = localVarValue;
-                node->blockInsts.addInst(
-                    new DeclearIRInst(temp->val, false, true)
-                );
-            }
-        }
-    }
-    // 函数进入语句
-    node->blockInsts.addInst(
-        new UselessIRInst("    entry")
-    );
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
@@ -142,7 +98,7 @@ static bool ir_def_list(struct ast_node *node)
             val = varsMap[temp->attr.id];
             temp->val = val;
         }
-        printf("global variable %s\n", temp->val->getName().c_str());
+        // printf("global variable %s\n", temp->val->getName().c_str());
         node->blockInsts.addInst(
             new DeclearIRInst(temp->val, true, true)
         );
@@ -205,9 +161,10 @@ static bool ir_def_func(struct ast_node *node)
             new AssignIRInst(resultValue, srcValue)
         );
     }
-    return true;
+    // return true;
     // 第四个孩子是语句块
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
+    // return true;
     node->blockInsts.addInst(func_block->blockInsts);
     // 语句块结束之后应该加一个 '}'
     node->blockInsts.addInst(
@@ -282,13 +239,20 @@ static bool ir_add(struct ast_node *node)
         // 某个变量没有定值
         return false;
     }
+    printf("加法指令\n");
     Value *leftValue = left->val;
     Value *rightValue = right->val;
     // 先把左右孩子操作数添加进去，在添加当前节点的操作数
     // 后序遍历
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
-
+    // todo 只考虑int类型
+    Value *resultValue = node->val;
+    printf("加法指令:dst = %d\n", resultValue == nullptr);
+    printf("加法指令:dst = %s\n", resultValue->getName().c_str());
+    node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
+    );
     // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
     if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
         // 处理实数类型的指令
@@ -356,7 +320,11 @@ static bool ir_sub(struct ast_node *node)
     // 后序遍历
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
-
+    // todo 只考虑int类型
+    Value *resultValue = node->val;
+    node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val)
+    );
     // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
     if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
         // 处理实数类型的指令
@@ -598,7 +566,7 @@ static bool ir_div(struct ast_node *node)
 static bool ir_assign(struct ast_node *node)
 {
     // TODO real number add
-    /*
+
     struct ast_node *son1_node = node->sons[0];
     struct ast_node *son2_node = node->sons[1];
 
@@ -624,21 +592,21 @@ static bool ir_assign(struct ast_node *node)
     // 创建临时变量保存IR的值，以及线性IR指令
     node->blockInsts.addInst(right->blockInsts);
     node->blockInsts.addInst(left->blockInsts);
-
+    // return true;
     // 左值类型与右值类型相同
     // 加上这行代码才能判断是否要进行类型转换
-    left->val->type = right->val->type;
+    // left->val->type = right->val->type;
 
     node->blockInsts.addInst(
         new AssignIRInst(left->val, right->val));
     node->val = left->val;
-    */
+
     return true;
 }
 
 static bool ir_leaf_node(struct ast_node *node)
 {
-    /*
+
     Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
@@ -648,7 +616,7 @@ static bool ir_leaf_node(struct ast_node *node)
         // 变量，则需要在符号表中查找对应的值
         // 若变量之前没有有定值，则采用默认的值为0
 
-        val = findValue(node->attr.id);
+        val = findValue(node->attr.id, FuncName, true);
         if (!val) {
             printf("Line(%d) Variable(%s) not defined\n",
                    node->attr.lineno,
@@ -664,7 +632,6 @@ static bool ir_leaf_node(struct ast_node *node)
     }
 
     node->val = val;
-*/
     return true;
 }
 
@@ -739,7 +706,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
         result = ir_cu(node);
         break;
     case AST_DEF_LIST:
-        printf("AST_DEF_LIST\n");
+        // printf("AST_DEF_LIST\n");
         // 变量定义
         result = ir_def_list(node);
         break;
@@ -751,7 +718,8 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
     case AST_RETURN:
         // printf("AST_DEF_array\n");
         // 数组定义
-        result = ir_return(node);
+        // result = ir_return(node);
+        result = true;
         break;
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
     default:
@@ -779,8 +747,10 @@ bool genIR(struct ast_node *root, InterCode &IRCode)
     printf("*** start genIR *** \n");
     result = ir_visit_ast_node(root);
     if (!result) {
+        printf("***genIr failed***\n");
         return false;
     }
+    printf("*** end genIR *** \n");
     // 第一步遍历符号表，声明所有全局变量
     // result = global_var_def(root);
     // if (!result) {

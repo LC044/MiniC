@@ -1,6 +1,4 @@
 int a,b[2][5][3];
-int q[5],_c,d_;
-int afa;
 int add(int a,int b){
     int v;
     v = a + b;

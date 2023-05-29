@@ -67,8 +67,8 @@ Value *newLocalVarValue(std::string name, ValueType type, std::string func_name)
     // 类型待定
     auto pIter1 = funcsMap.find(func_name);
     Value *temp = new LocalVarValue(name, type, func_name);
-    pIter1->second->localVarsMap.emplace(temp->name, temp);
-    pIter1->second->localVarsName.push_back(temp->name);
+    pIter1->second->localVarsMap.emplace(name, temp);
+    pIter1->second->localVarsName.push_back(name);
     return temp;
 }
 /// 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
@@ -118,15 +118,16 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
 Value *findValue(std::string name, std::string func_name, bool checkExist)
 {
     Value *temp = nullptr;
+    Value *result = nullptr;
     temp = findFuncValue(func_name);
     // 先在函数表的局部变量里找
-    if (temp != nullptr) {
+    if (temp) {
         auto pIter = temp->localVarsMap.find(name);
         if (pIter == temp->localVarsMap.end()) {
             // 变量名没有找到
         } else {
-            temp = pIter->second;
-            return temp;
+            result = pIter->second;
+            return result;
         }
     }
     // 局部变量找不到在全局变量里找
@@ -135,14 +136,14 @@ Value *findValue(std::string name, std::string func_name, bool checkExist)
 
         // 变量名没有找到
         if (!checkExist) {
-            temp = newVarValue(name);
+            result = newVarValue(name);
         }
 
     } else {
-        temp = pIter->second;
+        result = pIter->second;
     }
 
-    return temp;
+    return result;
 }
 Value *findFuncValue(std::string name)
 {
