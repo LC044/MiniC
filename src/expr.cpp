@@ -314,7 +314,7 @@ static bool expr_assign(struct ast_node *node)
 static bool expr_leaf_node(struct ast_node *node)
 {
     Value *val = nullptr;
-
+    /*
     if (node->attr.kind == DIGIT_KIND_ID) {
         // 新建一个ID型Value
         // TODO 类型没有指定，有问题，需要修改
@@ -336,7 +336,7 @@ static bool expr_leaf_node(struct ast_node *node)
         // 新建一个实数型常量Value
         val = newConstValue(node->attr.real_val);
     }
-
+    */
     node->val = val;
 
     return true;

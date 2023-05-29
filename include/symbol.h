@@ -69,6 +69,8 @@ public:
     std::vector<Value *> fargs;
     std::unordered_map<std::string, Value *> localVarsMap;
     std::vector<std::string > localVarsName;
+    std::unordered_map<std::string, Value *> tempVarsMap;
+    std::vector<std::string > tempVarsName;
 protected:
 
     /// @brief 默认实数类型的构造函数，初始值为0
@@ -252,7 +254,7 @@ public:
 /// \param checkExist 检查变量存在不？若true则检查，不存在则返回nullptr，否则创建新变量
 /// \return 变量对应的值
 
-Value *findValue(std::string name, bool checkExist = false);
+Value *findValue(std::string name, std::string func_name, bool checkExist = false);
 Value *findFuncValue(std::string name);
 bool IsExist(std::string name);
 bool LocalIsExist(std::string func_name, std::string var_name);

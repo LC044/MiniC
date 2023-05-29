@@ -14,7 +14,8 @@ int sub(int a,int b){
 int main(int a_,int b){
     b = 1+2;
     int k,i[5],f;
-    a = 1;
+    a = 1+b;
+    b = 1+b;
     int t;
     return b;
 }

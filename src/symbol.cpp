@@ -100,8 +100,8 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
 {
     auto pIter1 = funcsMap.find(func_name);
     Value *temp = new TempValue(type, func_name);
-    pIter1->second->localVarsName.push_back(temp->name);
-    pIter1->second->localVarsMap.emplace(temp->name, temp);
+    pIter1->second->tempVarsName.push_back(temp->name);
+    pIter1->second->tempVarsMap.emplace(temp->name, temp);
     if (isFfargs) {
         // 
         printf("形参 %s\n", temp->name.c_str());
@@ -115,10 +115,21 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
 /// 根据变量名取得当前符号的值。若变量不存在，则说明变量之前没有定值，则创建一个未知类型的值，初值为0
 /// \param name 变量名
 /// \return 变量对应的值
-Value *findValue(std::string name, bool checkExist)
+Value *findValue(std::string name, std::string func_name, bool checkExist)
 {
     Value *temp = nullptr;
-
+    temp = findFuncValue(func_name);
+    // 先在函数表的局部变量里找
+    if (temp != nullptr) {
+        auto pIter = temp->localVarsMap.find(name);
+        if (pIter == temp->localVarsMap.end()) {
+            // 变量名没有找到
+        } else {
+            temp = pIter->second;
+            return temp;
+        }
+    }
+    // 局部变量找不到在全局变量里找
     auto pIter = varsMap.find(name);
     if (pIter == varsMap.end()) {
 

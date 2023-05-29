@@ -169,7 +169,7 @@ static bool ir_def_func(struct ast_node *node)
     );
     // 添加局部变量定义IR指令
     printf("函数局部变量个数:%d\n", func_name->val->localVarsName.size());
-    for (int i = func_name->val->fargs.size(); i < func_name->val->localVarsName.size(); ++i) {
+    for (int i = 0; i < func_name->val->localVarsName.size(); ++i) {
         // 获取参数类型
         // struct ast_node *arg_type = (*pIter)->sons[0];
         // 获取参数名

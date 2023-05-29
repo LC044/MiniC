@@ -237,7 +237,7 @@ void FuncDefIRInst::toString(std::string &str)
             str += ", ";
         }
     }
-    str += "){";
+    str += ") {";
 }
 
 /// @brief 无参数的函数调用
