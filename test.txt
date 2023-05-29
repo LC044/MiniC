@@ -1,6 +1,16 @@
 int a,b[2][5][3];
 int q[5],_c,d_;
 int afa;
+int add(int a,int b){
+    int v;
+    v = a + b;
+    return v;
+}
+int sub(int a,int b){
+    int c;
+    c = a-b;
+    return c;
+}
 int main(int a_,int b){
     b = 1+2;
     int k,i[5],f;

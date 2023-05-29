@@ -6,6 +6,8 @@
 #include "symbol.h"
 
 using namespace std;
+// class的静态成员要在class外初始化
+std::unordered_map<std::string, uint64_t > Value::funcTempVarCount = { {"main",0} };
 // 保存全局变量名，以便顺序遍历
 std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
@@ -64,9 +66,9 @@ Value *newLocalVarValue(std::string name, ValueType type, std::string func_name)
 {
     // 类型待定
     auto pIter1 = funcsMap.find(func_name);
-    Value *temp = new LocalVarValue(name, type);
+    Value *temp = new LocalVarValue(name, type, func_name);
     pIter1->second->localVarsMap.emplace(temp->name, temp);
-    pIter1->second->localVarsName.push_back(name);
+    pIter1->second->localVarsName.push_back(temp->name);
     return temp;
 }
 /// 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
@@ -94,12 +96,19 @@ Value *newConstValue(double realVal)
 /// 新建一个临时型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newTempValue(ValueType type, std::string func_name)
+Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
 {
     auto pIter1 = funcsMap.find(func_name);
-    Value *temp = new TempValue(type);
-    pIter1->second->localVarsMap.emplace(temp->name, temp);
+    Value *temp = new TempValue(type, func_name);
     pIter1->second->localVarsName.push_back(temp->name);
+    pIter1->second->localVarsMap.emplace(temp->name, temp);
+    if (isFfargs) {
+        // 
+        printf("形参 %s\n", temp->name.c_str());
+        pIter1->second->fargs.push_back(temp);
+    } else {
+
+    }
     return temp;
 }
 

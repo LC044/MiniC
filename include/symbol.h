@@ -19,7 +19,7 @@ enum class ValueType {
 class Value {
 
 protected:
-
+    static std::unordered_map<std::string, uint64_t > funcTempVarCount;
     /// @brief 新建一个临时常量名
     /// \return
     static std::string createConstVarName()
@@ -32,11 +32,12 @@ protected:
     /// @brief 新建一个临时变量名
     /// \return
 
-    static std::string createTempVarName(bool isLocal = false)
+    static std::string createTempVarName(std::string func_name, bool isLocal = false)
     {
-        static uint64_t tempVarCount = 0; // 临时变量计数，默认从0开始
-        if (isLocal)return "%l" + int2str(tempVarCount++);
-        return "%t" + int2str(tempVarCount++);
+
+        // static uint64_t tempVarCount = 0; // 临时变量计数，默认从0开始
+        if (isLocal)return "%l" + int2str(funcTempVarCount[func_name]++);
+        return "%t" + int2str(funcTempVarCount[func_name]++);
     }
 
 protected:
@@ -64,7 +65,10 @@ public:
     int dims[10];
     /// @brief 实数常量的值
     double realVal = 0;
-
+    // 参数列表
+    std::vector<Value *> fargs;
+    std::unordered_map<std::string, Value *> localVarsMap;
+    std::vector<std::string > localVarsName;
 protected:
 
     /// @brief 默认实数类型的构造函数，初始值为0
@@ -104,12 +108,14 @@ public:
         return name;
     }
 };
+
+
 class FuncSymbol : public Value {
 public:
     /// @brief 函数名
     // 用来保存所有的局部变量信息
-    std::unordered_map<std::string, Value *> localVarsMap;
-    std::vector<std::string > localVarsName;
+
+
     FuncSymbol() : Value(ValueType::ValueType_Int)
     {
 
@@ -129,18 +135,19 @@ class TempValue : public Value {
 public:
     /// @brief 创建临时Value，用于保存中间IR指令的值
     /// \param val
-    TempValue(ValueType _type) : Value(_type)
+    TempValue(ValueType _type, std::string _func_name) : Value(_type)
     {
         isTemp = true;
-        name = createTempVarName();
+        name = createTempVarName(_func_name);
+
     }
 
     /// @brief 创建临时Value，用于保存中间IR指令的值
     /// \param val
-    TempValue() : Value(ValueType::ValueType_Real)
+    TempValue(std::string _func_name) : Value(ValueType::ValueType_Real)
     {
         isTemp = true;
-        name = createTempVarName();
+        name = createTempVarName(_func_name);
     }
 
     /// @brief 析构函数
@@ -218,20 +225,20 @@ public:
 
     /// @brief 创建变量Value，用于保存中间IR指令的值
     /// \param val
-    LocalVarValue(std::string _name, ValueType _type) : Value(_type)
+    LocalVarValue(std::string _name, ValueType _type, std::string _func_name) : Value(_type)
     {
         id_name = _name;
         isTemp = true;
-        name = createTempVarName(true);
+        name = createTempVarName(_func_name, true);
     }
 
     /// @brief 创建变量Value，用于保存中间IR指令的值
     /// \param val
-    LocalVarValue(std::string _name) : Value(ValueType::ValueType_Real)
+    LocalVarValue(std::string _name, std::string _func_name) : Value(ValueType::ValueType_Real)
     {
         id_name = _name;
         isTemp = true;
-        name = createTempVarName(true);
+        name = createTempVarName(_func_name, true);
     }
 
     /// @brief 析构函数
@@ -278,7 +285,7 @@ Value *newConstValue(double realVal);
 /// @brief 新建一个临时型的Value，并加入到符号表，用于后续释放空间
 /// \param intVal 整数值
 /// \return 常量Value
-Value *newTempValue(ValueType type, std::string func_name);
+Value *newTempValue(ValueType type, std::string func_name, bool isFfargs = false);
 
 /// @brief 新建一个函数Value，并加入到函数表，用于后续释放空间
 /// \param name 函数名

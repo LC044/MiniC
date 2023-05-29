@@ -199,16 +199,20 @@ void DeclearIRInst::toString(std::string &str)
 
 /* 修改 */
 // 函数定义指令
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, Value *_paras, ValueType _ret_type) :
+FuncDefIRInst::FuncDefIRInst(FuncSymbol *_func_name, ValueType _ret_type) :
     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
 {
-    srcValues.push_back(_paras);
+    // srcValues.push_back(_paras);
+    srcValues = _func_name->fargs;
+    printf("srcValues size %d\n", srcValues.size());
 }
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, std::vector<Value *> &_paras, ValueType _ret_type) :
+FuncDefIRInst::FuncDefIRInst(Value *_func_name, ValueType _ret_type) :
     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
 {
     // 形参拷贝
-    srcValues = _paras;
+    // srcValues = _paras;
+    srcValues = _func_name->fargs;
+    printf("srcValues size %d\n", srcValues.size());
 }
 /// @brief 析构函数
 FuncDefIRInst::~FuncDefIRInst()

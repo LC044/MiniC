@@ -5,3 +5,24 @@ declare i32 @_c
 declare i32 @d_
 declare i32 @afa
 declare i32 @ght
+define i32 @add(i32 %t0, i32 %t1){
+    declare i32 %l2 ; variable: a
+    declare i32 %l3 ; variable: b
+    declare i32 %l4 ; variable: 
+    declare i32 %l5 ; variable: v
+    entry
+define i32 @sub(i32 %t0, i32 %t1){
+    declare i32 %l2 ; variable: a
+    declare i32 %l3 ; variable: b
+    declare i32 %l4 ; variable: 
+    declare i32 %l5 ; variable: c
+    entry
+define i32 @main(i32 %t0, i32 %t1){
+    declare i32 %l2 ; variable: a_
+    declare i32 %l3 ; variable: b
+    declare i32 %l4 ; variable: 
+    declare i32 %l5 ; variable: k
+    declare i32 %l6[5] ; variable: i[5]
+    declare i32 %l7 ; variable: f
+    declare i32 %l8 ; variable: t
+    entry

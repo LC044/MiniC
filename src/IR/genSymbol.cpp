@@ -59,20 +59,15 @@ static bool sym_def_func(struct ast_node *node)
     // 第三个孩子是参数列表
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
-    std::vector<Value *> fargs;
     for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
         // 获取参数类型
         // struct ast_node *arg_type = (*pIter)->sons[0];
         // 获取参数名
         // struct ast_node *arg_name = (*pIter)->sons[1];
         // todo 暂时只考虑int类型
-        Value *fargsValue = newTempValue(ValueType::ValueType_Int, func_name->attr.id);
-        fargs.push_back(fargsValue);
+        newTempValue(ValueType::ValueType_Int, func_name->attr.id, true);
     }
 
-    // node->blockInsts.addInst(
-    //         new FuncDefIRInst(func_name->val, fargs)
-    // );
     // 形参定义
     for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
         // 获取参数类型
@@ -188,8 +183,9 @@ static bool sym_cu(struct ast_node *node)
     // 第二步确定函数表
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         if ((*pIter)->type == AST_FUNC_DEF) {
-            struct ast_node *temp = sym_visit_ast_node(*pIter);
-            if (temp == NULL) return true;
+            // struct ast_node *temp = sym_visit_ast_node(*pIter);
+            // if (temp == NULL) return true;
+            sym_visit_ast_node(*pIter);
         }
     }
     return true;
