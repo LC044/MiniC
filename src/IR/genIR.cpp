@@ -182,10 +182,29 @@ static bool ir_def_func(struct ast_node *node)
             new DeclearIRInst(localVarValue, false, true)
         );
     }
+    // 添加临时变量定义IR指令
+    printf("函数临时变量个数:%d\n", func_name->val->tempVarsName.size());
+    for (int i = func_name->val->fargs.size(); i < func_name->val->tempVarsName.size(); ++i) {
+        Value *localVarValue = nullptr;
+        localVarValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
+        node->blockInsts.addInst(
+            new DeclearIRInst(localVarValue, false, true)
+        );
+    }
     // 函数进入IR指令
     node->blockInsts.addInst(
         new UselessIRInst("    entry")
     );
+    for (int i = 0; i < func_name->val->fargs.size(); ++i) {
+        Value *srcValue = nullptr;
+        srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
+        Value *resultValue = nullptr;
+        resultValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
+        printf("实参赋值指令:%s = %s\n", resultValue->getName().c_str(), srcValue->getName().c_str());
+        node->blockInsts.addInst(
+            new AssignIRInst(resultValue, srcValue)
+        );
+    }
     return true;
     // 第四个孩子是语句块
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);

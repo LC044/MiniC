@@ -10,13 +10,23 @@ define i32 @add(i32 %t0, i32 %t1) {
     declare i32 %l3 ; variable: b
     declare i32 %l4 ; variable: 
     declare i32 %l7 ; variable: v
+    declare i32 %t5 ; variable: 
+    declare i32 %t6 ; variable: 
+    declare i32 %t8 ; variable: 
     entry
+    %l2 = assign %t0
+    %l3 = assign %t1
 define i32 @sub(i32 %t0, i32 %t1) {
     declare i32 %l2 ; variable: a
     declare i32 %l3 ; variable: b
     declare i32 %l4 ; variable: 
     declare i32 %l7 ; variable: c
+    declare i32 %t5 ; variable: 
+    declare i32 %t6 ; variable: 
+    declare i32 %t8 ; variable: 
     entry
+    %l2 = assign %t0
+    %l3 = assign %t1
 define i32 @main(i32 %t0, i32 %t1) {
     declare i32 %l2 ; variable: a_
     declare i32 %l3 ; variable: b
@@ -25,4 +35,9 @@ define i32 @main(i32 %t0, i32 %t1) {
     declare i32 %l8[5] ; variable: i[5]
     declare i32 %l9 ; variable: f
     declare i32 %l10 ; variable: t
+    declare i32 %t5 ; variable: 
+    declare i32 %t6 ; variable: 
+    declare i32 %t11 ; variable: 
     entry
+    %l2 = assign %t0
+    %l3 = assign %t1

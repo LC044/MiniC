@@ -87,9 +87,7 @@ static bool sym_def_func(struct ast_node *node)
     node->sons[3]->val = localVarValue;
     // 实参赋值给临时变量
     for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
-        // 获取参数类型
-        // struct ast_node *arg_type = (*pIter)->sons[0];
-        // 获取参数名
+
         struct ast_node *arg_name = (*pIter)->sons[1];
         Value *localVarValue = nullptr;
         // todo 暂时只考虑int类型
