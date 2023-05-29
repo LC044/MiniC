@@ -8,7 +8,7 @@ static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
-static struct ast_node *sym_visit_ast_node(struct ast_node *node);
+static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false);
 
 static bool sym_block(struct ast_node *node)
 {
@@ -24,6 +24,7 @@ static bool sym_block(struct ast_node *node)
             }
         }
     }
+    /*
     printf("实参赋值给临时变量 %d\n", node->parent->sons.size());
     struct ast_node *func_paras = node->parent->sons[2];
 
@@ -36,7 +37,8 @@ static bool sym_block(struct ast_node *node)
         localVarValue = newTempValue(ValueType::ValueType_Int, FuncName);
         arg_name->val = localVarValue;
     }
-    // 第二步是遍历其他表达式语句
+*/
+// 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
         if ((*pIter)->type == AST_DEF_LIST) {
@@ -274,7 +276,7 @@ static bool sym_assign(struct ast_node *node)
     // 赋值节点，自右往左运算
 
     // 赋值运算符的左侧操作数
-    struct ast_node *left = sym_visit_ast_node(son1_node);
+    struct ast_node *left = sym_visit_ast_node(son1_node, true);
     if (!left) {
         // 某个变量没有定值
         // 这里缺省设置变量不存在则创建，因此这里不会错误
@@ -287,11 +289,11 @@ static bool sym_assign(struct ast_node *node)
         // 某个变量没有定值
         return false;
     }
-    printf("赋值指令symbol\n");
+    // printf("赋值指令symbol\n");
     node->val = left->val;
     return true;
 }
-static bool sym_leaf_node(struct ast_node *node)
+static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
 
     Value *val = nullptr;
@@ -304,6 +306,10 @@ static bool sym_leaf_node(struct ast_node *node)
         // 若变量之前没有有定值，则采用默认的值为0
 
         val = findValue(node->attr.id, FuncName, true);
+        if (!isLeft) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+        }
+
         if (!val) {
             printf("Line(%d) Variable(%s) not defined\n",
                    node->attr.lineno,
@@ -320,7 +326,7 @@ static bool sym_leaf_node(struct ast_node *node)
     node->val = val;
     return true;
 }
-static struct ast_node *sym_visit_ast_node(struct ast_node *node)
+static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
 {
     // 非法节点
     if (nullptr == node) {
@@ -331,7 +337,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node)
 
     switch (node->type) {
     case AST_OP_NULL:
-        result = sym_leaf_node(node);
+        result = sym_leaf_node(node, isLeft);
         break;
     case AST_RETURN:
         printf("return\n");

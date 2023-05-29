@@ -13,7 +13,8 @@ extern std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
 extern std::vector<std::string > funcsName;
 
-static struct ast_node *ir_visit_ast_node(struct ast_node *node);
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
+static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 // 从抽象语法树的根开始遍历，然后输出计算出表达式的值
 static bool ir_cu(struct ast_node *node)
@@ -573,7 +574,7 @@ static bool ir_assign(struct ast_node *node)
     // 赋值节点，自右往左运算
 
     // 赋值运算符的左侧操作数
-    struct ast_node *left = ir_visit_ast_node(son1_node);
+    struct ast_node *left = ir_visit_ast_node(son1_node, true);
     if (!left) {
         // 某个变量没有定值
         // 这里缺省设置变量不存在则创建，因此这里不会错误
@@ -604,7 +605,7 @@ static bool ir_assign(struct ast_node *node)
     return true;
 }
 
-static bool ir_leaf_node(struct ast_node *node)
+static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
 
     Value *val = nullptr;
@@ -615,28 +616,24 @@ static bool ir_leaf_node(struct ast_node *node)
 
         // 变量，则需要在符号表中查找对应的值
         // 若变量之前没有有定值，则采用默认的值为0
-
-        val = findValue(node->attr.id, FuncName, true);
-        if (!val) {
-            printf("Line(%d) Variable(%s) not defined\n",
-                   node->attr.lineno,
-                   node->attr.id);
-            return false;
+        if (isLeft) {
+            val = findValue(node->attr.id, FuncName, true);
+            node->val = val;
+        } else {
+            val = findValue(node->attr.id, FuncName, true);
+            Value *dstVal = node->val;
+            node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+            );
         }
-    } else if (node->attr.kind == DIGIT_KIND_INT) {
-        // 新建一个整数常量Value
-        val = newConstValue(node->attr.integer_val);
-    } else {
-        // 新建一个实数型常量Value
-        val = newConstValue(node->attr.real_val);
-    }
 
-    node->val = val;
+        // node->val = val;
+    }
     return true;
 }
 
 // 递归遍历抽象语法树进行计算
-static struct ast_node *ir_visit_ast_node(struct ast_node *node)
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
 {
     // 非法节点
     if (nullptr == node) {
@@ -648,7 +645,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node)
     switch (node->type) {
     case AST_OP_NULL:
         // 叶子节点
-        result = ir_leaf_node(node);
+        result = ir_leaf_node(node, isLeft);
         break;
 
     case AST_OP_MUL:

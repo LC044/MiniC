@@ -9,11 +9,18 @@ define i32 @add(i32 %t0, i32 %t1) {
     declare i32 %t6 ; variable: 
     declare i32 %t7 ; variable: 
     declare i32 %t8 ; variable: 
+    declare i32 %t9 ; variable: 
+    declare i32 %t10 ; variable: 
     entry
     %l2 = %t0
     %l3 = %t1
-    %t8 = add %l2, %l3
+    %t6 = %l2
+    %t7 = %l3
+    %t8 = add %t6, %t7
     %l5 = %t8
+    %t9 = %l2
+    %t10 = sub %t9, 1
+    %l5 = %t10
 }
 define i32 @sub(i32 %t0, i32 %t1) {
     declare i32 %l2 ; variable: a
@@ -26,7 +33,9 @@ define i32 @sub(i32 %t0, i32 %t1) {
     entry
     %l2 = %t0
     %l3 = %t1
-    %t8 = sub %l2, %l3
+    %t6 = %l2
+    %t7 = %l3
+    %t8 = sub %t6, %t7
     %l5 = %t8
 }
 define i32 @main(i32 %t0, i32 %t1) {
@@ -45,10 +54,12 @@ define i32 @main(i32 %t0, i32 %t1) {
     entry
     %l2 = %t0
     %l3 = %t1
-    %t11 = add 1, 2
-    %l3 = %t11
-    %t12 = add 1, %l3
-    a = %t12
-    %t13 = add 1, %l3
+    %t9 = add 1, 2
+    %l3 = %t9
+    %t10 = %l3
+    %t11 = add 1, %t10
+    a = %t11
+    %t12 = %l3
+    %t13 = add 1, %t12
     %l3 = %t13
 }
