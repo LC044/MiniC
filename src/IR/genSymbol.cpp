@@ -149,12 +149,17 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
         Value *val = nullptr;
         struct ast_node *temp = *pIter;
         if (temp->type == AST_ARRAY) {
-            bool result = sym_def_array(temp, type);
+            bool result = sym_def_array(temp, type, isLocal);
             if (!result)return false;
         } else {
             if (!IsExist(temp->attr.id)) {
                 // 变量名没有找到
-                val = newVarValue(temp->attr.id);
+                if (isLocal) {
+                    val = newLocalVarValue(temp->attr.id, type, FuncName);
+                } else {
+                    val = newVarValue(temp->attr.id);
+                }
+
                 printf("other value %s\n", temp->attr.id);
             } else {
                 // 若变量名已存在，则报错重定义

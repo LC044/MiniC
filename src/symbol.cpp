@@ -2,12 +2,15 @@
 // Created by zenglj on 2023/1/29.
 //
 #include <unordered_map>
-
+#include <vector>
 #include "symbol.h"
 
 using namespace std;
-
-
+// 保存全局变量名，以便顺序遍历
+std::vector<std::string > varsName;
+// 保存函数名，以便顺序遍历
+std::vector<std::string > funcsName;
+// 用来保存所有的全局变量
 std::unordered_map<std::string, Value *> varsMap;
 
 // 用来保存所有的函数信息
@@ -43,7 +46,7 @@ Value *newVarValue(std::string name)
     // 类型待定
     Value *temp = new VarValue(name, ValueType::ValueType_MAX);
     varsMap.emplace(temp->name, temp);
-
+    varsName.push_back(name);
     return temp;
 }
 Value *newFuncValue(std::string name)
@@ -51,6 +54,7 @@ Value *newFuncValue(std::string name)
     // 类型待定
     FuncSymbol *tempSymbol = new FuncSymbol(name, ValueType::ValueType_Int);
     funcsMap.emplace(name, tempSymbol);
+    funcsName.push_back(name);
     return tempSymbol;
 }
 /// 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间
@@ -62,7 +66,7 @@ Value *newLocalVarValue(std::string name, ValueType type, std::string func_name)
     auto pIter1 = funcsMap.find(func_name);
     Value *temp = new LocalVarValue(name, type);
     pIter1->second->localVarsMap.emplace(temp->name, temp);
-
+    pIter1->second->localVarsName.push_back(name);
     return temp;
 }
 /// 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
@@ -95,6 +99,7 @@ Value *newTempValue(ValueType type, std::string func_name)
     auto pIter1 = funcsMap.find(func_name);
     Value *temp = new TempValue(type);
     pIter1->second->localVarsMap.emplace(temp->name, temp);
+    pIter1->second->localVarsName.push_back(temp->name);
     return temp;
 }
 

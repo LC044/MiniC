@@ -1784,6 +1784,12 @@ CMakeFiles/minic.dir/src/symbol.cpp.obj
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/unordered_map.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/range_access.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/vector
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_uninitialized.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/refwrap.h
+ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc
  D:/Project/Compile/lab3/MiniC/include/symbol.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cstdint
  D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stdint.h
@@ -1820,7 +1826,6 @@ CMakeFiles/minic.dir/src/symbol.cpp.obj
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/ctype.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/ostream_insert.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_forced.h
- D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/refwrap.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_string.h
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/string_view
  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/string_view.tcc

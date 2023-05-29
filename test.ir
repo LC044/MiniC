@@ -1,11 +1,7 @@
-declare i32 @f
-declare i32 @i[5]
-declare i32 @afa
-declare i32 @q[5]
-declare i32 @t
-declare i32 @k
-declare i32 @_c
-declare i32 @b[2][5][3]
-declare i32 @ght
-declare i32 @d_
 declare i32 @a
+declare i32 @b[2][5][3]
+declare i32 @q[5]
+declare i32 @_c
+declare i32 @d_
+declare i32 @afa
+declare i32 @ght

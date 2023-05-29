@@ -793,16 +793,22 @@ extern std::unordered_map<std::string, Value *> varsMap;
 
 // 用来保存所有的函数信息
 extern std::unordered_map<std::string, FuncSymbol *> funcsMap;
+// 保存全局变量名，以便顺序遍历
+extern std::vector<std::string > varsName;
+// 保存函数名，以便顺序遍历
+extern std::vector<std::string > funcsName;
 bool global_var_def(struct ast_node *node)
 {
     printf("global variable\n");
     printf("%d\n", varsMap.size());
-    for (auto it : varsMap) {
-        printf("global variable%s\n", it.second->getName().c_str());
+
+    for (int i = 0; i < varsName.size(); ++i) {
+        printf("global variable%s\n", varsMap[varsName[i]]->getName().c_str());
         node->blockInsts.addInst(
-        new DeclearIRInst(it.second, true, true)
+        new DeclearIRInst(varsMap[varsName[i]], true, true)
         );
     }
+
     return true;
 }
 /// @brief 遍历抽象语法树产生线性IR，保存到IRCode中

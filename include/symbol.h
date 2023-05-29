@@ -109,7 +109,7 @@ public:
     /// @brief 函数名
     // 用来保存所有的局部变量信息
     std::unordered_map<std::string, Value *> localVarsMap;
-
+    std::vector<std::string > localVarsName;
     FuncSymbol() : Value(ValueType::ValueType_Int)
     {
 
