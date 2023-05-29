@@ -51,7 +51,7 @@ static bool sym_def_func(struct ast_node *node)
         val = newFuncValue(func_name->attr.id);
     } else {
         // 若变量名已存在，则报错重定义
-        std::string error = std::string("error: redefinition of") + std::string(func_name->attr.id);
+        std::string error = std::string("error: redefinition of ") + std::string(func_name->attr.id);
         printError(func_name->attr.lineno, error);
         return false;
     }
@@ -99,7 +99,7 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
         // 创建一个新的符号
         if (isLocal) {
             val = newLocalVarValue(temp_id->attr.id, type, FuncName);
-            printf("loacl Arrar\n");
+            // printf("loacl Array\n");
         } else {
             val = newVarValue(temp_id->attr.id);
             val->type = type;
@@ -155,7 +155,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
                     val = newVarValue(temp->attr.id);
                 }
 
-                printf("other value %s\n", temp->attr.id);
+                // printf("other value %s\n", temp->attr.id);
             } else {
                 // 若变量名已存在，则报错重定义
                 std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);

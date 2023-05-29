@@ -161,7 +161,7 @@ static bool ir_def_func(struct ast_node *node)
     FuncName = func_name->attr.id;
     val = funcsMap[FuncName];
     func_name->val = val;
-    printf("Function: %s\n", func_name->attr.id);
+    // printf("Function: %s\n", func_name->attr.id);
     printf("Function: %s\n", val->getName().c_str());
     // 添加函数定义IR指令
     node->blockInsts.addInst(
@@ -176,7 +176,7 @@ static bool ir_def_func(struct ast_node *node)
         // struct ast_node *arg_name = (*pIter)->sons[1];
         Value *localVarValue = nullptr;
         localVarValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
-        printf("形参定义 %s\n", localVarValue->getName().c_str());
+        // printf("形参定义 %s\n", localVarValue->getName().c_str());
         // arg_name->val = localVarValue;
         node->blockInsts.addInst(
             new DeclearIRInst(localVarValue, false, true)

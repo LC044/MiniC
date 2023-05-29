@@ -160,16 +160,16 @@ bool GlobalIsExist(std::string name)
 {
     auto pIter = varsMap.find(name);
     if (pIter == varsMap.end()) {
-        return false;
+        auto pIter1 = funcsMap.find(name);
+        if (pIter1 == funcsMap.end()) {
+            return false;
+        } else {
+            return true;
+        }
     } else {
         return true;
     }
-    auto pIter1 = funcsMap.find(name);
-    if (pIter1 == funcsMap.end()) {
-        return false;
-    } else {
-        return true;
-    }
+
 }
 bool LocalIsExist(std::string func_name, std::string var_name)
 {
