@@ -215,37 +215,33 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     Value *leftValue = left->val;
     Value *rightValue = right->val;
-
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, left->val, true)
-            // );
-            // left->val = resultValue0;
+    Value *resultValue = nullptr;
+    if ((leftValue->type == ValueType::ValueType_Int) and (rightValue->type == ValueType::ValueType_Int)) {
+        int result = 0;
+        switch (type) {
+        case AST_OP_ADD:
+            result = rightValue->intVal + leftValue->intVal;
+            break;
+        case AST_OP_SUB:
+            result = rightValue->intVal - leftValue->intVal;
+            break;
+        case AST_OP_MUL:
+            result = rightValue->intVal * leftValue->intVal;
+            break;
+        case AST_OP_DIV:
+            result = rightValue->intVal / leftValue->intVal;
+            break;
+        case AST_OP_MOD:
+            result = rightValue->intVal % leftValue->intVal;
+            break;
+        default:
+            break;
         }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, right->val, true)
-            // );
-            // right->val = resultValue0;
-        }
-        // Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        // node->blockInsts.addInst(
-        //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
-        // );
-        // node->val = resultValue;
+        resultValue = newConstValue(result);
     } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
+        // todo 暂时只考虑int类型
+        resultValue = newTempValue(ValueType::ValueType_MAX, FuncName);
     }
-    // todo 暂时只考虑int类型
-    Value *resultValue = newTempValue(ValueType::ValueType_Int, FuncName);
 
     node->val = resultValue;
     printf("新建op临时变量: %s\n", node->val->getName().c_str());
@@ -311,7 +307,7 @@ static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 
         val = findValue(node->attr.id, FuncName, true);
         if (!isLeft) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            val = newTempValue(ValueType::ValueType_MAX, FuncName);
         }
 
         if (!val) {

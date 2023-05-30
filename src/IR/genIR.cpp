@@ -224,34 +224,42 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     // 后序遍历
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
-    switch (type) {
-    case AST_OP_ADD:
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_ADD, node->val, left->val, right->val)
-        );
-        break;
-    case AST_OP_SUB:
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_SUB, node->val, left->val, right->val)
-        );
-        break;
-    case AST_OP_MUL:
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_MUL, node->val, left->val, right->val)
-        );
-        break;
-    case AST_OP_DIV:
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_DIV, node->val, left->val, right->val)
-        );
-        break;
-    case AST_OP_MOD:
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_MOD, node->val, left->val, right->val)
-        );
-        break;
-    default:
-        break;
+    Value *leftValue = left->val;
+    Value *rightValue = right->val;
+    if ((leftValue->type == ValueType::ValueType_Int) and (rightValue->type == ValueType::ValueType_Int)) {
+        ;
+    } else {
+
+        switch (type) {
+        case AST_OP_ADD:
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_ADD, node->val, left->val, right->val)
+            );
+            break;
+        case AST_OP_SUB:
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_SUB, node->val, left->val, right->val)
+            );
+            break;
+        case AST_OP_MUL:
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_MUL, node->val, left->val, right->val)
+            );
+            break;
+        case AST_OP_DIV:
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_DIV, node->val, left->val, right->val)
+            );
+            break;
+        case AST_OP_MOD:
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_MOD, node->val, left->val, right->val)
+            );
+            break;
+        default:
+            break;
+        }
+
     }
     return true;
 }

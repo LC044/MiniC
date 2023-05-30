@@ -82,6 +82,7 @@ void yyerror(char * msg);
 
 %nonassoc LOWER_THEN_ELSE
 %nonassoc T_ELSE
+%nonassoc '(' ')'
 %%
 Input   : program
             {
