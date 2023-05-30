@@ -1,10 +1,10 @@
 # minic
 
-cmake-build-debug\minic.exe -a -o test.jpg  test.txt
+cmake-build-debug\minic.exe -a -o test.jpg  test.c
 
-cmake-build-debug\minic.exe -r -o test.ir  test.txt
+cmake-build-debug\minic.exe -r -o test.ir  test.c
 
-cmake-build-debug\minic.exe -a -o test.jpg  test.txt
+cmake-build-debug\minic.exe -a -o test.jpg  test.c
 
 git config --global --unset http.proxy
 
@@ -12,7 +12,7 @@ git push -u origin main
 
 老师写好的程序运行方式
 
-.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir test.txt
+.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir test.c
 
 ## 主要功能
 

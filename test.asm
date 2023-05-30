@@ -12,13 +12,6 @@ define i32 @add(i32 %t0, i32 %t1) {
     declare i32 %t9
     declare i32 %t10
     declare i32 %t11
-    declare i32 %t12
-    declare i32 %t13
-    declare i32 %t14
-    declare i32 %t15
-    declare i32 %t16
-    declare i32 %t17
-    declare i32 %t18
     entry
     %l2 = %t0
     %l3 = %t1
@@ -26,19 +19,9 @@ define i32 @add(i32 %t0, i32 %t1) {
     %t7 = %l3
     %t8 = add %t6, %t7
     %l5 = %t8
-    %t9 = %l2
-    %t10 = mul %t9, 2
-    %l2 = %t10
-    %t11 = %l2
-    %t12 = %l3
-    %t13 = div %t11, %t12
-    %l3 = %t13
-    %t14 = %l3
-    %t15 = mod %t14, 2
-    %l5 = %t15
-    %t16 = %l5
-    %t17 = add %t16, 1
-    %l4 = %t17
-    %t18 = %l4
-    exit %t18
+    %t9 = %l5
+    %t10 = add %t9, 1
+    %l4 = %t10
+    %t11 = %l4
+    exit %t11
 }

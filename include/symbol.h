@@ -62,7 +62,8 @@ public:
 
     /// @brief 整型常量的值
     int intVal = 0;
-    int dims[10];
+    // 不初始化会有问题
+    int dims[10] = { 0,0,0,0,0,0,0,0,0,0 };
     /// @brief 实数常量的值
     double realVal = 0;
     // 参数列表

@@ -112,8 +112,9 @@ public:
     bool IsTemp = false;
     /// @brief 构造函数
     /// @param result
-    /// @param 是否是全局变量
-    /// @param 是否是数组
+    /// @param IsGloba 是否是全局变量
+    /// @param IsArray 是否是数组
+    /// @param IsTemp 是否是临时变量
     DeclearIRInst(Value *result, bool IsGlobal = true, bool IsArray = false, bool IsTemp = false);
 
     /// @brief 析构函数
@@ -201,7 +202,6 @@ class ReturnIRInst : public IRInst {
 public:
     /// @brief 构造函数
     /// @param result 
-    /// @param srcVal1 
     ReturnIRInst(Value *result);
 
     /// @brief 析构函数

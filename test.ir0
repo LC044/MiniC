@@ -14,6 +14,11 @@ define i32 @add(i32 %t0, i32 %t1) {
 	declare i32 %t11
 	declare i32 %t12
 	declare i32 %t13
+	declare i32 %t14
+	declare i32 %t15
+	declare i32 %t16
+	declare i32 %t17
+	declare i32 %t18
 	entry
 	%l2 = %t0
 	%l3 = %t1
@@ -22,58 +27,18 @@ define i32 @add(i32 %t0, i32 %t1) {
 	%t8 = add %t6, %t7
 	%l5 = %t8
 	%t9 = %l2
-	%t10 = sub %t9, 1
-	%l5 = %t10
-	%t11 = %l5
-	%t12 = add %t11, 1
-	%l4 = %t12
-	%t13 = %l4
-	exit %t13
-}
-define i32 @sub(i32 %t0, i32 %t1) {
-	declare i32 %l2 ; variable: a
-	declare i32 %l3 ; variable: b
-	declare i32 %l4
-	declare i32 %l5 ; variable: c
-	declare i32 %t6
-	declare i32 %t7
-	declare i32 %t8
-	declare i32 %t9
-	entry
-	%l2 = %t0
-	%l3 = %t1
-	%t6 = %l2
-	%t7 = %l3
-	%t8 = sub %t6, %t7
-	%l5 = %t8
-	%l4 = %l5
-	%t9 = %l4
-	exit %t9
-}
-define i32 @main(i32 %t0, i32 %t1) {
-	declare i32 %l2 ; variable: a_
-	declare i32 %l3 ; variable: b
-	declare i32 %l4
-	declare i32 %l5 ; variable: k
-	declare i32 %l6[5] ; variable: i
-	declare i32 %l7 ; variable: f
-	declare i32 %l8 ; variable: t
-	declare i32 %t9
-	declare i32 %t10
-	declare i32 %t11
-	declare i32 %t12
-	declare i32 %t13
-	entry
-	%l2 = %t0
-	%l3 = %t1
-	%l3 = 3
-	%t9 = %l3
-	%t10 = add 1, %t9
-	@a = %t10
-	%t11 = %l3
-	%t12 = add 1, %t11
-	%l3 = %t12
-	%l4 = %l3
-	%t13 = %l4
-	exit %t13
+	%t10 = mul %t9, 2
+	%l2 = %t10
+	%t11 = %l2
+	%t12 = %l3
+	%t13 = div %t11, %t12
+	%l3 = %t13
+	%t14 = %l3
+	%t15 = mod %t14, 2
+	%l5 = %t15
+	%t16 = %l5
+	%t17 = add %t16, 1
+	%l4 = %t17
+	%t18 = %l4
+	exit %t18
 }

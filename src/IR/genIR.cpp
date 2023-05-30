@@ -197,110 +197,10 @@ static bool ir_return(struct ast_node *node)
     node->val = result->val;
     return true;
 }
-// 产生IR显示的IR指令
-static bool ir_show(struct ast_node *node, bool show)
+
+
+static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
 {
-    // TODO real number print
-
-    struct ast_node *src1_node = node->sons[0];
-
-    struct ast_node *result = ir_visit_ast_node(src1_node);
-    if (!result) {
-        // 解析错误
-        return false;
-    }
-
-    node->blockInsts.addInst(result->blockInsts);
-
-    if (show) {
-
-        node->blockInsts.addInst(
-            new FuncCallIRInst("printI", result->val));
-    }
-
-    node->val = nullptr;
-
-    return true;
-}
-
-// expresion add
-static bool ir_add(struct ast_node *node)
-{
-    // TODO real number add
-
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
-
-    // 加法节点，左结合，先计算左节点，后计算右节点
-
-    // 加法的左边操作数
-    struct ast_node *left = ir_visit_ast_node(src1_node);
-    if (!left) {
-        // 某个变量没有定值
-        return false;
-    }
-
-    // 加法的右边操作数
-    struct ast_node *right = ir_visit_ast_node(src2_node);
-    if (!right) {
-        // 某个变量没有定值
-        return false;
-    }
-    printf("加法指令\n");
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
-    // 先把左右孩子操作数添加进去，在添加当前节点的操作数
-    // 后序遍历
-    node->blockInsts.addInst(left->blockInsts);
-    node->blockInsts.addInst(right->blockInsts);
-    // todo 只考虑int类型
-    Value *resultValue = node->val;
-    printf("加法指令:dst = %d\n", resultValue == nullptr);
-    printf("加法指令:dst = %s\n", resultValue->getName().c_str());
-    node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
-    );
-    // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, left->val, true)
-            // );
-            // left->val = resultValue0;
-        }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, right->val, true)
-            // );
-            // right->val = resultValue0;
-        }
-        // Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        // node->blockInsts.addInst(
-        //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val)
-        // );
-        // node->val = resultValue;
-
-    } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
-        // Value *resultValue = newTempValue(ValueType::ValueType_Int);
-        // node->blockInsts.addInst(
-        //     new BinaryIRInst(IRINST_OP_ADD, resultValue, left->val, right->val));
-        // node->val = resultValue;
-    }
-    return true;
-}
-// expresion usb
-static bool ir_sub(struct ast_node *node)
-{
-    // TODO real number add
-
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
 
@@ -320,255 +220,42 @@ static bool ir_sub(struct ast_node *node)
         return false;
     }
 
-
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
     // 先把左右孩子操作数添加进去，在添加当前节点的操作数
     // 后序遍历
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
-    // todo 只考虑int类型
-    Value *resultValue = node->val;
-    node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val)
-    );
-    // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, left->val, true)
-            // );
-            // left->val = resultValue0;
-        }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            // Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            // node->blockInsts.addInst(
-            // new TypeCovIRInst(resultValue0, right->val, true)
-            // );
-            // right->val = resultValue0;
-        }
-        // Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        // node->blockInsts.addInst(
-        //     new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val)
-        // );
-        // node->val = resultValue;
-
-    } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
-        // Value *resultValue = newTempValue(ValueType::ValueType_Int);
-        // node->blockInsts.addInst(
-        //     new BinaryIRInst(IRINST_OP_SUB, resultValue, left->val, right->val));
-        // node->val = resultValue;
-    }
-    return true;
-}
-// expresion mod
-static bool ir_mod(struct ast_node *node)
-{
-    // TODO real number add
-    /*
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
-
-    // 加法节点，左结合，先计算左节点，后计算右节点
-
-    // 加法的左边操作数
-    struct ast_node *left = ir_visit_ast_node(src1_node);
-    if (!left) {
-        // 某个变量没有定值
-        return false;
-    }
-
-    // 加法的右边操作数
-    struct ast_node *right = ir_visit_ast_node(src2_node);
-    if (!right) {
-        // 某个变量没有定值
-        return false;
-    }
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
-    // 先把左右孩子操作数添加进去，在添加当前节点的操作数
-    // 后序遍历
-    node->blockInsts.addInst(left->blockInsts);
-    node->blockInsts.addInst(right->blockInsts);
-
-    // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, left->val, true)
-            );
-            left->val = resultValue0;
-        }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, right->val, true)
-            );
-            right->val = resultValue0;
-        }
-        char *error = "错了错了,'%' 运算必须是int";
-        error = "error: invalid operands to binary % (must 'int' and 'int')";
-        printf("%s\n", error);
-        return false;
-    } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
-        Value *resultValue = newTempValue(ValueType::ValueType_Int);
+    switch (type) {
+    case AST_OP_ADD:
         node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_MOD, resultValue, left->val, right->val));
-        node->val = resultValue;
-    }
-*/
-    return true;
-}
-
-// expresion multiply
-static bool ir_mul(struct ast_node *node)
-{
-    // TODO real number mul
-    /*
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
-
-    // 乘法节点，左结合，先计算左节点，后计算右节点
-
-    // 乘法的左边操作数
-    struct ast_node *left = ir_visit_ast_node(src1_node);
-    if (!left) {
-        // 某个变量没有定值
-        return false;
-    }
-
-    // 乘法的右边操作数
-    struct ast_node *right = ir_visit_ast_node(src2_node);
-    if (!right) {
-        // 某个变量没有定值
-        return false;
-    }
-
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
-    // 先把左右孩子操作数添加进去，在添加当前节点的操作数
-    // 后序遍历
-    node->blockInsts.addInst(left->blockInsts);
-    node->blockInsts.addInst(right->blockInsts);
-
-    // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, left->val, true)
-            );
-            left->val = resultValue0;
-        }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, right->val, true)
-            );
-            right->val = resultValue0;
-        }
-        Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_MUL, resultValue, left->val, right->val)
+            new BinaryIRInst(IRINST_OP_ADD, node->val, left->val, right->val)
         );
-        node->val = resultValue;
-
-    } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
-        Value *resultValue = newTempValue(ValueType::ValueType_Int);
+        break;
+    case AST_OP_SUB:
         node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_MUL, resultValue, left->val, right->val));
-        node->val = resultValue;
-    }
-    */
-    return true;
-}
-// expresion divide
-static bool ir_div(struct ast_node *node)
-{
-    // TODO real number mul
-/*
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
-
-    // 乘法节点，左结合，先计算左节点，后计算右节点
-
-    // 乘法的左边操作数
-    struct ast_node *left = ir_visit_ast_node(src1_node);
-    if (!left) {
-        // 某个变量没有定值
-        return false;
-    }
-
-    // 乘法的右边操作数
-    struct ast_node *right = ir_visit_ast_node(src2_node);
-    if (!right) {
-        // 某个变量没有定值
-        return false;
-    }
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
-    // 先把左右孩子操作数添加进去，在添加当前节点的操作数
-    // 后序遍历
-    node->blockInsts.addInst(left->blockInsts);
-    node->blockInsts.addInst(right->blockInsts);
-
-    // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-    if ((leftValue->type == ValueType::ValueType_Real) or (rightValue->type == ValueType::ValueType_Real)) {
-        // 处理实数类型的指令
-        // 创建临时变量保存IR的值，以及线性IR指令
-
-        // 判断是否需要类型转换
-        if (leftValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, left->val, true)
-            );
-            left->val = resultValue0;
-        }
-        if (rightValue->type == ValueType::ValueType_Int) {
-            Value *resultValue0 = newTempValue(ValueType::ValueType_Real);
-            node->blockInsts.addInst(
-            new TypeCovIRInst(resultValue0, right->val, true)
-            );
-            right->val = resultValue0;
-        }
-        Value *resultValue = newTempValue(ValueType::ValueType_Real);
-        node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_DIV, resultValue, left->val, right->val)
+            new BinaryIRInst(IRINST_OP_SUB, node->val, left->val, right->val)
         );
-        node->val = resultValue;
-
-    } else {
-        // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-        // 创建临时变量保存IR的值，以及线性IR指令
-        Value *resultValue = newTempValue(ValueType::ValueType_Int);
+        break;
+    case AST_OP_MUL:
         node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_DIV, resultValue, left->val, right->val));
-        node->val = resultValue;
+            new BinaryIRInst(IRINST_OP_MUL, node->val, left->val, right->val)
+        );
+        break;
+    case AST_OP_DIV:
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_DIV, node->val, left->val, right->val)
+        );
+        break;
+    case AST_OP_MOD:
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_MOD, node->val, left->val, right->val)
+        );
+        break;
+    default:
+        break;
     }
-*/
     return true;
 }
+
 // 赋值操作
 static bool ir_assign(struct ast_node *node)
 {
@@ -656,39 +343,22 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
 
     case AST_OP_MUL:
         // 乘法节点
-        result = ir_mul(node);
-        break;
+        ;
 
     case AST_OP_ADD:
         // 加法节点
-        result = ir_add(node);
-        break;
+        ;
     case AST_OP_SUB:
         // 乘法节点
-        result = ir_sub(node);
-        break;
+        ;
 
     case AST_OP_DIV:
         // 加法节点
-        result = ir_div(node);
-        break;
+        ;
     case AST_OP_MOD:
         // 加法节点
-        result = ir_mod(node);
+        result = ir_binary_op(node, node->type);
         break;
-    case AST_OP_EXPR:
-
-        // 表达式结点，不显示表达式的值
-        // 由于不显示值，并且不支持赋值操作，都是右值操作，这里什么都不做
-        result = ir_show(node, false);
-        break;
-
-    case AST_OP_EXPR_SHOW:
-
-        // 表达式结点，显示表达式的值
-        result = ir_show(node, true);
-        break;
-
     case AST_OP_ASSIGN:
 
         // 赋值语句
