@@ -47,7 +47,7 @@ Value *newVarValue(std::string name)
 {
     // 类型待定
 
-    Value *temp = new VarValue(name, ValueType::ValueType_MAX);
+    Value *temp = new VarValue(name, ValueType::ValueType_Int);
     varsMap.emplace(name, temp);
     varsName.push_back(name);
     return temp;

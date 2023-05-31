@@ -77,12 +77,12 @@ static bool sym_def_func(struct ast_node *node)
         struct ast_node *arg_name = (*pIter)->sons[1];
         Value *localVarValue = nullptr;
         // todo 暂时只考虑int类型
-        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_MAX, func_name->attr.id);
+        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int, func_name->attr.id);
         arg_name->val = localVarValue;
     }
     // 返回值定义
         // todo 暂时只考虑int类型
-    newLocalVarValue("return", ValueType::ValueType_MAX, FuncName);
+    newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
     // 第四个孩子是语句块
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
@@ -138,7 +138,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
     if (strcmp(temp_type->attr.id, "int") == 0) {
         // printf("int value\n");
         kind0 = DIGIT_KIND_ID;
-        type = ValueType::ValueType_MAX;
+        type = ValueType::ValueType_Int;
     }
 
     for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
@@ -215,17 +215,20 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     Value *leftValue = left->val;
     Value *rightValue = right->val;
     Value *val = nullptr;
-    if (left->attr.kind == DIGIT_KIND_ID) {
-        val = newTempValue(ValueType::ValueType_MAX, FuncName);
+    // 变量当右值要先复制给临时变量再进行计算
+    if (left->val->isId) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        val->isId = true;
         left->val = val;
     }
-    if (right->attr.kind == DIGIT_KIND_ID) {
-        val = newTempValue(ValueType::ValueType_MAX, FuncName);
+    if (right->val->isId) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        val->isId = true;
         right->val = val;
     }
 
     Value *resultValue = nullptr;
-    if ((leftValue->type == ValueType::ValueType_Int) and (rightValue->type == ValueType::ValueType_Int)) {
+    if ((leftValue->isConst) and (rightValue->isConst)) {
         int result = 0;
         switch (type) {
         case AST_OP_ADD:
@@ -249,7 +252,7 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
         resultValue = newConstValue(result);
     } else {
         // todo 暂时只考虑int类型
-        resultValue = newTempValue(ValueType::ValueType_MAX, FuncName);
+        resultValue = newTempValue(ValueType::ValueType_Int, FuncName);
     }
 
     node->val = resultValue;

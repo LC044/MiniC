@@ -226,23 +226,21 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     node->blockInsts.addInst(right->blockInsts);
     Value *leftValue = left->val;
     Value *rightValue = right->val;
-
-
-    if (left->attr.kind == DIGIT_KIND_ID) {
+    if (left->val->isId) {
         Value *val = findValue(left->attr.id, FuncName, true);
         Value *dstVal = left->val;
         node->blockInsts.addInst(
                 new AssignIRInst(dstVal, val)
         );
     }
-    if (right->attr.kind == DIGIT_KIND_ID) {
+    if (right->val->isId) {
         Value *val = findValue(right->attr.id, FuncName, true);
         Value *dstVal = right->val;
         node->blockInsts.addInst(
                 new AssignIRInst(dstVal, val)
         );
     }
-    if ((leftValue->type == ValueType::ValueType_Int) and (rightValue->type == ValueType::ValueType_Int)) {
+    if ((leftValue->isConst) and (rightValue->isConst)) {
         ;
     } else {
 

@@ -40,8 +40,7 @@ protected:
         return "%t" + int2str(funcTempVarCount[func_name]++);
     }
 
-protected:
-
+public:
     /// @brief 是否是常量
     bool isConst = false;
 
@@ -50,9 +49,6 @@ protected:
 
     /// @brief 是否是用户定义的变量或标识符
     bool isId = false;
-
-public:
-
     /// @brief 变量名或内部标识的名字
     std::string name;
     /// @brief 变量名
@@ -231,7 +227,7 @@ public:
     LocalVarValue(std::string _name, ValueType _type, std::string _func_name) : Value(_type)
     {
         id_name = _name;
-        isTemp = true;
+        isId = true;
         name = createTempVarName(_func_name, true);
     }
 
@@ -240,7 +236,7 @@ public:
     LocalVarValue(std::string _name, std::string _func_name) : Value(ValueType::ValueType_Real)
     {
         id_name = _name;
-        isTemp = true;
+        isId = true;
         name = createTempVarName(_func_name, true);
     }
 

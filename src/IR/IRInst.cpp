@@ -173,6 +173,7 @@ void DeclearIRInst::toString(std::string &str)
     if (result->type == ValueType::ValueType_Int) {
         type = "i32";
     }
+    // type = "i32";
     if (IsGlobal) {
         // 全局变量用@符号
         str = "declare " + type + result->getName();
