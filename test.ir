@@ -1,6 +1,6 @@
-declare  @a
-declare  @b[2][5][3]
-declare  @ght
+declare @a
+declare @b[2][5][3]
+declare @ght
 define i32 @add(i32 %t0, i32 %t1) {
     declare  %l2 ; variable: a_
     declare  %l3 ; variable: b
@@ -13,19 +13,28 @@ define i32 @add(i32 %t0, i32 %t1) {
     declare  %t10
     declare  %t11
     declare  %t12
-    declare i32 %t13
+    declare  %t13
+    declare  %t14
+    declare  %t15
+    declare  %t16
+    declare i32 %t17
     entry
     %l2 = %t0
     %l3 = %t1
-    %t6 = %l3
-    %t7 = add %t6, 1
-    %t8 = sub %t7, 2
-    %t9 = a
-    %t10 = add %t9, %t8
-    %l5 = %t10
-    %t11 = %l5
-    %t12 = add %t11, 1
-    %l4 = %t12
-    %t13 = %l4
-    exit %t13
+    %t6 = @a
+    %t7 = mul %t6, 2
+    %t8 = %l3
+    %t9 = add %t8, 1
+    %t10 = sub %t9, 2
+    %t11 = add %t7, %t10
+    %l5 = %t11
+    %t12 = @a
+    %t13 = %l5
+    %t14 = add %t12, %t13
+    @a = %t14
+    %t15 = %l5
+    %t16 = add %t15, 1
+    %l4 = %t16
+    %t17 = %l4
+    exit %t17
 }

@@ -175,7 +175,7 @@ void DeclearIRInst::toString(std::string &str)
     }
     if (IsGlobal) {
         // 全局变量用@符号
-        str = "declare " + type + " @" + result->getName();
+        str = "declare " + type + result->getName();
     } else {
         // 局部变量用%l符号
         str = "    declare " + type + " " + result->getName();

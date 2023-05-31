@@ -205,14 +205,14 @@ class VarValue : public Value {
 public:
     /// @brief 创建变量Value，用于保存中间IR指令的值
     /// \param val
-    VarValue(std::string _name, ValueType _type) : Value(_name, _type)
+    VarValue(std::string _name, ValueType _type) : Value("@" + _name, _type)
     {
         isId = true;
     }
 
     /// @brief 创建变量Value，用于保存中间IR指令的值
     /// \param val
-    VarValue(std::string _name) : Value(_name, ValueType::ValueType_Real)
+    VarValue(std::string _name) : Value("@" + _name, ValueType::ValueType_Real)
     {
         isId = true;
     }

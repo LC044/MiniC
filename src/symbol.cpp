@@ -46,8 +46,9 @@ void newVarValue(std::string name, ValueType type)
 Value *newVarValue(std::string name)
 {
     // 类型待定
+
     Value *temp = new VarValue(name, ValueType::ValueType_MAX);
-    varsMap.emplace(temp->name, temp);
+    varsMap.emplace(name, temp);
     varsName.push_back(name);
     return temp;
 }
