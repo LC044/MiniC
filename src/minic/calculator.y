@@ -73,6 +73,7 @@ void yyerror(char * msg);
 %left T_OR
 %left T_AND
 %left CMP_PREC  // 比较运算符优先级大于逻辑运算符
+%left T_CMP
 /* %left RELOP */
 %left "++" "--"
 /* %left MINUSASS PLUSASS */
@@ -335,9 +336,12 @@ expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 
             | expr '*' expr     {$$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
             | expr '/' expr     {$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
             | expr '%' expr     {$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
-            | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1, $2,$3);}/* 关系运算符 */
+            | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1,$2,$3);}/* 关系运算符 */
             | factor            {$$ = $1;};  // 符号，数字，括号
+            
+            
 /* 关系运算 */
+
 cmp     : T_CMP{
             struct ast_node_attr temp_val;
             temp_val.kind = CMP_KIND;

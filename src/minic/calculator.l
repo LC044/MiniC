@@ -77,6 +77,8 @@ white_line  [\r\n]
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
             }
+"&&"        {return T_AND;}
+"||"        {return T_OR;}
 "++"         {return T_INC;}
 "--"         {return T_DEC;}
 "int"        {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
@@ -119,8 +121,7 @@ white_line  [\r\n]
 "]"         |
 "!"         |
 ","         {return yytext[0];}
-"&&"        {return T_AND;}
-"||"        {return T_OR;}
+
 ">"         {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;

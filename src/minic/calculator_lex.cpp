@@ -385,18 +385,18 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[104] =
     {   0,
-        0,    0,    0,    0,   47,   45,   43,   44,   44,   33,
-       26,   45,   20,   21,   22,   23,   34,   25,   45,   24,
-        5,    5,   28,   38,   27,   37,   18,   31,   32,   18,
-       18,   18,   18,   18,   18,   18,   18,   29,   18,   30,
-        3,    3,    3,   43,   44,   42,   35,    7,    8,   19,
-        1,    4,   19,    0,    0,    0,    5,   39,   41,   40,
-       18,   18,   18,   18,   18,   18,   12,   18,   18,   18,
-       18,   18,    3,    3,    2,    4,   19,    0,   19,    6,
-       18,   18,   18,   15,    9,   18,   18,   18,   18,   18,
-       13,   18,   10,   18,   16,   18,   18,   14,   18,   11,
+        0,    0,    0,    0,   47,   45,   43,   44,   44,   35,
+       28,   45,   22,   23,   24,   25,   36,   27,   45,   26,
+        5,    5,   30,   38,   29,   37,   20,   33,   34,   20,
+       20,   20,   20,   20,   20,   20,   20,   31,   20,   32,
+        3,    3,    3,   43,   44,   42,    7,    9,   10,   21,
+        1,    4,   21,    0,    0,    0,    5,   39,   41,   40,
+       20,   20,   20,   20,   20,   20,   14,   20,   20,   20,
+       20,    8,    3,    3,    2,    4,   21,    0,   21,    6,
+       20,   20,   20,   17,   11,   20,   20,   20,   20,   20,
+       15,   20,   12,   20,   18,   20,   20,   16,   20,   13,
 
-       18,   17,    0
+       20,   19,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -947,70 +947,80 @@ YY_RULE_SETUP
 case 7:
 YY_RULE_SETUP
 #line 80 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_INC;}
+{return T_AND;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 81 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_DEC;}
+{return T_OR;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 82 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
+{return T_INC;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 83 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_VOID;}
+{return T_DEC;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 85 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_RETURN;}
+#line 84 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+{strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 86 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_IF;}
+#line 85 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+{strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_VOID;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 87 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_ELSE;}
+{return T_RETURN;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 88 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_WHILE;}
+{return T_IF;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 89 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_FOR;}
+{return T_ELSE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 90 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_BREAK;}
+{return T_WHILE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 91 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_CONTINUE;}
+{return T_FOR;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
+#line 92 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+{return T_BREAK;}
+	YY_BREAK
+case 19:
+YY_RULE_SETUP
 #line 93 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+{return T_CONTINUE;}
+	YY_BREAK
+case 20:
+YY_RULE_SETUP
+#line 95 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
                 strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));
                 yylval.var_id.lineno = yylineno;
                 return T_ID;
             }
 	YY_BREAK
-case 19:
+case 21:
 YY_RULE_SETUP
-#line 99 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 101 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
                 yylval.float_num.val = (double)strtod(yytext, (char **)NULL);
                 yylval.float_num.lineno = yylineno;
@@ -1018,10 +1028,6 @@ YY_RULE_SETUP
                 return T_FLOAT;
             }
 	YY_BREAK
-case 20:
-#line 108 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-case 21:
-#line 109 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 case 22:
 #line 110 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 case 23:
@@ -1047,23 +1053,17 @@ case 32:
 case 33:
 #line 121 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 case 34:
-YY_RULE_SETUP
-#line 121 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return yytext[0];}
-	YY_BREAK
-case 35:
-YY_RULE_SETUP
 #line 122 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_AND;}
-	YY_BREAK
+case 35:
+#line 123 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 case 36:
 YY_RULE_SETUP
 #line 123 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_OR;}
+{return yytext[0];}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 124 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 125 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1073,7 +1073,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 130 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 131 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "lt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1083,7 +1083,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 136 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 137 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "le", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1093,7 +1093,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 142 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 143 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "ge", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1103,7 +1103,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 148 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 149 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "eq", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1113,7 +1113,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 154 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 155 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "ne", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1123,18 +1123,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 161 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 162 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 ;
 	YY_BREAK
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 163 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 164 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 ;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 165 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 166 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 {
                 printf("Line %d: Invalid char %s\n", yylineno, yytext);
                 return YYUNDEF;
@@ -1142,7 +1142,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 169 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 170 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
 #line 1148 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_lex.cpp"
@@ -2162,7 +2162,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 169 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 170 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.l"
 
 /* "int"       {
                 strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));

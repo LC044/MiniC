@@ -36,6 +36,7 @@ protected:
     {
 
         // static uint64_t tempVarCount = 0; // 临时变量计数，默认从0开始
+        // 对每个函数单独编号
         if (isLocal)return "%l" + int2str(funcTempVarCount[func_name]++);
         return "%t" + int2str(funcTempVarCount[func_name]++);
     }

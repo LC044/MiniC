@@ -226,7 +226,7 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
         val->isId = true;
         right->val = val;
     }
-
+    // 左右值都是常量就直接计算出来，代码优化 
     Value *resultValue = nullptr;
     if ((leftValue->isConst) and (rightValue->isConst)) {
         int result = 0;
@@ -305,6 +305,26 @@ static bool sym_return(struct ast_node *node)
     node->val = val;
     return true;
 }
+static bool sym_if(struct ast_node *node)
+{
+
+    return true;
+}
+static bool sym_cmp(struct ast_node *node)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    struct ast_node *right = sym_visit_ast_node(src2_node);
+    if (!right) {
+        return false;
+    }
+
+    return true;
+}
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
 
@@ -356,6 +376,12 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_CU:
         result = sym_cu(node);
+        break;
+    case AST_OP_IF:
+        result = sym_if(node);
+        break;
+    case AST_OP_CMP:
+        result = sym_cmp(node);
         break;
     case AST_DEF_LIST:
         result = sym_def_list(node);
