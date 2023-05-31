@@ -226,6 +226,22 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     node->blockInsts.addInst(right->blockInsts);
     Value *leftValue = left->val;
     Value *rightValue = right->val;
+
+
+    if (left->attr.kind == DIGIT_KIND_ID) {
+        Value *val = findValue(left->attr.id, FuncName, true);
+        Value *dstVal = left->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (right->attr.kind == DIGIT_KIND_ID) {
+        Value *val = findValue(right->attr.id, FuncName, true);
+        Value *dstVal = right->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
     if ((leftValue->type == ValueType::ValueType_Int) and (rightValue->type == ValueType::ValueType_Int)) {
         ;
     } else {
@@ -297,7 +313,7 @@ static bool ir_assign(struct ast_node *node)
     // return true;
     // 左值类型与右值类型相同
     // 加上这行代码才能判断是否要进行类型转换
-    // left->val->type = right->val->type;
+    left->val->type = right->val->type;
 
     node->blockInsts.addInst(
         new AssignIRInst(left->val, right->val));
@@ -309,7 +325,7 @@ static bool ir_assign(struct ast_node *node)
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
 
-    Value *val = nullptr;
+    // Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
         // 新建一个ID型Value
@@ -318,14 +334,14 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
         // 变量，则需要在符号表中查找对应的值
         // 若变量之前没有有定值，则采用默认的值为0
         if (isLeft) {
-            val = findValue(node->attr.id, FuncName, true);
-            node->val = val;
+            // val = findValue(node->attr.id, FuncName, true);
+            // node->val = val;
         } else {
-            val = findValue(node->attr.id, FuncName, true);
-            Value *dstVal = node->val;
-            node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-            );
+            // val = findValue(node->attr.id, FuncName, true);
+            // Value *dstVal = node->val;
+            // node->blockInsts.addInst(
+            //     new AssignIRInst(dstVal, val)
+            // );
         }
 
         // node->val = val;
