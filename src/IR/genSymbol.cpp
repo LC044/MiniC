@@ -31,11 +31,15 @@ static bool sym_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
+        if (pIter != node->sons.end() - 1) {
+            (*pIter)->next = *(pIter + 1);
+        }
         // 遍历Block的每个语句，进行显示或者运算
         struct ast_node *temp = sym_visit_ast_node(*pIter);
         if (!temp) {
             return false;
         }
+
         temp->parent = node;
     }
     return true;
@@ -308,12 +312,50 @@ static bool sym_return(struct ast_node *node)
 }
 static bool sym_if(struct ast_node *node)
 {
-    std::vector<struct ast_node *>::iterator pIter;
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = sym_visit_ast_node(*pIter);
-        if (temp == NULL) return false;
+    if (!node->next) {
+        node->next = node->parent->next;
     }
+
+    std::string label1 = newLabel(FuncName);  // true语句
+    std::string label2 = newLabel(FuncName);  // false语句
+    std::string label3 = newLabel(FuncName);  // 下一条语句
+
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    // 条件表达式
+    struct ast_node *cond = sym_visit_ast_node(src1_node);
+    if (!cond) {
+        // 某个变量没有定值
+        return false;
+    }
+    // true表达式
+    struct ast_node *true_node = sym_visit_ast_node(src2_node);
+    if (!true_node) {
+        // if后面没有语句
+        src2_node->label = label3;
+    } else {
+        src2_node->label = label1;
+    }
+
+    if (node->sons.size() == 3) {
+        struct ast_node *src3_node = node->sons[2];
+        struct ast_node *false_node = sym_visit_ast_node(src3_node);
+        if (!false_node) {
+            // else 里没有语句
+            src3_node->label = label3;
+        } else {
+            src3_node->label = label2;
+        }
+    }
+    if (!node->next) {
+        printf("下一节点不存在\n");
+    } else {
+        // 节点的下一条语句为label3
+        node->next->label = label3;
+    }
+
     node->val = node->sons[0]->val;
+    printf("sym_if\n");
     return true;
 }
 static bool sym_cmp(struct ast_node *node)
@@ -340,7 +382,7 @@ static bool sym_cmp(struct ast_node *node)
         val->isId = true;
         right->val = val;
     }
-    val = newTempValue(ValueType::ValueType_Int, FuncName);
+    val = newTempValue(ValueType::ValueType_Bool, FuncName);
     node->val = val;
     return true;
 }
@@ -401,7 +443,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         result = sym_leaf_node(node, isLeft);
         break;
     case AST_EMPTY:
-        result = true;
+        result = false;
         break;
     case AST_RETURN:
         printf("return\n");

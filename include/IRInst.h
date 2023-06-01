@@ -27,22 +27,7 @@ enum IRInstOperator {
 
     IRINST_OP_MAX  // 最大指令码，也是无效指令
 };
-// 存储函数里的label编号
-static std::unordered_map<std::string, uint64_t > funcLabelCount;
-static std::string newLabel(std::string func_name)
-{
-    std::string name;
-    auto pIter = funcLabelCount.find(func_name);
-    if (pIter == funcLabelCount.end()) {
-        funcLabelCount[func_name] = 3;
-        name = ".L" + int2str(funcLabelCount[func_name]);
-    } else {
-        name = ".L" + int2str(++funcLabelCount[func_name]);
-    }
-    // Value *temp = new FuncSymbol(name, ValueType::ValueType_Int);
-    // return temp;
-    return name;
-}
+
 /// @brief IR指令的基类
 class IRInst {
 

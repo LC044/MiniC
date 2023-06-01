@@ -401,54 +401,69 @@ static bool ir_if(struct ast_node *node, bool isLast)
         return false;
     }
     node->blockInsts.addInst(cond->blockInsts);
-    std::string label1 = newLabel(FuncName);  // true语句
-    std::string label2 = newLabel(FuncName);  // false语句
-    std::string label3 = newLabel(FuncName);  // 下一条语句
+    std::string label1;  // true语句
+    std::string label2;  // false语句
+    std::string label3 = node->next->label;  // 下一条语句
     // 指令跳转语句
     if (node->sons.size() == 3) {
-        // struct ast_node *src3_node;
-        // src3_node = node->sons[2];
+        struct ast_node *src3_node;
+        src3_node = node->sons[2];
         if (src2_node->type == AST_EMPTY) {
-
+            label1 = label3;
+        } else {
+            label1 = src2_node->label;
         }
-        if (src2_node->type == AST_EMPTY) {
-
-        }
-        if (isLast) {
-
+        if (src3_node->type == AST_EMPTY) {
+            label2 = label3;
+        } else {
+            label2 = src3_node->label;
         }
         node->blockInsts.addInst(
             new JumpIRInst(IRINST_JUMP_BC, node->val, label1, label2)
         );
+    } else {
+        if (src2_node->type == AST_EMPTY) {
+            label1 = label3;
+            label2 = label3;
+        } else {
+            label1 = src2_node->label;
+        }
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, node->val, label1, label3)
+        );
     }
-
-    // 条件表达式为真的语句
-    node->blockInsts.addInst(
-            new UselessIRInst(label1)
-    );
     // 条件表达式为真
     struct ast_node *true_node = ir_visit_ast_node(src2_node);
-    if (!true_node) {
-        // 某个变量没有定值
-        return false;
-    }
-    node->blockInsts.addInst(true_node->blockInsts);
-    // 下一条语句
-    if (!isLast) {
+    if (true_node->type == AST_EMPTY) {
+        if (node->sons.size() == 2) {
+            return true;
+        }
+    } else {
+        // 条件表达式为真的语句
         node->blockInsts.addInst(
-                new JumpIRInst(IRINST_JUMP_BR, label3)
+                new UselessIRInst(label1 + ":")
         );
+        node->blockInsts.addInst(true_node->blockInsts);
+        // 下一条语句
+        if (!isLast) {
+            node->blockInsts.addInst(
+                    new JumpIRInst(IRINST_JUMP_BR, label3)
+            );
+        }
     }
+
+
     // 条件表达式为假，else存在
     if (node->sons.size() == 3) {
-        node->blockInsts.addInst(
-            new UselessIRInst(label2)
-        );
         struct ast_node *src3_node = node->sons[2];
         struct ast_node *false_node = ir_visit_ast_node(src3_node);
-        if (!false_node) {
+        if (false_node->type == AST_EMPTY) {
             // 某个变量没有定值
-            return false;
+            // return true;
+        } else {
+            node->blockInsts.addInst(
+            new UselessIRInst(label2 + ":")
+            );
         }
         node->blockInsts.addInst(false_node->blockInsts);
         // 下一条语句
@@ -461,7 +476,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
     // 下一条语句
     if (!isLast) {
         node->blockInsts.addInst(
-                new UselessIRInst(label3)
+                new UselessIRInst(label3 + ":")
         );
     }
     return true;

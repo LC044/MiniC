@@ -12,6 +12,7 @@ enum class ValueType {
     ValueType_Int,   // 整型
     ValueType_Real,  // 实数
     ValueType_ARRAY, // 数组
+    ValueType_Bool,  // boolean
     ValueType_MAX,   // 最大值，无效值
 };
 
@@ -294,3 +295,19 @@ Value *newFuncValue(std::string name);
 /// @brief 清理注册的所有Value资源
 void freeValues();
 // 用来保存所有的变量信息
+// 存储函数里的label编号
+static std::unordered_map<std::string, uint64_t > funcLabelCount;
+static std::string newLabel(std::string func_name)
+{
+    std::string name;
+    auto pIter = funcLabelCount.find(func_name);
+    if (pIter == funcLabelCount.end()) {
+        funcLabelCount[func_name] = 3;
+        name = ".L" + int2str(funcLabelCount[func_name]);
+    } else {
+        name = ".L" + int2str(++funcLabelCount[func_name]);
+    }
+    // Value *temp = new FuncSymbol(name, ValueType::ValueType_Int);
+    // return temp;
+    return name;
+}

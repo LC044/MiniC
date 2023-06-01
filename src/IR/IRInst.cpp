@@ -179,8 +179,15 @@ void DeclearIRInst::toString(std::string &str)
     // todo 暂时只考虑int型，以后可以继续添加
     Value *result = dstValue;
     std::string type;
-    if (result->type == ValueType::ValueType_Int) {
+    switch (result->type) {
+    case ValueType::ValueType_Int:
         type = "i32";
+        break;
+    case ValueType::ValueType_Bool:
+        type = "i1";
+        break;
+    default:
+        break;
     }
     // type = "i32";
     if (IsGlobal) {
@@ -410,7 +417,7 @@ void JumpIRInst::toString(std::string &str)
         break;
     case IRINST_JUMP_BC: {
         Value *src1 = dstValue;
-        str += "bc " + src1->getName() + ", label " + label1 + " label " + label2;
+        str += "bc " + src1->getName() + ", label " + label1 + ", label " + label2;
         break;
     }
 

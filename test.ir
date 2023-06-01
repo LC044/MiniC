@@ -10,20 +10,16 @@ define i32 @add(i32 %t0, i32 %t1) {
     declare i32 %t7
     declare i32 %t8
     declare i32 %t9
-    declare i32 %t10
+    declare i1 %t10
     declare i32 %t11
     declare i32 %t12
-    declare i32 %t13
+    declare i1 %t13
     declare i32 %t14
     declare i32 %t15
-    declare i32 %t16
+    declare i1 %t16
     declare i32 %t17
     declare i32 %t18
     declare i32 %t19
-    declare i32 %t20
-    declare i32 %t21
-    declare i32 %t22
-    declare i32 %t23
     entry
     %l2 = %t0
     %l3 = %t1
@@ -33,39 +29,30 @@ define i32 @add(i32 %t0, i32 %t1) {
     %t8 = %l3
     %t9 = @a
     %t10 = cmp gt %t8, %t9
-.L3
+    bc %t10, label .L3, label .L5
+.L3:
     @a = 1
     br label .L5
-.L5
+.L5:
     %t11 = %l3
     %t12 = @a
     %t13 = cmp lt %t11, %t12
-.L6
-    %t14 = %l3
-    %t15 = cmp gt %t14, 1
-.L9
-    %t16 = %l3
-    %t17 = cmp lt %t16, 5
-.L12
-    br label .L14
-.L14
-    br label .L11
-.L11
+    bc %t13, label .L6, label .L8
+.L6:
+    @a = 2
     br label .L8
-.L8
-    %t18 = %l3
-    %t19 = @a
-    %t20 = cmp gt %t18, %t19
-    bc %t20, label .L15 label .L16
-.L15
-    br label .L17
-.L16
+.L8:
+    %t14 = %l3
+    %t15 = @a
+    %t16 = cmp gt %t14, %t15
+    bc %t16, label .L11, label .L10
+.L10:
     %l5 = 1
-    br label .L17
-.L17
-    %t21 = %l5
-    %t22 = add %t21, 1
-    %l4 = %t22
-    %t23 = %l4
-    exit %t23
+    br label .L11
+.L11:
+    %t17 = %l5
+    %t18 = add %t17, 1
+    %l4 = %t18
+    %t19 = %l4
+    exit %t19
 }
