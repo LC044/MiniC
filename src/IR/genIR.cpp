@@ -157,7 +157,6 @@ static bool ir_def_func(struct ast_node *node)
         srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
         Value *resultValue = nullptr;
         resultValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
-        printf("实参赋值指令:%s = %s\n", resultValue->getName().c_str(), srcValue->getName().c_str());
         node->blockInsts.addInst(
             new AssignIRInst(resultValue, srcValue)
         );
@@ -329,6 +328,7 @@ static bool ir_neg(struct ast_node *node)
         // 这里缺省设置变量不存在则创建，因此这里不会错误
         return false;
     }
+    node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(
         new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
 
@@ -336,10 +336,57 @@ static bool ir_neg(struct ast_node *node)
 }
 static bool ir_cmp(struct ast_node *node)
 {
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[2];
+
+    // 减法节点，左结合，先计算左节点，后计算右节点
+
+    // 减法的左边操作数
+    struct ast_node *left = ir_visit_ast_node(src1_node);
+    if (!left) {
+        // 某个变量没有定值
+        return false;
+    }
+
+    // 减法的右边操作数
+    struct ast_node *right = ir_visit_ast_node(src2_node);
+    if (!right) {
+        // 某个变量没有定值
+        return false;
+    }
+    // 创建临时变量保存IR的值，以及线性IR指令
+    node->blockInsts.addInst(right->blockInsts);
+    node->blockInsts.addInst(left->blockInsts);
+    if (left->val->isId) {
+        Value *val = findValue(left->attr.id, FuncName, true);
+        Value *dstVal = left->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (right->val->isId) {
+        Value *val = findValue(right->attr.id, FuncName, true);
+        Value *dstVal = right->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    // 比较运算符
+    struct ast_node *cmp_node = node->sons[1];
+    node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, cmp_node->attr.id, node->val, left->val, right->val)
+    );
+    // printf("cmp指令\n");
     return true;
 }
 static bool ir_if(struct ast_node *node)
 {
+    std::vector<struct ast_node *>::iterator pIter;
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp = ir_visit_ast_node(*pIter);
+        if (temp == nullptr) return false;
+        node->blockInsts.addInst(temp->blockInsts);
+    }
     return true;
 }
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
@@ -410,6 +457,14 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_OP_NEG:
         result = ir_neg(node);
+        break;
+    case AST_OP_IF:
+        printf("IF\n");
+        result = ir_if(node);
+        break;
+    case AST_OP_CMP:
+        printf("CMP\n");
+        result = ir_cmp(node);
         break;
     case AST_RETURN:
 

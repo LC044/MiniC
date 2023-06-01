@@ -62,7 +62,13 @@ BinaryIRInst::BinaryIRInst(IRInstOperator _op, Value *_result, Value *_srcVal1, 
     srcValues.push_back(_srcVal1);
     srcValues.push_back(_srcVal2);
 }
-
+BinaryIRInst::BinaryIRInst(IRInstOperator _op, std::string _cmp, Value *_result, Value *_srcVal1, Value *_srcVal2) :
+    IRInst(_op, _result)
+{
+    cmp = _cmp;
+    srcValues.push_back(_srcVal1);
+    srcValues.push_back(_srcVal2);
+}
 /// @brief 析构函数
 BinaryIRInst::~BinaryIRInst()
 {
@@ -79,6 +85,9 @@ void BinaryIRInst::toString(std::string &str)
     // 只需要判断结果类型即可判断是浮点运算还是整数运算
     str = "    ";
     switch (op) {
+    case IRINST_OP_CMP:
+        str += result->getName() + " = cmp " + cmp + " " + src1->getName() + ", " + src2->getName();
+        break;
     case IRINST_OP_ADD:
         // 加法指令，二元运算
         if (result->type == ValueType::ValueType_Real) {

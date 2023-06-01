@@ -14,6 +14,7 @@ enum IRInstOperator {
     IRINST_OP_MOD,       // 取余指令，二元运算
     IRINST_OP_ASSIGN,    // 赋值指令，一元运算
     IRINST_OP_NEG,
+    IRINST_OP_CMP, //
     IRINST_OP_TYPECOV,   // 类型转换指令
     IRINST_OP_FUNC_DEF,  // 函数定义指令
     IRINST_OP_VAR_DEF,   // 变量定义指令
@@ -72,13 +73,14 @@ protected:
 class BinaryIRInst : public IRInst {
 
 public:
+    std::string cmp;
     /// @brief 构造函数
     /// @param op 
     /// @param result 
     /// @param srcVal1 
     /// @param srcVal2 
     BinaryIRInst(IRInstOperator op, Value *result, Value *srcVal1, Value *srcVal2);
-
+    BinaryIRInst(IRInstOperator op, std::string cmp, Value *result, Value *srcVal1, Value *srcVal2);
     /// @brief 析构函数
     virtual ~BinaryIRInst() override;
 

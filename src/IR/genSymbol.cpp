@@ -309,10 +309,8 @@ static bool sym_if(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        if ((*pIter)->type == AST_DEF_LIST) {
-            struct ast_node *temp = sym_visit_ast_node(*pIter);
-            if (temp == NULL) return false;
-        }
+        struct ast_node *temp = sym_visit_ast_node(*pIter);
+        if (temp == NULL) return false;
     }
     node->val = node->sons[0]->val;
     return true;
@@ -329,31 +327,19 @@ static bool sym_cmp(struct ast_node *node)
     if (!right) {
         return false;
     }
-    // 比较运算符
-    struct ast_node *cmp_node = node->sons[1];
-    switch (cmp_node->attr.cmp_kind) {
-    case GT:
-        /* code */
-        break;
-    case LT:
-        /* code */
-        break;
-    case GE:
-        /* code */
-        break;
-    case LE:
-        /* code */
-        break;
-    case EQ:
-        /* code */
-        break;
-    case NE:
-        /* code */
-        break;
-    default:
-        break;
+    Value *val = nullptr;
+    // 变量当右值要先复制给临时变量再进行计算
+    if (left->val->isId) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        val->isId = true;
+        left->val = val;
     }
-    Value *val = newTempValue(ValueType::ValueType_MAX, FuncName);
+    if (right->val->isId) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        val->isId = true;
+        right->val = val;
+    }
+    val = newTempValue(ValueType::ValueType_Int, FuncName);
     node->val = val;
     return true;
 }
