@@ -307,13 +307,20 @@ static bool sym_return(struct ast_node *node)
 }
 static bool sym_if(struct ast_node *node)
 {
-
+    std::vector<struct ast_node *>::iterator pIter;
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        if ((*pIter)->type == AST_DEF_LIST) {
+            struct ast_node *temp = sym_visit_ast_node(*pIter);
+            if (temp == NULL) return false;
+        }
+    }
+    node->val = node->sons[0]->val;
     return true;
 }
 static bool sym_cmp(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
+    struct ast_node *src2_node = node->sons[2];
     struct ast_node *left = sym_visit_ast_node(src1_node);
     if (!left) {
         return false;
@@ -322,7 +329,43 @@ static bool sym_cmp(struct ast_node *node)
     if (!right) {
         return false;
     }
-
+    // 比较运算符
+    struct ast_node *cmp_node = node->sons[1];
+    switch (cmp_node->attr.cmp_kind) {
+    case GT:
+        /* code */
+        break;
+    case LT:
+        /* code */
+        break;
+    case GE:
+        /* code */
+        break;
+    case LE:
+        /* code */
+        break;
+    case EQ:
+        /* code */
+        break;
+    case NE:
+        /* code */
+        break;
+    default:
+        break;
+    }
+    Value *val = newTempValue(ValueType::ValueType_MAX, FuncName);
+    node->val = val;
+    return true;
+}
+static bool sym_neg(struct ast_node *node)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+    node->val = val;
     return true;
 }
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
@@ -392,19 +435,17 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
     case AST_OP_BLOCK:
         result = sym_block(node);
         break;
+    case AST_OP_NEG:
+        result = sym_neg(node);
+        break;
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
     case AST_OP_ADD:
-        printf("binary operator add\n");
-        ;
     case AST_OP_SUB:
-        printf("binary operator sub\n");
-        ;
     case AST_OP_MUL:
-        ;
     case AST_OP_DIV:
-        ;
     case AST_OP_MOD:
-
+    case AST_OP_OR:
+    case AST_OP_AND:
         result = sym_binary_op(node, node->type);
         break;
     case AST_OP_ASSIGN:

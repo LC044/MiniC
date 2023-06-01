@@ -176,7 +176,7 @@ void DeclearIRInst::toString(std::string &str)
     // type = "i32";
     if (IsGlobal) {
         // 全局变量用@符号
-        str = "declare " + type + result->getName();
+        str = "declare " + type + " " + result->getName();
     } else {
         // 局部变量用%l符号
         str = "    declare " + type + " " + result->getName();
@@ -356,6 +356,39 @@ void ReturnIRInst::toString(std::string &str)
     Value *result = dstValue;
     str = "    ";
     str += "exit " + result->getName();
+}
+
+/// @brief 一元运算IR指令
+/// @param _result 
+/// @param _srcVal1 
+UnaryIRInst::UnaryIRInst(IRInstOperator _op, Value *_result, Value *_srcVal1) :
+    IRInst(_op, _result)
+{
+    srcValues.push_back(_srcVal1);
+}
+
+/// @brief 析构函数
+UnaryIRInst::~UnaryIRInst()
+{
+
+}
+
+
+/// @brief 转换成字符串显示
+/// @param str 转换后的字符串
+void UnaryIRInst::toString(std::string &str)
+{
+    Value *result = dstValue, *src = srcValues[0];
+    str = "    ";
+    switch (op) {
+    case IRINST_OP_NEG:
+        str += result->getName() + " = neg " + src->getName();
+        break;
+
+    default:
+        break;
+    }
+
 }
 
 /// @brief 没啥用指令

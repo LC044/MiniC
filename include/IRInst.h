@@ -13,6 +13,7 @@ enum IRInstOperator {
     IRINST_OP_DIV,       // 除法指令，二元运算
     IRINST_OP_MOD,       // 取余指令，二元运算
     IRINST_OP_ASSIGN,    // 赋值指令，一元运算
+    IRINST_OP_NEG,
     IRINST_OP_TYPECOV,   // 类型转换指令
     IRINST_OP_FUNC_DEF,  // 函数定义指令
     IRINST_OP_VAR_DEF,   // 变量定义指令
@@ -197,6 +198,21 @@ public:
 };
 
 /// @brief return指令
+class UnaryIRInst : public IRInst {
+
+public:
+    /// @brief 构造函数
+    /// @param result 
+    UnaryIRInst(IRInstOperator op, Value *result, Value *src);
+
+    /// @brief 析构函数
+    virtual ~UnaryIRInst() override;
+
+    /// @brief 转换成字符串
+    void toString(std::string &str) override;
+
+};
+/// @brief 一元运算指令
 class ReturnIRInst : public IRInst {
 
 public:
@@ -211,7 +227,6 @@ public:
     void toString(std::string &str) override;
 
 };
-
 /// @brief 没啥用指令
 class UselessIRInst : public IRInst {
 private:

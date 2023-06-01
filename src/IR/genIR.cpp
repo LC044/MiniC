@@ -319,7 +319,20 @@ static bool ir_assign(struct ast_node *node)
 
     return true;
 }
+static bool ir_neg(struct ast_node *node)
+{
+    struct ast_node *son1_node = node->sons[0];
+    struct ast_node *left = ir_visit_ast_node(son1_node);
+    if (!left) {
+        // 某个变量没有定值
+        // 这里缺省设置变量不存在则创建，因此这里不会错误
+        return false;
+    }
+    node->blockInsts.addInst(
+        new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
 
+    return true;
+}
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
 
@@ -385,6 +398,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
 
         // 赋值语句
         result = ir_assign(node);
+        break;
+    case AST_OP_NEG:
+        result = ir_neg(node);
         break;
     case AST_RETURN:
 
