@@ -333,31 +333,6 @@ void AssignIRInst::toString(std::string &str)
     str += result->getName() + " = " + src1->getName();
 }
 
-/// @brief 赋值IR指令
-/// @param _result 
-/// @param _srcVal1 
-ReturnIRInst::ReturnIRInst(Value *_result) :
-    IRInst(IRINST_OP_RETURN, _result)
-{
-    // srcValues.push_back(_srcVal1);
-}
-
-/// @brief 析构函数
-ReturnIRInst::~ReturnIRInst()
-{
-
-}
-
-
-/// @brief 转换成字符串显示
-/// @param str 转换后的字符串
-void ReturnIRInst::toString(std::string &str)
-{
-    Value *result = dstValue;
-    str = "    ";
-    str += "exit " + result->getName();
-}
-
 /// @brief 一元运算IR指令
 /// @param _result 
 /// @param _srcVal1 
@@ -384,7 +359,9 @@ void UnaryIRInst::toString(std::string &str)
     case IRINST_OP_NEG:
         str += result->getName() + " = neg " + src->getName();
         break;
-
+    case IRINST_OP_RETURN:
+        str += "exit " + src->getName();
+        break;
     default:
         break;
     }

@@ -197,7 +197,7 @@ public:
 
 };
 
-/// @brief return指令
+/// @brief 一元运算指令
 class UnaryIRInst : public IRInst {
 
 public:
@@ -212,21 +212,7 @@ public:
     void toString(std::string &str) override;
 
 };
-/// @brief 一元运算指令
-class ReturnIRInst : public IRInst {
 
-public:
-    /// @brief 构造函数
-    /// @param result 
-    ReturnIRInst(Value *result);
-
-    /// @brief 析构函数
-    virtual ~ReturnIRInst() override;
-
-    /// @brief 转换成字符串
-    void toString(std::string &str) override;
-
-};
 /// @brief 没啥用指令
 class UselessIRInst : public IRInst {
 private:

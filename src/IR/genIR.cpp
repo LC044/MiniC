@@ -190,11 +190,12 @@ static bool ir_return(struct ast_node *node)
     node->blockInsts.addInst(
             new AssignIRInst(node->val, returnValue)
     );
+    // node->blockInsts.addInst(
+    //     new ReturnIRInst(node->val)
+    // );
     node->blockInsts.addInst(
-        new ReturnIRInst(node->val)
+        new UnaryIRInst(IRINST_OP_RETURN, node->val, node->val)
     );
-
-    node->val = result->val;
     return true;
 }
 
@@ -331,6 +332,14 @@ static bool ir_neg(struct ast_node *node)
     node->blockInsts.addInst(
         new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
 
+    return true;
+}
+static bool ir_cmp(struct ast_node *node)
+{
+    return true;
+}
+static bool ir_if(struct ast_node *node)
+{
     return true;
 }
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
