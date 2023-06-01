@@ -250,6 +250,9 @@ Agnode_t *graph_visit_ast_node(Agraph_t *g, struct ast_node *astnode)
     case AST_OP_BREAK:
         graph_node = genBlockGraphNode(g, astnode, "BREAK");
         break;
+    case AST_EMPTY:
+        graph_node = genBlockGraphNode(g, astnode, "EMPTY");
+        break;
     case AST_OP_CONTINUE:
         graph_node = genBlockGraphNode(g, astnode, "CONTINUE");
         break;

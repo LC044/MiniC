@@ -4,10 +4,11 @@ int add(int a_, int b)
     int v;
     b = -a + 3;
     if (b > a) {
-        v = 2;
-    } else {
-        v = 1;
+        a = 1;
     }
+    if (b < a) if (b > 1)if (b < 5);
+    if (b > a) {} else { v = 1; }
+
     return v + 1;
 }
 int ght;

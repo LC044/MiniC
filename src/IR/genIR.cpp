@@ -13,9 +13,10 @@ extern std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
 extern std::vector<std::string > funcsName;
 
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
+
 // 从抽象语法树的根开始遍历，然后输出计算出表达式的值
 static bool ir_cu(struct ast_node *node)
 {
@@ -58,8 +59,14 @@ static bool ir_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
-        // 遍历Block的每个语句，进行显示或者运算
-        struct ast_node *temp = ir_visit_ast_node(*pIter);
+        struct ast_node *temp;
+        if (pIter == node->sons.end() - 1) {
+            temp = ir_visit_ast_node(*pIter, true);
+        } else {
+            // 遍历Block的每个语句，进行显示或者运算
+            temp = ir_visit_ast_node(*pIter);
+        }
+
         if (!temp) {
             return false;
         }
@@ -379,13 +386,83 @@ static bool ir_cmp(struct ast_node *node)
     // printf("cmp指令\n");
     return true;
 }
-static bool ir_if(struct ast_node *node)
+static bool ir_if(struct ast_node *node, bool isLast)
 {
-    std::vector<struct ast_node *>::iterator pIter;
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = ir_visit_ast_node(*pIter);
-        if (temp == nullptr) return false;
-        node->blockInsts.addInst(temp->blockInsts);
+
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+
+    // 减法节点，左结合，先计算左节点，后计算右节点
+
+    // 减法的左边操作数
+    struct ast_node *cond = ir_visit_ast_node(src1_node);
+    if (!cond) {
+        // 某个变量没有定值
+        return false;
+    }
+    node->blockInsts.addInst(cond->blockInsts);
+    std::string label1 = newLabel(FuncName);  // true语句
+    std::string label2 = newLabel(FuncName);  // false语句
+    std::string label3 = newLabel(FuncName);  // 下一条语句
+    // 指令跳转语句
+    if (node->sons.size() == 3) {
+        // struct ast_node *src3_node;
+        // src3_node = node->sons[2];
+        if (src2_node->type == AST_EMPTY) {
+
+        }
+        if (src2_node->type == AST_EMPTY) {
+
+        }
+        if (isLast) {
+
+        }
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, node->val, label1, label2)
+        );
+    }
+
+    // 条件表达式为真的语句
+    node->blockInsts.addInst(
+            new UselessIRInst(label1)
+    );
+    // 条件表达式为真
+    struct ast_node *true_node = ir_visit_ast_node(src2_node);
+    if (!true_node) {
+        // 某个变量没有定值
+        return false;
+    }
+    node->blockInsts.addInst(true_node->blockInsts);
+    // 下一条语句
+    if (!isLast) {
+        node->blockInsts.addInst(
+                new JumpIRInst(IRINST_JUMP_BR, label3)
+        );
+    }
+    // 条件表达式为假，else存在
+    if (node->sons.size() == 3) {
+        node->blockInsts.addInst(
+            new UselessIRInst(label2)
+        );
+        struct ast_node *src3_node = node->sons[2];
+        struct ast_node *false_node = ir_visit_ast_node(src3_node);
+        if (!false_node) {
+            // 某个变量没有定值
+            return false;
+        }
+        node->blockInsts.addInst(false_node->blockInsts);
+        // 下一条语句
+        if (!isLast) {
+            node->blockInsts.addInst(
+                    new JumpIRInst(IRINST_JUMP_BR, label3)
+            );
+        }
+    }
+    // 下一条语句
+    if (!isLast) {
+        node->blockInsts.addInst(
+                new UselessIRInst(label3)
+        );
     }
     return true;
 }
@@ -417,7 +494,7 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 }
 
 // 递归遍历抽象语法树进行计算
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast)
 {
     // 非法节点
     if (nullptr == node) {
@@ -429,9 +506,11 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
     switch (node->type) {
     case AST_OP_NULL:
         // 叶子节点
-        result = ir_leaf_node(node, isLeft);
+        result = ir_leaf_node(node, isLast);
         break;
-
+    case AST_EMPTY:
+        result = true;
+        break;
     case AST_OP_MUL:
         // 乘法节点
         ;
@@ -460,7 +539,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_OP_IF:
         printf("IF\n");
-        result = ir_if(node);
+        result = ir_if(node, isLast);
         break;
     case AST_OP_CMP:
         printf("CMP\n");

@@ -36,6 +36,7 @@ static bool sym_block(struct ast_node *node)
         if (!temp) {
             return false;
         }
+        temp->parent = node;
     }
     return true;
 }
@@ -398,6 +399,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
     switch (node->type) {
     case AST_OP_NULL:
         result = sym_leaf_node(node, isLeft);
+        break;
+    case AST_EMPTY:
+        result = true;
         break;
     case AST_RETURN:
         printf("return\n");

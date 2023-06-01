@@ -12,7 +12,7 @@ git push -u origin main
 
 老师写好的程序运行方式
 
-.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir test.c
+.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir0 test.c
 
 ## 主要功能
 

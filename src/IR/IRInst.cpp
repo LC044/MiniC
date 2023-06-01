@@ -377,6 +377,48 @@ void UnaryIRInst::toString(std::string &str)
 
 }
 
+/// @brief 一元运算IR指令
+/// @param _result 
+/// @param _srcVal1 
+JumpIRInst::JumpIRInst(IRInstOperator _op, Value *_src1, std::string _label1, std::string _label2) :
+    IRInst(_op, _src1)
+{
+
+    label1 = _label1;
+    label2 = _label2;
+}
+JumpIRInst::JumpIRInst(IRInstOperator _op, std::string _label) :
+    IRInst(_op)
+{
+    dstValue = nullptr;
+    label1 = _label;
+}
+/// @brief 析构函数
+JumpIRInst::~JumpIRInst()
+{
+
+}
+/// @brief 转换成字符串显示
+/// @param str 转换后的字符串
+void JumpIRInst::toString(std::string &str)
+{
+
+    str = "    ";
+    switch (op) {
+    case IRINST_JUMP_BR:
+        str += "br label " + label1;
+        break;
+    case IRINST_JUMP_BC: {
+        Value *src1 = dstValue;
+        str += "bc " + src1->getName() + ", label " + label1 + " label " + label2;
+        break;
+    }
+
+    default:
+        break;
+    }
+
+}
 /// @brief 没啥用指令
 /// @param  
 UselessIRInst::UselessIRInst(std::string str) :

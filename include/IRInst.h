@@ -14,7 +14,11 @@ enum IRInstOperator {
     IRINST_OP_MOD,       // 取余指令，二元运算
     IRINST_OP_ASSIGN,    // 赋值指令，一元运算
     IRINST_OP_NEG,
-    IRINST_OP_CMP, //
+    IRINST_OP_CMP,  //
+    IRINST_JUMP_BR, //无条件跳转
+    IRINST_JUMP_BC, //有条件跳转
+    IRINST_JUMP_BF,
+    IRINST_JUMP_BT,
     IRINST_OP_TYPECOV,   // 类型转换指令
     IRINST_OP_FUNC_DEF,  // 函数定义指令
     IRINST_OP_VAR_DEF,   // 变量定义指令
@@ -23,7 +27,22 @@ enum IRInstOperator {
 
     IRINST_OP_MAX  // 最大指令码，也是无效指令
 };
-
+// 存储函数里的label编号
+static std::unordered_map<std::string, uint64_t > funcLabelCount;
+static std::string newLabel(std::string func_name)
+{
+    std::string name;
+    auto pIter = funcLabelCount.find(func_name);
+    if (pIter == funcLabelCount.end()) {
+        funcLabelCount[func_name] = 3;
+        name = ".L" + int2str(funcLabelCount[func_name]);
+    } else {
+        name = ".L" + int2str(++funcLabelCount[func_name]);
+    }
+    // Value *temp = new FuncSymbol(name, ValueType::ValueType_Int);
+    // return temp;
+    return name;
+}
 /// @brief IR指令的基类
 class IRInst {
 
@@ -214,7 +233,23 @@ public:
     void toString(std::string &str) override;
 
 };
+/// @brief 跳转指令
+class JumpIRInst : public IRInst {
 
+public:
+    std::string label1;
+    std::string label2;
+    /// @brief 构造函数
+    /// @param result 
+    JumpIRInst(IRInstOperator op, Value *src1, std::string label1, std::string label2);
+    JumpIRInst(IRInstOperator op, std::string label);
+    /// @brief 析构函数
+    virtual ~JumpIRInst() override;
+
+    /// @brief 转换成字符串
+    void toString(std::string &str) override;
+
+};
 /// @brief 没啥用指令
 class UselessIRInst : public IRInst {
 private:

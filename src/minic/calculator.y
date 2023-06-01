@@ -286,7 +286,7 @@ onepara : type T_ID
 
 /* 语句块：一对花括号和里面的语句 */
 blockstat : '{' subprogram '}'{$$ = $2;};
-subprogram : {$$=NULL;}
+subprogram : {$$ = new_ast_node(AST_EMPTY);}
             | onestatement{$$ = new_ast_node(AST_OP_BLOCK, $1);}
             | subprogram onestatement
             {
@@ -324,7 +324,7 @@ statement   : blockstat                                         {$$ = $1;}      
             | T_WHILE '(' expr ')' statement                    {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}//while语句
             | T_BREAK ';'                                       {$$ = new_ast_node(AST_OP_BREAK);}      //break语句
             | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}   //continue语句
-            | ';'                                               {$$ = NULL;}                            //空语句
+            | ';'                                               {$$ = new_ast_node(AST_EMPTY);}                            //空语句
             | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}     // return 语句
 
 /* 表达式语句 */

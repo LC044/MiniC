@@ -1534,7 +1534,7 @@ yyreduce:
 
   case 23: /* subprogram: %empty  */
 #line 289 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
-             {(yyval.node)=NULL;}
+             {(yyval.node) = new_ast_node(AST_EMPTY);}
 #line 1539 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
@@ -1630,7 +1630,7 @@ yyreduce:
 
   case 36: /* statement: ';'  */
 #line 327 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
-                                                                {(yyval.node) = NULL;}
+                                                                {(yyval.node) = new_ast_node(AST_EMPTY);}
 #line 1635 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 

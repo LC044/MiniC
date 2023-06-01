@@ -41,8 +41,8 @@ enum ast_operator_type {
     AST_ARRAY,        // 数组定义
     AST_ARRAY_LIST,
     AST_DEF_LIST,
-    AST_DEC_LIST,
     AST_DIMS,         // 数组维度
+    AST_EMPTY,        // 空语句
     AST_RETURN,       // 返回语句
     AST_CU,           // 文件，全局声明、定义
     AST_VAR_DECL,     // 变量声明
