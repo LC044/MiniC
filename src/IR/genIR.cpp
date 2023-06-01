@@ -59,6 +59,7 @@ static bool ir_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
+
         struct ast_node *temp;
         if (pIter == node->sons.end() - 1) {
             temp = ir_visit_ast_node(*pIter, true);
@@ -66,10 +67,16 @@ static bool ir_block(struct ast_node *node)
             // 遍历Block的每个语句，进行显示或者运算
             temp = ir_visit_ast_node(*pIter);
         }
-
         if (!temp) {
             return false;
         }
+        // 下一条语句
+        if (pIter != node->sons.begin() and (*(pIter - 1))->type == AST_OP_IF) {
+            node->blockInsts.addInst(
+                    new UselessIRInst(temp->label + ":")
+            );
+        }
+
 
         node->blockInsts.addInst(temp->blockInsts);
     }
@@ -436,23 +443,28 @@ static bool ir_if(struct ast_node *node, bool isLast)
     struct ast_node *true_node = ir_visit_ast_node(src2_node);
     if (true_node->type == AST_EMPTY) {
         if (node->sons.size() == 2) {
+            // // 下一条语句
+            // if (!isLast) {
+            //     node->blockInsts.addInst(
+            //             new UselessIRInst(label3 + ":")
+            //     );
+            // }
             return true;
         }
     } else {
         // 条件表达式为真的语句
+        // printf("label1 %s\n", label1.c_str());
         node->blockInsts.addInst(
                 new UselessIRInst(label1 + ":")
         );
         node->blockInsts.addInst(true_node->blockInsts);
         // 下一条语句
-        if (!isLast) {
+        if (!isLast and true_node->type != AST_OP_IF) {
             node->blockInsts.addInst(
                     new JumpIRInst(IRINST_JUMP_BR, label3)
             );
         }
     }
-
-
     // 条件表达式为假，else存在
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
@@ -461,24 +473,26 @@ static bool ir_if(struct ast_node *node, bool isLast)
             // 某个变量没有定值
             // return true;
         } else {
+            // printf("label2 %s\n", label2.c_str());
             node->blockInsts.addInst(
             new UselessIRInst(label2 + ":")
             );
-        }
-        node->blockInsts.addInst(false_node->blockInsts);
-        // 下一条语句
-        if (!isLast) {
-            node->blockInsts.addInst(
-                    new JumpIRInst(IRINST_JUMP_BR, label3)
-            );
+            node->blockInsts.addInst(false_node->blockInsts);
+            // 下一条语句
+            if (!isLast and true_node->type != AST_OP_IF) {
+                node->blockInsts.addInst(
+                        new JumpIRInst(IRINST_JUMP_BR, label3)
+                );
+            }
         }
     }
-    // 下一条语句
-    if (!isLast) {
-        node->blockInsts.addInst(
-                new UselessIRInst(label3 + ":")
-        );
-    }
+    // // 下一条语句
+    // if (!isLast) {
+    //     printf("label3 %s\n", label3.c_str());
+    //     node->blockInsts.addInst(
+    //             new UselessIRInst(label3 + ":")
+    //     );
+    // }
     return true;
 }
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)

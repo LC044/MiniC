@@ -39,7 +39,7 @@ static bool sym_block(struct ast_node *node)
         if (!temp) {
             return false;
         }
-
+        // printf("sym label %s\n", node->label.c_str());
         temp->parent = node;
     }
     return true;
@@ -347,13 +347,7 @@ static bool sym_if(struct ast_node *node)
             src3_node->label = label2;
         }
     }
-    if (!node->next) {
-        printf("下一节点不存在\n");
-    } else {
-        // 节点的下一条语句为label3
-        node->next->label = label3;
-    }
-
+    node->next->label = label3;
     node->val = node->sons[0]->val;
     printf("sym_if\n");
     return true;
