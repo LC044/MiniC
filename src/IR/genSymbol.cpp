@@ -382,8 +382,11 @@ static bool sym_return(struct ast_node *node)
         // 这里缺省设置变量不存在则创建，因此这里不会错误
         return false;
     }
-
     Value *val = nullptr;
+    if (left->type == AST_OP_INDEX) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        left->val = val;
+    }
     val = newTempValue(ValueType::ValueType_Int, FuncName);
     node->val = val;
     return true;

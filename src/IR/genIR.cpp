@@ -194,8 +194,15 @@ static bool ir_return(struct ast_node *node)
         // 解析错误
         return false;
     }
+
     node->blockInsts.addInst(result->blockInsts);
+    if (result->type == AST_OP_INDEX) {
+        node->blockInsts.addInst(
+            new AssignIRInst(result->val, result->sons[0]->val)
+        );
+    }
     Value *returnValue = findValue("return", FuncName, true);
+
     node->blockInsts.addInst(
             new AssignIRInst(returnValue, result->val)
     );
