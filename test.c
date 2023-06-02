@@ -1,13 +1,18 @@
-int a, b[2][5][3];
-int add(int a_, int b)
-{
-    int v;
-    b = -a + 3;
-    if (b > a);
-    if (b < a) { a = 2; }
-    if (b > 1)if (b < 5);
-    if (b > a) {} else { v = 1; }
+//test domain of global var define and local define
+int a;
+int b;
 
-    return v + 1;
+int main()
+{
+    int c;
+    a = 3;
+    b = 5;
+
+    {
+        int a;
+        a = 5;
+        c = a + b;
+    }
+
+    return c;
 }
-int ght;

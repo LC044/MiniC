@@ -70,14 +70,13 @@ static bool ir_block(struct ast_node *node)
         if (!temp) {
             return false;
         }
+        // if语句的后一句一定是一个新的label
         // 下一条语句
         if (pIter != node->sons.begin() and (*(pIter - 1))->type == AST_OP_IF) {
             node->blockInsts.addInst(
                     new UselessIRInst(temp->label + ":")
             );
         }
-
-
         node->blockInsts.addInst(temp->blockInsts);
     }
     return true;

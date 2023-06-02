@@ -100,23 +100,30 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
     Value *val = nullptr;
     // 第一个孩子是标识符
     struct ast_node *temp_id = node->sons[0];
-    if (!IsExist(temp_id->attr.id)) {
-        // 变量名没有找到
-        // 创建一个新的符号
-        if (isLocal) {
+    if (isLocal) {
+        // 局部变量
+        if (!LocalIsExist(FuncName, temp_id->attr.id)) {
             val = newLocalVarValue(temp_id->attr.id, type, FuncName);
-            // printf("loacl Array\n");
-        } else {
-            val = newVarValue(temp_id->attr.id);
-            val->type = type;
-        }
 
+        } else {
+            // 若变量名已存在，则报错重定义
+            std::string error = std::string("error: redefinition of ") + std::string(temp_id->attr.id);
+            printError(temp_id->attr.lineno, error);
+            return false;
+        }
     } else {
-        // 若变量名已存在，则报错重定义
-        std::string error = std::string("error: redefinition of ") + std::string(temp_id->attr.id);
-        printError(temp_id->attr.lineno, error);
-        return false;
+        // 全局变量
+        if (!GlobalIsExist(temp_id->attr.id)) {
+            val = newVarValue(temp_id->attr.id);
+        } else {
+            // 若变量名已存在，则报错重定义
+            std::string error = std::string("error: redefinition of ") + std::string(temp_id->attr.id);
+            printError(temp_id->attr.lineno, error);
+            return false;
+        }
     }
+    val->type = type;
+
     struct ast_node *temp_dims = node->sons[1];
     // 第二个孩子是数组维度节点
     int i = 0;
@@ -153,21 +160,28 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
             bool result = sym_def_array(temp, type, isLocal);
             if (!result)return false;
         } else {
-            if (!IsExist(temp->attr.id)) {
-                // 变量名没有找到
-                if (isLocal) {
+            if (isLocal) {
+                // 局部变量
+                if (!LocalIsExist(FuncName, temp->attr.id)) {
                     val = newLocalVarValue(temp->attr.id, type, FuncName);
                 } else {
-                    val = newVarValue(temp->attr.id);
+                    // 若变量名已存在，则报错重定义
+                    std::string error = std::string("error: redefinition of ") + std::string(temp->attr.id);
+                    printError(temp->attr.lineno, error);
+                    return false;
                 }
-
-                // printf("other value %s\n", temp->attr.id);
             } else {
-                // 若变量名已存在，则报错重定义
-                std::string error = std::string("error: redefinition of") + std::string(temp->attr.id);
-                printError(temp->attr.lineno, error);
-                return false;
+                // 全局变量
+                if (!GlobalIsExist(temp->attr.id)) {
+                    val = newVarValue(temp->attr.id);
+                } else {
+                    // 若变量名已存在，则报错重定义
+                    std::string error = std::string("error: redefinition of ") + std::string(temp->attr.id);
+                    printError(temp->attr.lineno, error);
+                    return false;
+                }
             }
+
             temp->attr.kind = kind0;
             temp->val = val;
         }

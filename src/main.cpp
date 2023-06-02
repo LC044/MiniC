@@ -30,7 +30,7 @@ std::string gOutputFile;
 void showHelp(const std::string &exeName)
 {
     std::cout << exeName + " [-o output] -a source" << std::endl;
-    std::cout << exeName + " [-o output] -r source" << std::endl;
+    std::cout << exeName + " [-o output] -i source" << std::endl;
     std::cout << exeName + " -R source" << std::endl;
 }
 
@@ -53,7 +53,7 @@ std::string trim(const std::string &str)
 int ArgsAnalysis(int argc, char *argv[])
 {
     int ch;
-    const char options[] = "ho:arR";
+    const char options[] = "ho:aiR";
 
     opterr = 1;
 
@@ -69,7 +69,7 @@ lb_check:
         case 'h':
             gShowHelp = true;
             break;
-        case 'r':
+        case 'i':
             // 产生中间IR
             gGenIr = 1;
             break;

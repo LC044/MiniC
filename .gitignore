@@ -1,3 +1,8 @@
 test/
 cmake-build-debug/
 .VSCodeCounter/
+.history/
+src/minic/calculator_lex.cpp
+src/minic/calculator_lex.h
+src/minic/calculator_yacc.cpp
+src/minic/calculator_yacc.h
