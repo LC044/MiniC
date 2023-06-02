@@ -391,6 +391,34 @@ static bool sym_return(struct ast_node *node)
     node->val = val;
     return true;
 }
+static bool sym_func_call(struct ast_node *node, bool isLeft)
+{
+    // 第一个节点是函数名
+    struct ast_node *son1_node = node->sons[0];
+    struct ast_node *left = sym_visit_ast_node(son1_node, true);
+    if (!left) {
+        return false;
+    }
+    // 这里应该先判断一下参数个数是否匹配
+    if (node->sons.size() == 2) {
+        std::vector<struct ast_node *>::iterator pIter;
+        // 第一步首先确定所有全局变量
+        for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
+            struct ast_node *temp = sym_visit_ast_node(*pIter);
+            // 变量当右值要先复制给临时变量再进行计算
+            if (temp->val->isId) {
+                Value *val;
+                val = newTempValue(ValueType::ValueType_Int, FuncName);
+                val->isId = true;
+                temp->val = val;
+            }
+        }
+    }
+    Value *val;
+    val = newTempValue(ValueType::ValueType_Int, FuncName);
+    node->val = val;
+    return true;
+}
 static bool sym_if(struct ast_node *node)
 {
     if (!node->next) {
@@ -522,6 +550,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_OP_INDEX:
         result = sym_index(node);
+        break;
+    case AST_FUNC_CALL:
+        result = sym_func_call(node, isLeft);
         break;
     case AST_RETURN:
         printf("return\n");

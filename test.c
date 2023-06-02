@@ -1,12 +1,19 @@
-int a[5];
-
+int a;
+int func(int p)
+{
+    p = p - 1;
+    return p;
+}
+int add()
+{
+    return 1 + 1;
+}
 int main()
 {
-    a[0] = 0;
-    a[1] = 1;
-    a[2] = 2;
-    a[3] = 3;
-    a[4] = 4;
+    int b;
+    a = 10;
+    b = add();
+    b = func(a);
 
-    return a[4];
+    return b;
 }

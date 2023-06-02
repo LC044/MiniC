@@ -168,16 +168,19 @@ public:
     /// @brief 无参数并且没有要设置的返回值的函数调用
     /// @param name 函数名
     FuncCallIRInst(std::string _name);
+    /// @brief 无参数有返回值的函数调用
+    /// @param name 函数名
+    FuncCallIRInst(std::string _name, Value *_result);
 
     /// @brief 含有参数的函数调用
     /// @param _srcVal1 函数的实参Value
     /// @param result 保存返回值的Value
-    FuncCallIRInst(std::string _name, Value *_srcVal1, Value *_result = nullptr);
+    FuncCallIRInst(std::string _name, Value *_srcVal1, bool _paras, Value *_result = nullptr);
 
     /// @brief 含有参数的函数调用
     /// @param srcVal 函数的实参Value
     /// @param result 保存返回值的Value
-    FuncCallIRInst(std::string _name, std::vector<Value *> &_srcVal, Value *_result = nullptr);
+    FuncCallIRInst(std::string _name, std::vector<Value *> &_srcVal, bool _paras, Value *_result = nullptr);
 
     /// @brief 析构函数
     virtual ~FuncCallIRInst() override;

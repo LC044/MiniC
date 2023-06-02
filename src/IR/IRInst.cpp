@@ -266,11 +266,17 @@ void FuncDefIRInst::toString(std::string &str)
 FuncCallIRInst::FuncCallIRInst(std::string _name) :
     IRInst(IRINST_OP_FUNC_CALL, nullptr), name(_name)
 {}
+/// @brief 无参数的函数调用
+/// @param name 函数名
+/// @param result 保存返回值的Value
+FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_result) :
+    IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
+{}
 
 /// @brief 含有参数的函数调用
 /// @param _srcVal1 函数的实参Value
 /// @param result 保存返回值的Value
-FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_srcVal1, Value *_result) :
+FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_srcVal1, bool _paras, Value *_result) :
     IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
 {
     srcValues.push_back(_srcVal1);
@@ -279,7 +285,7 @@ FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_srcVal1, Value *_resul
 /// @brief 含有参数的函数调用
 /// @param srcVal 函数的实参Value
 /// @param result 保存返回值的Value
-FuncCallIRInst::FuncCallIRInst(std::string _name, std::vector<Value *> &_srcVal, Value *_result) :
+FuncCallIRInst::FuncCallIRInst(std::string _name, std::vector<Value *> &_srcVal, bool _paras, Value *_result) :
     IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
 {
     // 实参拷贝
@@ -310,7 +316,7 @@ void FuncCallIRInst::toString(std::string &str)
     } else {
 
         // 函数有返回值要设置到结果变量中
-        str += result->getName() + " = call int @" + name + "(";
+        str += result->getName() + " = call i32 @" + name + "(";
     }
 
     for (size_t k = 0; k < srcValues.size(); ++k) {

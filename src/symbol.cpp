@@ -58,6 +58,7 @@ Value *newFuncValue(std::string name)
     FuncSymbol *tempSymbol = new FuncSymbol(name, ValueType::ValueType_Int);
     funcsMap.emplace(name, tempSymbol);
     funcsName.push_back(name);
+    varsMap.emplace(name, tempSymbol);
     return tempSymbol;
 }
 /// 新建一个局部变量型的Value，并加入到符号表，用于后续释放空间

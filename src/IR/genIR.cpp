@@ -13,7 +13,7 @@ extern std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
 extern std::vector<std::string > funcsName;
 
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast = false);
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast = false, bool isLeft = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 
@@ -218,7 +218,61 @@ static bool ir_return(struct ast_node *node)
     return true;
 }
 
-
+static bool ir_func_call(struct ast_node *node, bool isLeft)
+{
+    // 第一个节点是函数名
+    struct ast_node *son1_node = node->sons[0];
+    struct ast_node *left = ir_visit_ast_node(son1_node, true);
+    if (!left) {
+        return false;
+    }
+    printf("函数调用指令\n");
+    // 这里应该先判断一下参数个数是否匹配
+    if (node->sons.size() == 2) {
+        std::vector<struct ast_node *>::iterator pIter;
+        // 第一步首先将变量实参复制给临时变量
+        for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
+            struct ast_node *temp = ir_visit_ast_node(*pIter);
+            if (temp->val->isId) {
+                Value *val = findValue(temp->attr.id, FuncName, true);
+                Value *dstVal = temp->val;
+                node->blockInsts.addInst(
+                        new AssignIRInst(dstVal, val)
+                );
+            }
+        }
+        std::vector<Value *> _srcVal;
+        // 
+        for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
+            struct ast_node *temp = ir_visit_ast_node(*pIter);
+            _srcVal.push_back(temp->val);
+        }
+        if (isLeft) {
+            node->blockInsts.addInst(
+            new FuncCallIRInst(left->attr.id, _srcVal, true)
+            );
+        } else {
+            node->blockInsts.addInst(
+            new FuncCallIRInst(left->attr.id, _srcVal, true, node->val)
+            );
+        }
+    } else {
+        printf("无参函数调用指令0\n");
+        if (isLeft) {
+            node->blockInsts.addInst(
+            new FuncCallIRInst(left->attr.id)
+            );
+        } else {
+            node->blockInsts.addInst(
+            new FuncCallIRInst(left->attr.id, node->val)
+            );
+        }
+        printf("左值名字 %s\n", node->parent->sons[0]->val->getName().c_str());
+        printf("无参函数调用指令1\n");
+    }
+    printf("函数调用指令\n");
+    return true;
+}
 static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -339,7 +393,7 @@ static bool ir_assign(struct ast_node *node)
     // 赋值节点，自右往左运算
 
     // 赋值运算符的左侧操作数
-    struct ast_node *left = ir_visit_ast_node(son1_node, true);
+    struct ast_node *left = ir_visit_ast_node(son1_node, true, true);
     if (!left) {
         // 某个变量没有定值
         // 这里缺省设置变量不存在则创建，因此这里不会错误
@@ -378,9 +432,8 @@ static bool ir_assign(struct ast_node *node)
         }
     }
     node->blockInsts.addInst(
-            new AssignIRInst(leftValue, rightValue)
+        new AssignIRInst(leftValue, rightValue)
     );
-
     return true;
 }
 static bool ir_neg(struct ast_node *node)
@@ -573,7 +626,7 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 }
 
 // 递归遍历抽象语法树进行计算
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast)
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bool isLeft)
 {
     // 非法节点
     if (nullptr == node) {
@@ -592,6 +645,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast)
         break;
     case AST_OP_INDEX:
         result = ir_index(node);
+        break;
+    case AST_FUNC_CALL:
+        result = ir_func_call(node, isLeft);
         break;
     case AST_OP_MUL:
         // 乘法节点

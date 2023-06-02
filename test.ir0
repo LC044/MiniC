@@ -1,34 +1,42 @@
-declare i32 @a[5]
+declare i32 @a
+define i32 @func(i32 %t0) {
+	declare i32 %l1 ; variable: p
+	declare i32 %l2
+	declare i32 %t3
+	declare i32 %t4
+	declare i32 %t5
+	entry
+	%l1 = %t0
+	%t3 = %l1
+	%t4 = sub %t3, 1
+	%l1 = %t4
+	%l2 = %l1
+	%t5 = %l2
+	exit %t5
+}
+define i32 @add() {
+	declare i32 %l0
+	declare i32 %t1
+	entry
+	%l0 = 2
+	%t1 = %l0
+	exit %t1
+}
 define i32 @main() {
 	declare i32 %l0
-	declare i32* %t1
+	declare i32 %l1 ; variable: b
 	declare i32 %t2
-	declare i32* %t3
+	declare i32 %t3
 	declare i32 %t4
-	declare i32* %t5
-	declare i32 %t6
-	declare i32* %t7
-	declare i32 %t8
-	declare i32* %t9
-	declare i32 %t10
-	declare i32* %t11
-	declare i32 %t12
-	declare i32 %t13
-	declare i32 %t14
+	declare i32 %t5
 	entry
-	%t1 = add @a, 0
-	*%t1 = 0
-	%t3 = add @a, 4
-	*%t3 = 1
-	%t5 = add @a, 8
-	*%t5 = 2
-	%t7 = add @a, 12
-	*%t7 = 3
-	%t9 = add @a, 16
-	*%t9 = 4
-	%t11 = add @a, 16
-	%t13 = *%t11
-	%l0 = %t13
-	%t14 = %l0
-	exit %t14
+	@a = 10
+	%t2 = call i32 @add()
+	%l1 = %t2
+	%t3 = @a
+	%t4 = call i32 @func(i32 %t3)
+	%l1 = %t4
+	%l0 = %l1
+	%t5 = %l0
+	exit %t5
 }
