@@ -186,6 +186,8 @@ void DeclearIRInst::toString(std::string &str)
     case ValueType::ValueType_Bool:
         type = "i1";
         break;
+    case ValueType::ValueType_Int_ptr:
+        type = "i32*";
     default:
         break;
     }
@@ -346,7 +348,19 @@ void AssignIRInst::toString(std::string &str)
 {
     Value *src1 = srcValues[0], *result = dstValue;
     str = "    ";
-    str += result->getName() + " = " + src1->getName();
+    std::string resultName, srcName;
+    // 指针引用需要加 * 号
+    if (result->type == ValueType::ValueType_Int_ptr) {
+        resultName = "*" + result->getName();
+    } else {
+        resultName = result->getName();
+    }
+    if (src1->type == ValueType::ValueType_Int_ptr) {
+        srcName = "*" + src1->getName();
+    } else {
+        srcName = src1->getName();
+    }
+    str += resultName + " = " + srcName;
 }
 
 /// @brief 一元运算IR指令

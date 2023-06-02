@@ -28,5 +28,8 @@ int main(int argc, char **argv)
     }
 
     printf("--------------------------------");
+    int q[5] = { 0, 1, 2, 3, 4 };
+    int *i = q;
+    printf("%d\n", i[3]);
     return 0;
 }

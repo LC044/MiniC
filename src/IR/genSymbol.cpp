@@ -245,6 +245,14 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
         val->isId = true;
         right->val = val;
     }
+    if (left->type == AST_OP_INDEX) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        left->val = val;
+    }
+    if (right->type == AST_OP_INDEX) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        right->val = val;
+    }
     // 左右值都是常量就直接计算出来，代码优化 
     Value *resultValue = nullptr;
     if ((leftValue->isConst) and (rightValue->isConst)) {
@@ -278,6 +286,48 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     printf("新建op临时变量: %s\n", node->val->getName().c_str());
     return true;
 }
+static bool sym_index(struct ast_node *node)
+{
+    // 数组索引第一个孩子节点是变量名
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *array_name = sym_visit_ast_node(src1_node);
+    if (!array_name) {
+        return false;
+    }
+    std::vector<struct ast_node *>::iterator pIter;
+    Value *val = nullptr;
+    // 第一步首先确定所有全局变量
+    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp = sym_visit_ast_node(*pIter);
+        if (temp == NULL) return false;
+    }
+    printf("数组引用\n");
+    // 求偏移量
+    // 假设最大支持10维数组
+    int *dims = array_name->val->dims;
+    int offsets[10] = { 1,1,1,1,1,1,1,1,1,1 };
+    for (int i = 0; i < 10 && dims[i] != 0; i++) {
+        // printf("%d ", dims[i]);
+        for (int j = i + 1; j < 10 && dims[j] != 0; j++) {
+            offsets[i] *= dims[j];
+        }
+    }
+    // printf("\n");
+    // for (int i = 0; i < 10 && dims[i] != 0; i++) {
+    //     printf("%d ", offsets[i]);
+    // }
+    int offset = 0;
+    for (int i = 1; i < node->sons.size(); ++i) {
+        offset += node->sons[i]->val->intVal * offsets[i - 1];
+    }
+    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+    val->intVal = offset * 4;
+    printf("%s 数组引用结束 %d\n", array_name->attr.id, val->intVal);
+    array_name->val = val;
+    val = newTempValue(ValueType::ValueType_Int, FuncName);
+    node->val = val;
+    return true;
+}
 static bool sym_assign(struct ast_node *node)
 {
     // TODO real number add
@@ -301,8 +351,22 @@ static bool sym_assign(struct ast_node *node)
         // 某个变量没有定值
         return false;
     }
+    if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
+        // if (left->type == AST_OP_INDEX) {
+        //     // leftValue = left->sons[0]->val;
+        //     Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+        //     node->val = val;
+        // }
+        if (right->type == AST_OP_INDEX) {
+            // leftValue = left->sons[0]->val;
+            Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+            node->val = val;
+        }
+    } else {
+        node->val = left->val;
+    }
     // printf("赋值指令symbol\n");
-    node->val = left->val;
+
     return true;
 }
 static bool sym_return(struct ast_node *node)
@@ -452,6 +516,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_EMPTY:
         result = false;
+        break;
+    case AST_OP_INDEX:
+        result = sym_index(node);
         break;
     case AST_RETURN:
         printf("return\n");

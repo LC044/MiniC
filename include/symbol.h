@@ -9,11 +9,12 @@
 #include "common.h"
 
 enum class ValueType {
-    ValueType_Int,   // 整型
-    ValueType_Real,  // 实数
-    ValueType_ARRAY, // 数组
-    ValueType_Bool,  // boolean
-    ValueType_MAX,   // 最大值，无效值
+    ValueType_Int,      // 整型
+    ValueType_Real,     // 实数
+    ValueType_ARRAY,    // 数组
+    ValueType_Int_ptr,  // int指针
+    ValueType_Bool,     // boolean
+    ValueType_MAX,      // 最大值，无效值
 };
 
 

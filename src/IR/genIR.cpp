@@ -253,6 +253,21 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
                 new AssignIRInst(dstVal, val)
         );
     }
+
+    if (left->type == AST_OP_INDEX) {
+        Value *dstVal = left->val;
+        Value *val = left->sons[0]->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (right->type == AST_OP_INDEX) {
+        Value *dstVal = right->val;
+        Value *val = right->sons[0]->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
     if ((leftValue->isConst) and (rightValue->isConst)) {
         ;
     } else {
@@ -290,7 +305,22 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     return true;
 }
-
+static bool ir_index(struct ast_node *node)
+{
+    // 数组索引第一个孩子节点是变量名
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *array_name = ir_visit_ast_node(src1_node);
+    if (!array_name) {
+        return false;
+    }
+    Value *val = nullptr;
+    val = findValue(array_name->attr.id, FuncName, true);
+    Value *offsetVal = newConstValue(node->sons[0]->val->intVal);
+    node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_ADD, node->sons[0]->val, val, offsetVal)
+    );
+    return true;
+}
 // 赋值操作
 static bool ir_assign(struct ast_node *node)
 {
@@ -319,16 +349,30 @@ static bool ir_assign(struct ast_node *node)
     // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
 
     // 创建临时变量保存IR的值，以及线性IR指令
-    node->blockInsts.addInst(right->blockInsts);
     node->blockInsts.addInst(left->blockInsts);
+    node->blockInsts.addInst(right->blockInsts);
+
     // return true;
     // 左值类型与右值类型相同
     // 加上这行代码才能判断是否要进行类型转换
     left->val->type = right->val->type;
-
+    Value *leftValue = left->val, *rightValue = right->val;
+    if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
+        if (left->type == AST_OP_INDEX) {
+            leftValue = left->sons[0]->val;
+        }
+        // 右侧是数组变量，要把数组变量复制给临时变量，再将临时变量复制给左值
+        if (right->type == AST_OP_INDEX) {
+            rightValue = right->sons[0]->val;
+            node->blockInsts.addInst(
+            new AssignIRInst(node->val, rightValue)
+            );
+            rightValue = node->val;
+        }
+    }
     node->blockInsts.addInst(
-        new AssignIRInst(left->val, right->val));
-    node->val = left->val;
+            new AssignIRInst(leftValue, rightValue)
+    );
 
     return true;
 }
@@ -538,6 +582,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast)
         break;
     case AST_EMPTY:
         result = true;
+        break;
+    case AST_OP_INDEX:
+        result = ir_index(node);
         break;
     case AST_OP_MUL:
         // 乘法节点

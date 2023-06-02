@@ -2,7 +2,7 @@
 
 cmake-build-debug\minic.exe -a -o test.jpg  test.c
 
-cmake-build-debug\minic.exe -r -o test.ir  test.c
+cmake-build-debug\minic.exe -i -o test.ir  test.c
 
 cmake-build-debug\minic.exe -a -o test.jpg  test.c
 

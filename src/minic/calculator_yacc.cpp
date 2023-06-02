@@ -590,7 +590,7 @@ static const yytype_int16 yyrline[] =
      318,   319,   320,   321,   322,   323,   324,   325,   328,   329,
      330,   331,   332,   333,   334,   335,   336,   337,   342,   350,
      351,   352,   353,   354,   355,   356,   358,   359,   360,   361,
-     362,   364,   365,   379,   380,   387,   390,   391,   398,   406
+     362,   364,   365,   377,   378,   385,   388,   389,   396,   404
 };
 #endif
 
@@ -1797,62 +1797,60 @@ yyreduce:
 
   case 62: /* lval: ident lvaltail  */
 #line 365 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
-                         {
+                         {  // 数组引用
             // $$ = new_ast_node(AST_OP_INDEX,$1,$2);
             struct ast_node * temp_node;
             temp_node = new_ast_node(AST_OP_INDEX,(yyvsp[-1].node));
             std::vector<struct ast_node *>::iterator pIterNode;
-            // 变量列表是从右向左递归生成的，所以要倒序遍历
             for (pIterNode = (yyvsp[0].node)->sons.begin(); pIterNode != (yyvsp[0].node)->sons.end(); ++pIterNode) {
                 temp_node->sons.push_back(*pIterNode);
                 (*pIterNode)->parent = temp_node;
             }
             (yyval.node) = temp_node;
-            
             }
-#line 1814 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1812 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 63: /* lvaltail: '[' expr ']'  */
-#line 379 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 377 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                        {(yyval.node) = new_ast_node(AST_OP_INDEX,(yyvsp[-1].node));}
-#line 1820 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1818 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 64: /* lvaltail: lvaltail '[' expr ']'  */
-#line 381 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 379 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
          {
             (yyvsp[-1].node)->parent = (yyvsp[-3].node);
             (yyvsp[-3].node)->sons.push_back((yyvsp[-1].node));
             (yyval.node) = (yyvsp[-3].node);
          }
-#line 1830 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1828 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 65: /* realarg: realargs  */
-#line 387 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 385 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                         {(yyval.node) = (yyvsp[0].node);}
-#line 1836 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1834 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 66: /* realargs: expr  */
-#line 390 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 388 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
                    { (yyval.node) = new_ast_node(AST_REAL_ARGS,(yyvsp[0].node));}
-#line 1842 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1840 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 67: /* realargs: realargs ',' expr  */
-#line 392 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 390 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
             {
             (yyvsp[0].node)->parent = (yyvsp[-2].node);
             (yyvsp[-2].node)->sons.push_back((yyvsp[0].node));
             (yyval.node) = (yyvsp[-2].node);
             }
-#line 1852 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1850 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 68: /* ident: T_ID  */
-#line 399 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 397 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
             struct ast_node_attr temp_val;
             temp_val.kind = DIGIT_KIND_ID;
@@ -1860,11 +1858,11 @@ yyreduce:
             strncpy(temp_val.id, (yyvsp[0].var_id).id, sizeof(temp_val.id));
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1864 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1862 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
   case 69: /* num: T_DIGIT  */
-#line 407 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 405 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
         {
           // 终结符作为抽象语法树的叶子节点进行创建
             struct ast_node_attr temp_val;
@@ -1874,11 +1872,11 @@ yyreduce:
             // printf("%d\n", temp_val.integer_val);
             (yyval.node) = new_ast_leaf_node(temp_val);
         }
-#line 1878 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1876 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
     break;
 
 
-#line 1882 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
+#line 1880 "D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp"
 
       default: break;
     }
@@ -2071,7 +2069,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 416 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 414 "D:/Project/Compile/lab3/MiniC/src/minic/calculator.y"
 
 
 // 语法识别错误要调用函数的定义
