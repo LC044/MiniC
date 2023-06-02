@@ -1,61 +1,67 @@
-declare i32 @a
-declare i32 @b[2][5][3]
-declare i32 @ght
-define i32 @add(i32 %t0, i32 %t1) {
-	declare i32 %l2 ; variable: a_
-	declare i32 %l3 ; variable: b
-	declare i32 %l4
-	declare i32 %l5 ; variable: v
-	declare i32 %t6
+define i32 @main() {
+	declare i32 %l0
+	declare i32 %l1[4][2] ; variable: a
+	declare i32 %l2[4][2] ; variable: b
+	declare i32 %l3[4][2] ; variable: c
+	declare i32 %l4[4][2] ; variable: d
+	declare i32 %l5[4][2] ; variable: e
+	declare i32* %t6
 	declare i32 %t7
-	declare i1 %t8
+	declare i32* %t8
 	declare i32 %t9
-	declare i1 %t10
+	declare i32* %t10
 	declare i32 %t11
-	declare i32 %t12
-	declare i1 %t13
-	declare i32 %t14
-	declare i1 %t15
-	declare i32 %t16
+	declare i32* %t12
+	declare i32 %t13
+	declare i32* %t14
+	declare i32 %t15
+	declare i32* %t16
 	declare i32 %t17
-	declare i32 %t18
+	declare i32* %t18
+	declare i32 %t19
+	declare i32* %t20
+	declare i32 %t21
+	declare i32* %t22
+	declare i32 %t23
+	declare i32 %t24
+	declare i32 %t25
+	declare i32 %t26
+	declare i32* %t27
+	declare i32 %t28
+	declare i32 %t29
+	declare i32 %t30
+	declare i32* %t31
+	declare i32 %t32
+	declare i32 %t33
+	declare i32 %t34
+	declare i32 %t35
 	entry
-	%l2 = %t0
-	%l3 = %t1
-	@a = 1
-	%t6 = %l3
-	%t7 = sub %t6, 1
-	%t8 = cmp gt %t7, 2
-	bc %t8, label .L3, label .L6
-.L6:
-	%t9 = @a
-	%t10 = cmp lt %t9, 5
-	bc %t10, label .L3, label .L4
-.L3:
-	%l5 = 2
-	br label .L5
-.L4:
-	%l5 = 4
-	br label .L5
-.L5:
-	%t11 = %l3
-	%t12 = sub %t11, 1
-	%t13 = cmp gt %t12, 2
-	bc %t13, label .L10, label .L8
-.L10:
-	%t14 = @a
-	%t15 = cmp lt %t14, 5
-	bc %t15, label .L7, label .L8
-.L7:
-	%l5 = 2
-	br label .L9
-.L8:
-	%l5 = 4
-	br label .L9
-.L9:
-	%t16 = %l5
-	%t17 = add %t16, 1
-	%l4 = %t17
-	%t18 = %l4
-	exit %t18
+	%t6 = add %l1, 16
+	*%t6 = 1
+	%t8 = add %l2, 16
+	*%t8 = 11
+	%t10 = add %l3, 16
+	*%t10 = 22
+	%t12 = add %l4, 16
+	*%t12 = 33
+	%t14 = add %l5, 0
+	*%t14 = 2
+	%t16 = add %l5, 4
+	*%t16 = 3
+	%t18 = add %l5, 28
+	*%t18 = 4
+	%t20 = add %l5, 28
+	%t22 = add %l5, 0
+	%t24 = *%t20
+	%t25 = *%t22
+	%t26 = add %t24, %t25
+	%t27 = add %l5, 4
+	%t29 = *%t27
+	%t30 = add %t26, %t29
+	%t31 = add %l1, 16
+	%t33 = *%t31
+	%t34 = add %t30, %t33
+	%l0 = %t34
+	%t35 = %l0
+	exit %t35
 }

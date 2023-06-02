@@ -65,7 +65,7 @@ void yyerror(char * msg);
 // 指定文法的非终结符号，<>可指定文法属性
 %type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
 %type <node> subprogram onestatement localdef statement 
-%type <node> expr lval rval  // 表达式, 左值,右值
+%type <node> expr lval rval lvaltail // 表达式, 左值,右值
 %type <node> factor realarg realargs
 %type <node> ident num
 %type <node> cmp
@@ -230,6 +230,7 @@ deflist : ';' { $$ = new_ast_node(AST_DEF_LIST);}
             $3->sons.push_back($2);
             $$ = $3;
         }
+
 /* 单个变量或数组:a,b[3] */
 defdata : ident varrdef{
     if($2!=NULL) $$ = new_ast_node(AST_ARRAY,$1,$2);
@@ -310,11 +311,7 @@ localdef    : type defdata deflist
                     temp_node->sons.push_back(*pIterNode);
                     (*pIterNode)->parent = temp_node;
                 }
-                // 删除该节点
-                // $3->sons.clear();
-                // free_ast_node($3);
                 $$ = temp_node;
-                // $$ = new_ast_node(AST_DEF_LIST, $1, $2, $3);
             }
 /* 单条语句 */
 statement   : blockstat                                         {$$ = $1;}                              //另一个语句块
@@ -361,11 +358,32 @@ factor      : '-' factor %prec UMINUS {$$ = new_ast_node(AST_OP_NEG, $2);}  //�
 rval    : lval  {$$=$1;}
         | '(' expr ')'  {$$ = $2;}
         | ident '(' realarg ')' {$$ = new_ast_node(AST_FUNC_CALL,$1,$3);} // 函数调用
+        | ident '(' ')' {$$ = new_ast_node(AST_FUNC_CALL,$1);} // 函数调用,无参
         | num           {$$ = $1;}
-lval    : ident {$$ = $1;}
-        | ident '[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$1,$3);}
-realarg     :  { $$ = NULL; }
-            | realargs {$$ = $1;}
+
+lval    : ident {$$ = $1;}  // 变量
+        | ident lvaltail {  // 数组引用
+            // $$ = new_ast_node(AST_OP_INDEX,$1,$2);
+            struct ast_node * temp_node;
+            temp_node = new_ast_node(AST_OP_INDEX,$1);
+            std::vector<struct ast_node *>::iterator pIterNode;
+            for (pIterNode = $2->sons.begin(); pIterNode != $2->sons.end(); ++pIterNode) {
+                temp_node->sons.push_back(*pIterNode);
+                (*pIterNode)->parent = temp_node;
+            }
+            $$ = temp_node;
+            }  // 变量数组
+
+lvaltail :'[' expr ']' {$$ = new_ast_node(AST_OP_INDEX,$2);}
+         | lvaltail '[' expr ']' 
+         {
+            $3->parent = $1;
+            $1->sons.push_back($3);
+            $$ = $1;
+         }
+
+realarg     :  realargs {$$ = $1;}
+
 
 realargs    : expr { $$ = new_ast_node(AST_REAL_ARGS,$1);}
             | realargs ',' expr 
