@@ -1,27 +1,4 @@
 declare i32 @a
-define i32 @func(i32 %t0) {
-	declare i32 %l1 ; variable: p
-	declare i32 %l2
-	declare i32 %t3
-	declare i32 %t4
-	declare i32 %t5
-	entry
-	%l1 = %t0
-	%t3 = %l1
-	%t4 = sub %t3, 1
-	%l1 = %t4
-	%l2 = %l1
-	%t5 = %l2
-	exit %t5
-}
-define i32 @add() {
-	declare i32 %l0
-	declare i32 %t1
-	entry
-	%l0 = 2
-	%t1 = %l0
-	exit %t1
-}
 define i32 @main() {
 	declare i32 %l0
 	declare i32 %l1 ; variable: b
@@ -30,13 +7,13 @@ define i32 @main() {
 	declare i32 %t4
 	declare i32 %t5
 	entry
+	%l1 = 2
 	@a = 10
-	%t2 = call i32 @add()
-	%l1 = %t2
+	%t2 = %l1
 	%t3 = @a
-	%t4 = call i32 @func(i32 %t3)
-	%l1 = %t4
-	%l0 = %l1
+	%t4 = sub %t2, %t3
+	call void @putint(i32 %t4)
+	%l0 = 0
 	%t5 = %l0
 	exit %t5
 }

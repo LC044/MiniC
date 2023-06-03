@@ -35,7 +35,7 @@ static bool sym_block(struct ast_node *node)
             (*pIter)->next = *(pIter + 1);
         }
         // 遍历Block的每个语句，进行显示或者运算
-        struct ast_node *temp = sym_visit_ast_node(*pIter);
+        struct ast_node *temp = sym_visit_ast_node(*pIter, true);
         if (!temp) {
             return false;
         }
@@ -46,8 +46,9 @@ static bool sym_block(struct ast_node *node)
 }
 static bool sym_def_func(struct ast_node *node)
 {
-    // struct ast_node *func_type = node->sons[0];
+    struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
+
     struct ast_node *func_name = node->sons[1];
     FuncName = func_name->attr.id;
     Value *val = nullptr;
@@ -62,6 +63,10 @@ static bool sym_def_func(struct ast_node *node)
         return false;
     }
     func_name->val = val;
+    if (strcmp(func_type->attr.id, "void") == 0) {
+        // printf("int value\n");
+        return true;
+    }
     // 第三个孩子是参数列表
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
@@ -71,7 +76,7 @@ static bool sym_def_func(struct ast_node *node)
         // 获取参数名
         // struct ast_node *arg_name = (*pIter)->sons[1];
         // todo 暂时只考虑int类型
-        newTempValue(ValueType::ValueType_MAX, func_name->attr.id, true);
+        newTempValue(ValueType::ValueType_Int, func_name->attr.id, true);
     }
 
     // 形参定义
@@ -414,9 +419,14 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
             }
         }
     }
-    Value *val;
-    val = newTempValue(ValueType::ValueType_Int, FuncName);
-    node->val = val;
+
+    if (!isLeft) {
+        // 函数调用当左值，不需要赋值给临时变量
+        Value *val;
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->val = val;
+    }
+
     return true;
 }
 static bool sym_if(struct ast_node *node)

@@ -1,19 +1,13 @@
+//test sub
 int a;
-int func(int p)
-{
-    p = p - 1;
-    return p;
-}
-int add()
-{
-    return 1 + 1;
-}
+
+void putint(int k);
 int main()
 {
     int b;
+    b = 2;
     a = 10;
-    b = add();
-    b = func(a);
+    putint(b - a);
 
-    return b;
+    return 0;
 }

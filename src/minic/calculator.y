@@ -156,7 +156,16 @@ type   :  T_INT {
                 strncpy(temp_val.id, $1.id, sizeof(temp_val.id));
                 // printf("%s\n", temp_val.id);
                 $$ = new_ast_leaf_node(temp_val);
-            };
+            }
+        | T_VOID{
+            // 终结符作为抽象语法树的叶子节点进行创建
+                struct ast_node_attr temp_val;
+                temp_val.kind = KEYWORD_ID;
+                temp_val.lineno = $1.lineno;
+                strncpy(temp_val.id, $1.id, sizeof(temp_val.id));
+                // printf("%s\n", temp_val.id);
+                $$ = new_ast_leaf_node(temp_val);
+        }
 
 /* 变量定义或函数定义 */
 def    :  ident idtail
@@ -249,7 +258,7 @@ varrdef : {$$ = NULL; }
 
 /* 函数体 */
 functail : blockstat {$$ = $1;}
-        | T_SEMICOLON {};
+        | ';' {$$ = new_ast_node(AST_EMPTY);}
 /* 函数参数 */
 para    : {
             // 参数为空

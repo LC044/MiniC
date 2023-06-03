@@ -62,10 +62,10 @@ static bool ir_block(struct ast_node *node)
 
         struct ast_node *temp;
         if (pIter == node->sons.end() - 1) {
-            temp = ir_visit_ast_node(*pIter, true);
+            temp = ir_visit_ast_node(*pIter, true, true);
         } else {
             // 遍历Block的每个语句，进行显示或者运算
-            temp = ir_visit_ast_node(*pIter);
+            temp = ir_visit_ast_node(*pIter, false, true);
         }
         if (!temp) {
             return false;
@@ -123,8 +123,12 @@ static bool ir_def_list(struct ast_node *node)
 // 函数定义IR
 static bool ir_def_func(struct ast_node *node)
 {
-    // struct ast_node *func_type = node->sons[0];
+    struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
+    if (strcmp(func_type->attr.id, "void") == 0) {
+        printf("void value\n");
+        return true;
+    }
     // 第二个孩子是函数名
     struct ast_node *func_name = node->sons[1];
     Value *val = nullptr;
@@ -240,6 +244,7 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
                         new AssignIRInst(dstVal, val)
                 );
             }
+            node->blockInsts.addInst(temp->blockInsts);
         }
         std::vector<Value *> _srcVal;
         // 
