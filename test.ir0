@@ -1,19 +1,79 @@
-declare i32 @a
+define i32 @ifElseIf() {
+	declare i32 %l0
+	declare i32 %l1 ; variable: a
+	declare i32 %l2 ; variable: b
+	declare i32 %t3
+	declare i1 %t4
+	declare i32 %t5
+	declare i1 %t6
+	declare i32 %t7
+	declare i1 %t8
+	declare i32 %t9
+	declare i1 %t10
+	declare i32 %t11
+	declare i1 %t12
+	declare i32 %t13
+	declare i1 %t14
+	declare i32 %t15
+	declare i32 %t16
+	declare i32 %t17
+	declare i32 %t18
+	entry
+	%l1 = 5
+	%l2 = 10
+	%t3 = %l1
+	%t4 = cmp eq %t3, 6
+	bc %t4, label .L3, label .L6
+.L6:
+	%t5 = %l2
+	%t6 = cmp eq %t5, 11
+	bc %t6, label .L3, label .L4
+.L3:
+	%l0 = %l1
+	br label .L2
+.L4:
+	%t7 = %l2
+	%t8 = cmp eq %t7, 10
+	bc %t8, label .L10, label .L8
+.L10:
+	%t9 = %l1
+	%t10 = cmp eq %t9, 1
+	bc %t10, label .L7, label .L8
+.L7:
+	%l1 = 25
+	br label .L9
+.L8:
+	%t11 = %l2
+	%t12 = cmp eq %t11, 10
+	bc %t12, label .L14, label .L12
+.L14:
+	%t13 = %l1
+	%t14 = cmp eq %t13, -5
+	bc %t14, label .L11, label .L12
+.L11:
+	%t15 = %l1
+	%t16 = add %t15, 15
+	%l1 = %t16
+	br label .L9
+.L12:
+	%t17 = neg %l1
+	%l1 = %t17
+	br label .L9
+.L9:
+	%l0 = %l1
+	br label .L2
+.L2:
+	%t18 = %l0
+	exit %t18
+}
 define i32 @main() {
 	declare i32 %l0
-	declare i32 %l1 ; variable: b
+	declare i32 %t1
 	declare i32 %t2
-	declare i32 %t3
-	declare i32 %t4
-	declare i32 %t5
 	entry
-	%l1 = 2
-	@a = 10
-	%t2 = %l1
-	%t3 = @a
-	%t4 = sub %t2, %t3
-	call void @putint(i32 %t4)
+	%t1 = call i32 @ifElseIf()
+	call void @putint(i32 %t1)
 	%l0 = 0
-	%t5 = %l0
-	exit %t5
+	%t2 = %l0
+	exit %t2
 }

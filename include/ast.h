@@ -92,7 +92,7 @@ struct ast_node {
     enum ast_operator_type type; // 节点类型
     std::string label; //
     struct ast_node_attr attr;   // node的其它属性
-
+    bool visited = false; //
     // 线性IR指令块，可包含多条IR指令
     InterCode blockInsts;
 

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "symbol.h"
 std::string FuncName;
+static int ReturnFlag = 0;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
@@ -31,6 +32,7 @@ static bool sym_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
+
         if (pIter != node->sons.end() - 1) {
             (*pIter)->next = *(pIter + 1);
         }
@@ -39,7 +41,16 @@ static bool sym_block(struct ast_node *node)
         if (!temp) {
             return false;
         }
-        // printf("sym label %s\n", node->label.c_str());
+        if (temp->type == AST_RETURN) {
+            ReturnFlag += 1;
+            break;
+        }
+        // 如果if节点里含有两个return，就把后面的节点删除
+        if (ReturnFlag == 2) {
+            node->sons.erase(pIter + 1, node->sons.end());
+            ReturnFlag = 0;
+            break;
+        }
         temp->parent = node;
     }
     return true;
@@ -96,7 +107,11 @@ static bool sym_def_func(struct ast_node *node)
     // 第四个孩子是语句块
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
+    printf("返回值复制给临时变量0\n");
     struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
+    // 返回值复制给临时变量
+    newTempValue(ValueType::ValueType_Int, FuncName);
+    printf("返回值复制给临时变量\n");
     if (func_block == NULL) return true;
     return true;
 }
@@ -381,7 +396,7 @@ static bool sym_return(struct ast_node *node)
     // 赋值节点，自右往左运算
 
     // 赋值运算符的左侧操作数
-    struct ast_node *left = sym_visit_ast_node(son1_node, true);
+    struct ast_node *left = sym_visit_ast_node(son1_node, false);
     if (!left) {
         // 某个变量没有定值
         // 这里缺省设置变量不存在则创建，因此这里不会错误
@@ -392,8 +407,8 @@ static bool sym_return(struct ast_node *node)
         val = newTempValue(ValueType::ValueType_Int, FuncName);
         left->val = val;
     }
-    val = newTempValue(ValueType::ValueType_Int, FuncName);
-    node->val = val;
+    // val = newTempValue(ValueType::ValueType_Int, FuncName);
+    node->val = left->val;
     return true;
 }
 static bool sym_func_call(struct ast_node *node, bool isLeft)
@@ -455,7 +470,11 @@ static bool sym_if(struct ast_node *node)
     } else {
         src2_node->label = label1;
     }
+    if (ReturnFlag) {
+        ReturnFlag = 1;
+    } else {
 
+    }
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
         struct ast_node *false_node = sym_visit_ast_node(src3_node);
@@ -465,8 +484,18 @@ static bool sym_if(struct ast_node *node)
         } else {
             src3_node->label = label2;
         }
+        if (ReturnFlag > 1) {
+            ReturnFlag = 2;
+        } else {
+        }
     }
-    node->next->label = label3;
+    printf("sym_if\n");
+    if (!node->next) {
+
+    } else {
+        node->next->label = label3;
+    }
+
     node->val = node->sons[0]->val;
     printf("sym_if\n");
     return true;
@@ -565,7 +594,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         result = sym_func_call(node, isLeft);
         break;
     case AST_RETURN:
-        printf("return\n");
+        // printf("return\n");
         result = sym_return(node);
         break;
     case AST_CU:

@@ -1,19 +1,42 @@
-declare i32 @a
+define i32 @ifElseIf() {
+    declare i32 %l0 ; variable: return
+    declare i32 %l1 ; variable: a
+    declare i32 %l2 ; variable: b
+    declare i32 %t3
+    declare i1 %t4
+    declare i32 %t5
+    declare i1 %t6
+    declare i32 %t7
+    declare i32 %t8
+    declare i1 %t9
+    declare i32 %t10
+    declare i1 %t11
+    declare i32 %t12
+    declare i32 %t13
+    declare i1 %t14
+    declare i32 %t15
+    declare i32 %t16
+    declare i1 %t17
+    declare i32 %t18
+    declare i32 %t19
+    declare i32 %t20
+    declare i32 %t21
+    declare i32 %t22
+    entry
+    %l1 = 5
+    %l2 = 10
+.L5:
+    %l0 = %l1
+    %t22 = %l0
+    exit %t22
+}
 define i32 @main() {
     declare i32 %l0 ; variable: return
-    declare i32 %l1 ; variable: b
+    declare i32 %t1
     declare i32 %t2
-    declare i32 %t3
-    declare i32 %t4
-    declare i32 %t5
     entry
-    %l1 = 2
-    @a = 10
-    %t2 = %l1
-    %t3 = @a
-    %t4 = sub %t2, %t3
-    call void @putint(i32 %t4)
-    %l0 = 0
-    %t5 = %l0
-    exit %t5
+    %t1 = call i32 @ifElseIf()
+    call void @putint(i32 %t1)
+    %t2 = %l0
+    exit %t2
 }
