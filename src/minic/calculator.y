@@ -74,9 +74,7 @@ void yyerror(char * msg);
 %left T_AND
 %left CMP_PREC  // 比较运算符优先级大于逻辑运算符
 %left T_CMP
-/* %left RELOP */
 %left "++" "--"
-/* %left MINUSASS PLUSASS */
 %left '+' '-'
 %left '*' '/'
 %right UMINUS '!' 
@@ -296,6 +294,7 @@ onepara : type T_ID
 
 /* 语句块：一对花括号和里面的语句 */
 blockstat : '{' subprogram '}'{$$ = $2;};
+
 subprogram : {$$ = new_ast_node(AST_EMPTY);}
             | onestatement{$$ = new_ast_node(AST_OP_BLOCK, $1);}
             | subprogram onestatement
@@ -322,6 +321,7 @@ localdef    : type defdata deflist
                 }
                 $$ = temp_node;
             }
+
 /* 单条语句 */
 statement   : blockstat                                         {$$ = $1;}                              //另一个语句块
             | expr ';'                                          {$$ = $1;}                              //表达式语句
@@ -330,8 +330,9 @@ statement   : blockstat                                         {$$ = $1;}      
             | T_WHILE '(' expr ')' statement                    {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}//while语句
             | T_BREAK ';'                                       {$$ = new_ast_node(AST_OP_BREAK);}      //break语句
             | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}   //continue语句
-            | ';'                                               {$$ = new_ast_node(AST_EMPTY);}                            //空语句
+            | ';'                                               {$$ = new_ast_node(AST_EMPTY);}         //空语句
             | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}     // return 语句
+
 
 /* 表达式语句 */
 expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
@@ -339,7 +340,7 @@ expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 
             | expr T_OR expr    {$$ = new_ast_node(AST_OP_OR, $1, $3);}      // 逻辑或
             | expr '+' expr     {$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法
             | expr '-' expr     {$$ = new_ast_node(AST_OP_SUB, $1, $3);}     // 减法
-            | expr '*' expr     {$$ = new_ast_node(AST_OP_MUL, $1, $3);}    // 乘法
+            | expr '*' expr     {$$ = new_ast_node(AST_OP_MUL, $1, $3);}     // 乘法
             | expr '/' expr     {$$ = new_ast_node(AST_OP_DIV, $1, $3);}     // 除法
             | expr '%' expr     {$$ = new_ast_node(AST_OP_MOD, $1, $3);}     // 取余运算
             | expr cmp expr %prec CMP_PREC {$$ = new_ast_node(AST_OP_CMP, $1,$2,$3);}/* 关系运算符 */
@@ -364,7 +365,7 @@ factor      : '-' factor %prec UMINUS {$$ = new_ast_node(AST_OP_NEG, $2);}  //�
             | T_INC lval    {$$ = new_ast_node(AST_OP_RINC,$2);}
             | rval          {$$ = $1;};
 
-rval    : lval  {$$=$1;}
+rval    : lval          {$$=$1;}
         | '(' expr ')'  {$$ = $2;}
         | ident '(' realarg ')' {$$ = new_ast_node(AST_FUNC_CALL,$1,$3);} // 函数调用
         | ident '(' ')' {$$ = new_ast_node(AST_FUNC_CALL,$1);} // 函数调用,无参
