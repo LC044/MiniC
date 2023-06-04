@@ -4,6 +4,7 @@
 #include "symbol.h"
 std::string FuncName;
 static int ReturnFlag = 0;
+bool ExitLabel = false;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
@@ -459,6 +460,9 @@ static bool sym_if(struct ast_node *node)
     node->labels.push_back(label2);
     node->labels.push_back(label3);
     if (!node->next) {
+        struct ast_node *temp = new_ast_node(AST_EMPTY);
+        temp->label = label3;
+        node->next = temp;
     } else {
         if (node->next->label.size() == 0) {
             node->next->label = label3;
@@ -483,10 +487,12 @@ static bool sym_if(struct ast_node *node)
         src2_node->label = label1;
     }
     if (ReturnFlag > returnflag) {
+        ExitLabel = true;
         true_return = true;
     }
 
     if (node->sons.size() == 3) {
+
         struct ast_node *src3_node = node->sons[2];
         returnflag = ReturnFlag;
         struct ast_node *false_node = sym_visit_ast_node(src3_node);
@@ -498,35 +504,52 @@ static bool sym_if(struct ast_node *node)
             src3_node->label = label2;
         }
         if (ReturnFlag > returnflag) {
+            ExitLabel = true;
             false_return = true;
         }
-        printf("%d,%d\n", returnflag, ReturnFlag);
         if (true_return and false_return) {
-            printf("if else 都有return语句,\n");
+            // return语句直接跳转到L2
             if (node->next) {
                 node->next->label = ".L2";
             }
-
+            struct ast_node *temp = new_ast_node(AST_EMPTY);
+            temp->label = ".L2";
+            true_node->next = temp;
+            false_node->next = temp;
         } else if (true_return and !false_return) {
-            printf("if有return语句,else 没有\n");
             if (node->next) {
                 node->next->label = false_node->labels[2];
             }
+            struct ast_node *temp = new_ast_node(AST_EMPTY);
+            temp->label = ".L2";
+            true_node->next = temp;
         } else if (!true_return and false_return) {
             if (node->next) {
                 node->next->label = true_node->labels[2];
             }
+            struct ast_node *temp = new_ast_node(AST_EMPTY);
+            temp->label = ".L2";
+            false_node->next = temp;
         } else {
             if (node->next) {
-                node->next->label = label3;
+                true_node->next = node->next;
+                false_node->next = node->next;
+            } else {
+
             }
         }
     } else {
-        node->labels[1] = node->next->label;
-        // if (!node->next) {
-        // } else {
-        //     node->next->label = label3;
-        // }
+        if (true_return) {
+            struct ast_node *temp = new_ast_node(AST_EMPTY);
+            temp->label = ".L2";
+            true_node->next = temp;
+            node->labels[1] = node->next->label;
+        } else {
+            node->labels[1] = node->next->label;
+            if (node->next) {
+                true_node->next = node->next;
+            } else {}
+        }
     }
     node->val = node->sons[0]->val;
     sym_visit_ast_node(src1_node, true);

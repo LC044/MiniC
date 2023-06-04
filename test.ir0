@@ -1,44 +1,21 @@
-define i32 @if_if_Else() {
-	declare i32 %l0
-	declare i32 %l1 ; variable: a
-	declare i32 %l2 ; variable: b
-	declare i32 %t3
-	declare i1 %t4
-	declare i32 %t5
-	declare i1 %t6
-	declare i32 %t7
-	declare i32 %t8
-	declare i32 %t9
-	entry
-	%l1 = 5
-	%l2 = 10
-	%t3 = %l1
-	%t4 = cmp eq %t3, 5
-	bc %t4, label .L3, label .L4
-.L3:
-	%t5 = %l2
-	%t6 = cmp eq %t5, 10
-	bc %t6, label .L6, label .L5
-.L6:
-	%l1 = 25
-	br label .L5
-.L4:
-	%t7 = %l1
-	%t8 = add %t7, 15
-	%l1 = %t8
-	br label .L5
-.L5:
-	%l0 = %l1
-	%t9 = %l0
-	exit %t9
-}
+declare i32 @a
 define i32 @main() {
 	declare i32 %l0
 	declare i32 %t1
-	declare i32 %t2
+	declare i1 %t2
+	declare i32 %t3
 	entry
-	%t1 = call i32 @if_if_Else()
-	%l0 = %t1
-	%t2 = %l0
-	exit %t2
+	@a = 10
+	%t1 = @a
+	%t2 = cmp gt %t1, 0
+	bc %t2, label .L3, label .L5
+.L3:
+	%l0 = 1
+	br label .L2
+.L5:
+	%l0 = 0
+	br label .L2
+.L2:
+	%t3 = %l0
+	exit %t3
 }

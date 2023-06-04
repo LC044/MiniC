@@ -4,8 +4,8 @@
 #include "symbol.h"
 // std::string FuncName;
 static int ReturnFlag = 0;
-static bool BlockBreak = false;
-static bool ExitLabel = false;
+// static bool BlockBreak = false;
+extern bool ExitLabel;
 static int IFflag = 0;
 extern std::string FuncName;
 // #include <iostream>
@@ -526,6 +526,10 @@ static bool ir_cmp(struct ast_node *node)
 }
 static bool ir_if(struct ast_node *node, bool isLast)
 {
+    // if 有三个孩子节点，比较运算、true代码块、false代码块(false可能不存在)
+    // node->labels存储三个跳转节点的label，供bc指令跳转用
+    // true_node->next->label存储true代码块的下一个跳转节点
+    // false_node->next->label存储false代码块的下一个跳转节点
     IFflag++;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
@@ -535,159 +539,48 @@ static bool ir_if(struct ast_node *node, bool isLast)
     }
     node->blockInsts.addInst(cond->blockInsts);
     // return true;
-    std::string label1;  // true语句
-    std::string label2;  // false语句
-    std::string label3;  // 下一条语句
-    if (!node->next) {
-        label3 = ".L2";
-    } else {
-        label3 = node->next->label;
-    }
-    printf("label3:%s\n", label3.c_str());
-    // 指令跳转语句
-
-    if (node->sons.size() == 3) {
-        struct ast_node *src3_node;
-        src3_node = node->sons[2];
-        if (src2_node->type == AST_EMPTY) {
-            label1 = label3;
-        } else {
-            label1 = src2_node->label;
-        }
-        if (src3_node->type == AST_EMPTY) {
-            label2 = label3;
-        } else {
-            label2 = src3_node->label;
-        }
-    } else {
-        if (src2_node->type == AST_EMPTY) {
-            label1 = label3;
-            label2 = label3;
-        } else {
-            label1 = src2_node->label;
-        }
-    }
-
-    bool true_return = false, false_return = false;
+    std::string label1 = node->labels[0];  // true语句
+    std::string label2 = node->labels[1];  // false语句
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
-        int returnflag = ReturnFlag;
         int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        if (ReturnFlag > returnflag) {
-            true_return = true;
-            ExitLabel = true;
-        }
-        returnflag = ReturnFlag;
         int falseIfFlag = IFflag;
         struct ast_node *false_node = ir_visit_ast_node(src3_node);
-        if (ReturnFlag > returnflag) {
-            false_return = true;
-            ExitLabel = true;
-        }
         if (true_node->type != AST_EMPTY and false_node->type != AST_EMPTY) {
             node->blockInsts.addInst(
                             new UselessIRInst(label1 + ":")
             );
             node->blockInsts.addInst(true_node->blockInsts);
-            if (true_return and false_return) {
-                printf("if  else 都有return\n");
-                BlockBreak = true;
-                //说明if，else都有return语句
+            if (IFflag == trueIfFlag) {
                 node->blockInsts.addInst(
-                        new JumpIRInst(IRINST_JUMP_BR, ".L2")
+                        new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
+            }
+            node->blockInsts.addInst(
+                new UselessIRInst(label2 + ":")
+            );
+            node->blockInsts.addInst(false_node->blockInsts);
+            if (IFflag == falseIfFlag) {
                 node->blockInsts.addInst(
-                            new UselessIRInst(label2 + ":")
+                        new JumpIRInst(IRINST_JUMP_BR, false_node->next->label)
                 );
-                node->blockInsts.addInst(false_node->blockInsts);
-                node->blockInsts.addInst(
-                        new JumpIRInst(IRINST_JUMP_BR, ".L2")
-                );
-            } else if (true_return and !false_return) {
-                printf("if有return语句,else 没有\n");
-                //说明if有return语句,else 没有
-                if (BlockBreak) {
-                    BlockBreak = false;
-                } else {
-                    node->blockInsts.addInst(
-                        new JumpIRInst(IRINST_JUMP_BR, ".L2")
-                    );
-                }
-                node->blockInsts.addInst(
-                            new UselessIRInst(label2 + ":")
-                );
-                node->blockInsts.addInst(false_node->blockInsts);
-                // 添加下一条语句
-                // if (node->next) {
-                //     struct ast_node *next_node = ir_visit_ast_node(node->next);
-                //     node->blockInsts.addInst(next_node->blockInsts);
-                // }
-
-            } else if (!true_return and false_return) {
-                printf("if 没有return else 有return\n");
-                // true后面加下一条语句的IR指令
-                // if (node->next) {
-                //     struct ast_node *next_node = ir_visit_ast_node(node->next);
-                //     node->blockInsts.addInst(next_node->blockInsts);
-                // }
-                node->blockInsts.addInst(
-                    new UselessIRInst(label2 + ":")
-                );
-                node->blockInsts.addInst(false_node->blockInsts);
-                if (BlockBreak) {
-                    BlockBreak = false;
-                } else {
-                    node->blockInsts.addInst(
-                        new JumpIRInst(IRINST_JUMP_BR, ".L2")
-                    );
-                }
-            } else {
-                printf("if  else 都没有return:label3 = %s\n", label3.c_str());
-                if (IFflag == trueIfFlag) {
-                    node->blockInsts.addInst(
-                            new JumpIRInst(IRINST_JUMP_BR, label3)
-                    );
-                }
-                node->blockInsts.addInst(
-                    new UselessIRInst(label2 + ":")
-                );
-                node->blockInsts.addInst(false_node->blockInsts);
-                if (IFflag == falseIfFlag) {
-                    node->blockInsts.addInst(
-                            new JumpIRInst(IRINST_JUMP_BR, label3)
-                    );
-                }
             }
         } else if (true_node->type != AST_EMPTY and false_node->type == AST_EMPTY) {
 
         }
     } else {
-        int returnflag = ReturnFlag;
         int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        if (ReturnFlag > returnflag) {
-            true_return = true;
-            ExitLabel = true;
-        }
         if (true_node->type != AST_EMPTY) {
             node->blockInsts.addInst(
                             new UselessIRInst(label1 + ":")
             );
             node->blockInsts.addInst(true_node->blockInsts);
-            if (true_return) {
+            if (IFflag == trueIfFlag) {
                 node->blockInsts.addInst(
-                    new JumpIRInst(IRINST_JUMP_BR, ".L2")
+                        new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
-            } else {
-                if (IFflag == trueIfFlag) {
-                    node->blockInsts.addInst(
-                            new JumpIRInst(IRINST_JUMP_BR, label3)
-                    );
-                }
-                if (!isLast and true_node->type != AST_OP_IF) {
-
-                }
             }
         }
     }
