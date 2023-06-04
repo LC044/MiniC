@@ -1,4 +1,4 @@
-define i32 @ifElseIf() {
+define i32 @if_if_Else() {
     declare i32 %l0 ; variable: return
     declare i32 %l1 ; variable: a
     declare i32 %l2 ; variable: b
@@ -8,35 +8,37 @@ define i32 @ifElseIf() {
     declare i1 %t6
     declare i32 %t7
     declare i32 %t8
-    declare i1 %t9
-    declare i32 %t10
-    declare i1 %t11
-    declare i32 %t12
-    declare i32 %t13
-    declare i1 %t14
-    declare i32 %t15
-    declare i32 %t16
-    declare i1 %t17
-    declare i32 %t18
-    declare i32 %t19
-    declare i32 %t20
-    declare i32 %t21
-    declare i32 %t22
+    declare i32 %t9
     entry
     %l1 = 5
     %l2 = 10
+    %t3 = %l1
+    %t4 = cmp eq %t3, 5
+    bc %t4, label .L3, label .L4
+.L3:
+    %t5 = %l2
+    %t6 = cmp eq %t5, 10
+    bc %t6, label .L6, label .L5
+.L6:
+    %l1 = 25
+    br label .L5
+.L4:
+    %t7 = %l1
+    %t8 = add %t7, 15
+    %l1 = %t8
+    br label .L5
 .L5:
     %l0 = %l1
-    %t22 = %l0
-    exit %t22
+    %t9 = %l0
+    exit %t9
 }
 define i32 @main() {
     declare i32 %l0 ; variable: return
     declare i32 %t1
     declare i32 %t2
     entry
-    %t1 = call i32 @ifElseIf()
-    call void @putint(i32 %t1)
+    %t1 = call i32 @if_if_Else()
+    %l0 = %t1
     %t2 = %l0
     exit %t2
 }

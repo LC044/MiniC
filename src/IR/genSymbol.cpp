@@ -32,23 +32,28 @@ static bool sym_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
+        // if ((*pIter)->parent) {
+        //     if ((*pIter)->parent->type == AST_OP_IF) {
 
+        //     }
+        // }
         if (pIter != node->sons.end() - 1) {
             (*pIter)->next = *(pIter + 1);
+        } else {
+            (*pIter)->next = node->parent->next;
         }
         // 遍历Block的每个语句，进行显示或者运算
         struct ast_node *temp = sym_visit_ast_node(*pIter, true);
         if (!temp) {
             return false;
         }
-        if (temp->type == AST_RETURN) {
-            ReturnFlag += 1;
-            break;
+        if (temp->type == AST_OP_IF) {
+            node->labels = temp->labels;
         }
         // 如果if节点里含有两个return，就把后面的节点删除
         if (ReturnFlag == 2) {
             node->sons.erase(pIter + 1, node->sons.end());
-            ReturnFlag = 0;
+            // ReturnFlag = 0;
             break;
         }
         temp->parent = node;
@@ -112,6 +117,7 @@ static bool sym_def_func(struct ast_node *node)
     // 返回值复制给临时变量
     newTempValue(ValueType::ValueType_Int, FuncName);
     printf("返回值复制给临时变量\n");
+    ReturnFlag = 0;
     if (func_block == NULL) return true;
     return true;
 }
@@ -391,11 +397,8 @@ static bool sym_assign(struct ast_node *node)
 }
 static bool sym_return(struct ast_node *node)
 {
+    ReturnFlag += 1;
     struct ast_node *son1_node = node->sons[0];
-
-    // 赋值节点，自右往左运算
-
-    // 赋值运算符的左侧操作数
     struct ast_node *left = sym_visit_ast_node(son1_node, false);
     if (!left) {
         // 某个变量没有定值
@@ -407,7 +410,6 @@ static bool sym_return(struct ast_node *node)
         val = newTempValue(ValueType::ValueType_Int, FuncName);
         left->val = val;
     }
-    // val = newTempValue(ValueType::ValueType_Int, FuncName);
     node->val = left->val;
     return true;
 }
@@ -453,55 +455,90 @@ static bool sym_if(struct ast_node *node)
     std::string label1 = newLabel(FuncName);  // true语句
     std::string label2 = newLabel(FuncName);  // false语句
     std::string label3 = newLabel(FuncName);  // 下一条语句
-
+    node->labels.push_back(label1);
+    node->labels.push_back(label2);
+    node->labels.push_back(label3);
+    if (!node->next) {
+    } else {
+        if (node->next->label.size() == 0) {
+            node->next->label = label3;
+        }
+    }
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     // 条件表达式
     struct ast_node *cond = sym_visit_ast_node(src1_node);
     if (!cond) {
-        // 某个变量没有定值
         return false;
     }
+    bool true_return = false, false_return = false;
     // true表达式
+    int returnflag = ReturnFlag;
     struct ast_node *true_node = sym_visit_ast_node(src2_node);
     if (!true_node) {
         // if后面没有语句
         src2_node->label = label3;
+        node->labels[0] = label3;
     } else {
         src2_node->label = label1;
     }
-    if (ReturnFlag) {
-        ReturnFlag = 1;
-    } else {
-
+    if (ReturnFlag > returnflag) {
+        true_return = true;
     }
+
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
+        returnflag = ReturnFlag;
         struct ast_node *false_node = sym_visit_ast_node(src3_node);
         if (!false_node) {
             // else 里没有语句
             src3_node->label = label3;
+            node->labels[1] = label3;
         } else {
             src3_node->label = label2;
         }
-        if (ReturnFlag > 1) {
-            ReturnFlag = 2;
-        } else {
+        if (ReturnFlag > returnflag) {
+            false_return = true;
         }
-    }
-    printf("sym_if\n");
-    if (!node->next) {
+        printf("%d,%d\n", returnflag, ReturnFlag);
+        if (true_return and false_return) {
+            printf("if else 都有return语句,\n");
+            if (node->next) {
+                node->next->label = ".L2";
+            }
 
+        } else if (true_return and !false_return) {
+            printf("if有return语句,else 没有\n");
+            if (node->next) {
+                node->next->label = false_node->labels[2];
+            }
+        } else if (!true_return and false_return) {
+            if (node->next) {
+                node->next->label = true_node->labels[2];
+            }
+        } else {
+            if (node->next) {
+                node->next->label = label3;
+            }
+        }
     } else {
-        node->next->label = label3;
+        node->labels[1] = node->next->label;
+        // if (!node->next) {
+        // } else {
+        //     node->next->label = label3;
+        // }
     }
-
     node->val = node->sons[0]->val;
-    printf("sym_if\n");
+    sym_visit_ast_node(src1_node, true);
     return true;
 }
-static bool sym_cmp(struct ast_node *node)
+static bool sym_cmp(struct ast_node *node, bool isSecond)
 {
+    if (isSecond) {
+        node->labels = node->parent->labels;
+        return true;
+    }
+    // 仅第一次访问有效
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[2];
     struct ast_node *left = sym_visit_ast_node(src1_node);
@@ -535,8 +572,66 @@ static bool sym_neg(struct ast_node *node)
     if (!left) {
         return false;
     }
-    Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-    node->val = val;
+    if (left->val->isId) {
+        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->val = val;
+    } else {
+        left->val->intVal = -left->val->intVal;
+        node->val = left->val;
+    }
+
+    return true;
+}
+static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
+{
+
+    if (type == AST_OP_NOT) {
+        struct ast_node *src1_node = node->sons[0];
+        struct ast_node *left = sym_visit_ast_node(src1_node);
+        if (!left) {
+            return false;
+        }
+    } else {
+        if (!isSecond) {
+            std::string label = newLabel(FuncName);
+            node->label = label;
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *src2_node = node->sons[1];
+            struct ast_node *left = sym_visit_ast_node(src1_node);
+            if (!left) {
+                return false;
+            }
+            struct ast_node *right = sym_visit_ast_node(src2_node);
+            if (!right) {
+                return false;
+            }
+            right->label = label;
+            // printf("逻辑运算\n");
+        } else {
+            node->labels = node->parent->labels;
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *src2_node = node->sons[1];
+            struct ast_node *left = sym_visit_ast_node(src1_node, true);
+            if (!left) {
+                return false;
+            }
+
+            struct ast_node *right = sym_visit_ast_node(src2_node, true);
+            if (!right) {
+                return false;
+            }
+            if (type == AST_OP_OR) {
+                left->labels[1] = node->label;
+                left->next = right;
+            } else {
+                left->labels[0] = node->label;
+                left->next = right;
+            }
+
+            // printf("逻辑运算\n");
+        }
+
+    }
     return true;
 }
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
@@ -604,7 +699,13 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         result = sym_if(node);
         break;
     case AST_OP_CMP:
-        result = sym_cmp(node);
+        result = sym_cmp(node, isLeft);
+        break;
+    case AST_OP_OR:
+        result = sym_logical_operation(node, AST_OP_OR, isLeft);
+        break;
+    case AST_OP_AND:
+        result = sym_logical_operation(node, AST_OP_AND, isLeft);
         break;
     case AST_DEF_LIST:
         result = sym_def_list(node);
@@ -624,8 +725,6 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
     case AST_OP_MUL:
     case AST_OP_DIV:
     case AST_OP_MOD:
-    case AST_OP_OR:
-    case AST_OP_AND:
         result = sym_binary_op(node, node->type);
         break;
     case AST_OP_ASSIGN:

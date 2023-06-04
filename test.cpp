@@ -31,5 +31,9 @@ int main(int argc, char **argv)
     int q[5] = { 0, 1, 2, 3, 4 };
     int *i = q;
     printf("%d\n", i[3]);
+    printf("%d\n", ">=" == ">=");
+    int a = 2, b;
+    b = --a + a-- - b++;
+
     return 0;
 }

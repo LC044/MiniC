@@ -6,6 +6,7 @@
 static int ReturnFlag = 0;
 static bool BlockBreak = false;
 static bool ExitLabel = false;
+static int IFflag = 0;
 extern std::string FuncName;
 // #include <iostream>
 extern std::unordered_map<std::string, Value *> varsMap;
@@ -71,7 +72,7 @@ static bool ir_block(struct ast_node *node)
             temp = ir_visit_ast_node(*pIter, false, true);
         }
         if (!temp) {
-            continue;;
+            continue;
         }
         // if语句的后一句一定是一个新的label
         // 下一条语句
@@ -193,18 +194,19 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(func_block->blockInsts);
     // 如果if里有return语句则在exit这里加个label
     if (ExitLabel) {
-        // if (func_block->sons[func_block->sons.size() - 2]->type != AST_OP_IF) {
-        //     node->blockInsts.addInst(
-        //         new JumpIRInst(IRINST_JUMP_BR, ".L2")
-        //     );
-        // }
-        node->blockInsts.addInst(
+        if (func_block->sons[func_block->sons.size() - 1]->type != AST_OP_IF) {
+            node->blockInsts.addInst(
                 new JumpIRInst(IRINST_JUMP_BR, ".L2")
-        );
+            );
+        }
+        // node->blockInsts.addInst(
+        //         new JumpIRInst(IRINST_JUMP_BR, ".L2")
+        // );
         node->blockInsts.addInst(
             new UselessIRInst(".L2:")
         );
     }
+    ExitLabel = false;
     // return语句
     Value *returnValue = findValue("return", FuncName, true);
     Value *srcValue = nullptr;
@@ -255,7 +257,7 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
     if (!left) {
         return false;
     }
-    printf("函数调用指令\n");
+    // printf("函数调用指令\n");
     // 这里应该先判断一下参数个数是否匹配
     if (node->sons.size() == 2) {
         std::vector<struct ast_node *>::iterator pIter;
@@ -287,7 +289,7 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             );
         }
     } else {
-        printf("无参函数调用指令0\n");
+        // printf("无参函数调用指令0\n");
         if (isLeft) {
             node->blockInsts.addInst(
             new FuncCallIRInst(left->attr.id)
@@ -298,9 +300,9 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             );
         }
         printf("左值名字 %s\n", node->parent->sons[0]->val->getName().c_str());
-        printf("无参函数调用指令1\n");
+        // printf("无参函数调用指令1\n");
     }
-    printf("函数调用指令\n");
+    // printf("函数调用指令\n");
     return true;
 }
 static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
@@ -476,29 +478,22 @@ static bool ir_neg(struct ast_node *node)
         return false;
     }
     node->blockInsts.addInst(left->blockInsts);
-    node->blockInsts.addInst(
+    if (left->val->isId) {
+        node->blockInsts.addInst(
         new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
-
+    }
     return true;
 }
 static bool ir_cmp(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[2];
-
-    // 减法节点，左结合，先计算左节点，后计算右节点
-
-    // 减法的左边操作数
     struct ast_node *left = ir_visit_ast_node(src1_node);
     if (!left) {
-        // 某个变量没有定值
         return false;
     }
-
-    // 减法的右边操作数
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
-        // 某个变量没有定值
         return false;
     }
     // 创建临时变量保存IR的值，以及线性IR指令
@@ -523,27 +518,26 @@ static bool ir_cmp(struct ast_node *node)
     node->blockInsts.addInst(
         new BinaryIRInst(IRINST_OP_CMP, cmp_node->attr.id, node->val, left->val, right->val)
     );
-    // printf("cmp指令\n");
+    node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, node->val, node->labels[0], node->labels[1])
+    );
+    printf("cmp指令\n");
     return true;
 }
 static bool ir_if(struct ast_node *node, bool isLast)
 {
-
+    IFflag++;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
-
-    // 减法节点，左结合，先计算左节点，后计算右节点
-
-    // 减法的左边操作数
     struct ast_node *cond = ir_visit_ast_node(src1_node);
     if (!cond) {
-        // 某个变量没有定值
         return false;
     }
     node->blockInsts.addInst(cond->blockInsts);
+    // return true;
     std::string label1;  // true语句
     std::string label2;  // false语句
-    std::string label3;// 下一条语句
+    std::string label3;  // 下一条语句
     if (!node->next) {
         label3 = ".L2";
     } else {
@@ -551,6 +545,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
     }
     printf("label3:%s\n", label3.c_str());
     // 指令跳转语句
+
     if (node->sons.size() == 3) {
         struct ast_node *src3_node;
         src3_node = node->sons[2];
@@ -564,9 +559,6 @@ static bool ir_if(struct ast_node *node, bool isLast)
         } else {
             label2 = src3_node->label;
         }
-        node->blockInsts.addInst(
-            new JumpIRInst(IRINST_JUMP_BC, node->val, label1, label2)
-        );
     } else {
         if (src2_node->type == AST_EMPTY) {
             label1 = label3;
@@ -574,20 +566,20 @@ static bool ir_if(struct ast_node *node, bool isLast)
         } else {
             label1 = src2_node->label;
         }
-        node->blockInsts.addInst(
-            new JumpIRInst(IRINST_JUMP_BC, node->val, label1, label3)
-        );
     }
+
     bool true_return = false, false_return = false;
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
         int returnflag = ReturnFlag;
+        int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
         if (ReturnFlag > returnflag) {
             true_return = true;
             ExitLabel = true;
         }
         returnflag = ReturnFlag;
+        int falseIfFlag = IFflag;
         struct ast_node *false_node = ir_visit_ast_node(src3_node);
         if (ReturnFlag > returnflag) {
             false_return = true;
@@ -627,18 +619,18 @@ static bool ir_if(struct ast_node *node, bool isLast)
                 );
                 node->blockInsts.addInst(false_node->blockInsts);
                 // 添加下一条语句
-                if (node->next) {
-                    struct ast_node *next_node = ir_visit_ast_node(node->next);
-                    node->blockInsts.addInst(next_node->blockInsts);
-                }
+                // if (node->next) {
+                //     struct ast_node *next_node = ir_visit_ast_node(node->next);
+                //     node->blockInsts.addInst(next_node->blockInsts);
+                // }
 
             } else if (!true_return and false_return) {
                 printf("if 没有return else 有return\n");
                 // true后面加下一条语句的IR指令
-                if (node->next) {
-                    struct ast_node *next_node = ir_visit_ast_node(node->next);
-                    node->blockInsts.addInst(next_node->blockInsts);
-                }
+                // if (node->next) {
+                //     struct ast_node *next_node = ir_visit_ast_node(node->next);
+                //     node->blockInsts.addInst(next_node->blockInsts);
+                // }
                 node->blockInsts.addInst(
                     new UselessIRInst(label2 + ":")
                 );
@@ -651,8 +643,8 @@ static bool ir_if(struct ast_node *node, bool isLast)
                     );
                 }
             } else {
-                printf("if  else 都没有return\n");
-                if (!isLast and true_node->type != AST_OP_IF) {
+                printf("if  else 都没有return:label3 = %s\n", label3.c_str());
+                if (IFflag == trueIfFlag) {
                     node->blockInsts.addInst(
                             new JumpIRInst(IRINST_JUMP_BR, label3)
                     );
@@ -661,7 +653,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
                     new UselessIRInst(label2 + ":")
                 );
                 node->blockInsts.addInst(false_node->blockInsts);
-                if (!isLast and false_node->type != AST_OP_IF) {
+                if (IFflag == falseIfFlag) {
                     node->blockInsts.addInst(
                             new JumpIRInst(IRINST_JUMP_BR, label3)
                     );
@@ -672,6 +664,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
         }
     } else {
         int returnflag = ReturnFlag;
+        int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
         if (ReturnFlag > returnflag) {
             true_return = true;
@@ -687,10 +680,13 @@ static bool ir_if(struct ast_node *node, bool isLast)
                     new JumpIRInst(IRINST_JUMP_BR, ".L2")
                 );
             } else {
-                if (!isLast and true_node->type != AST_OP_IF) {
+                if (IFflag == trueIfFlag) {
                     node->blockInsts.addInst(
                             new JumpIRInst(IRINST_JUMP_BR, label3)
                     );
+                }
+                if (!isLast and true_node->type != AST_OP_IF) {
+
                 }
             }
         }
@@ -723,7 +719,27 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
     }
     return true;
 }
-
+static bool ir_or(struct ast_node *node)
+{
+    printf("or运算符0\n");
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    struct ast_node *left = ir_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    struct ast_node *right = ir_visit_ast_node(src2_node);
+    if (!right) {
+        return false;
+    }
+    node->blockInsts.addInst(left->blockInsts);
+    node->blockInsts.addInst(
+            new UselessIRInst(node->label + ":")
+    );
+    node->blockInsts.addInst(right->blockInsts);
+    printf("or运算符1\n");
+    return true;
+}
 // 递归遍历抽象语法树进行计算
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bool isLeft)
 {
@@ -753,65 +769,45 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         result = ir_func_call(node, isLeft);
         break;
     case AST_OP_MUL:
-        // 乘法节点
-        ;
-
     case AST_OP_ADD:
-        // 加法节点
-        ;
     case AST_OP_SUB:
-        // 乘法节点
-        ;
-
     case AST_OP_DIV:
-        // 加法节点
-        ;
     case AST_OP_MOD:
-        // 加法节点
         result = ir_binary_op(node, node->type);
         break;
     case AST_OP_ASSIGN:
-
-        // 赋值语句
         result = ir_assign(node);
         break;
     case AST_OP_NEG:
         result = ir_neg(node);
         break;
     case AST_OP_IF:
-        printf("IF\n");
         result = ir_if(node, isLast);
         break;
     case AST_OP_CMP:
-        printf("CMP\n");
         result = ir_cmp(node);
         break;
+    case AST_OP_OR:
+    case AST_OP_AND:
+        result = ir_or(node);
+        // result = true;
+        break;
     case AST_RETURN:
-
-        // 赋值语句
         result = ir_return(node);
         break;
     case AST_OP_BLOCK:
-
-        // 多个语句组成的块
         result = ir_block(node);
         if (!result) {
             printf("error:in block\n");
         }
         break;
     case AST_CU:
-        printf("CU\n");
-        // 多个语句组成的块
         result = ir_cu(node);
         break;
     case AST_DEF_LIST:
-        // printf("AST_DEF_LIST\n");
-        // 变量定义
         result = ir_def_list(node);
         break;
     case AST_FUNC_DEF:
-        // printf("AST_DEF_array\n");
-        // 数组定义
         result = ir_def_func(node);
         break;
         // TODO 其它运算符支持追加，同时增加表达式运算函数调用
