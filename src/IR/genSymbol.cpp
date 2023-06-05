@@ -168,6 +168,7 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
     int i = 0;
     while (temp_dims) {
         val->dims[i] = temp_dims->sons[0]->attr.integer_val;
+        val->dim++;
         if (temp_dims->sons.size() > 1) {
             temp_dims = temp_dims->sons[1];
         } else {
@@ -274,6 +275,14 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     Value *rightValue = right->val;
     Value *val = nullptr;
     // 变量当右值要先复制给临时变量再进行计算
+    if (left->type == AST_OP_INDEX) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        left->val = val;
+    }
+    if (right->type == AST_OP_INDEX) {
+        val = newTempValue(ValueType::ValueType_Int, FuncName);
+        right->val = val;
+    }
     if (left->val->isId) {
         val = newTempValue(ValueType::ValueType_Int, FuncName);
         val->isId = true;
@@ -284,14 +293,7 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
         val->isId = true;
         right->val = val;
     }
-    if (left->type == AST_OP_INDEX) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        left->val = val;
-    }
-    if (right->type == AST_OP_INDEX) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        right->val = val;
-    }
+
     // 左右值都是常量就直接计算出来，代码优化 
     Value *resultValue = nullptr;
     if ((leftValue->isConst) and (rightValue->isConst)) {
@@ -325,6 +327,65 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     printf("新建op临时变量: %s\n", node->val->getName().c_str());
     return true;
 }
+static bool sym_dimensions(struct ast_node *node, bool isSecond)
+{
+
+    if (isSecond) {
+
+        if (node->sons.size() > 1) {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = sym_visit_ast_node(src1_node, isSecond);
+            if (node->sons[1]->val->isConst) {
+                node->val = node->sons[1]->val;
+                node->val->intVal *= 4;
+            } else {
+                Value *val;
+                val = newTempValue(ValueType::ValueType_Int, FuncName);
+
+                node->sons[2]->val = val;
+                val = newTempValue(ValueType::ValueType_Int, FuncName);
+                node->val = val;
+            }
+
+            if (!left) {
+                return false;
+            }
+        } else {
+            if (node->sons[0]->val->isConst) {
+
+                node->val = node->sons[0]->val;
+                node->val->intVal *= 4;
+            } else {
+                Value *val;
+                val = newTempValue(ValueType::ValueType_Int, FuncName);
+                // val = newTempValue(ValueType::ValueType_Int, FuncName);
+                node->val = val;
+            }
+
+        }
+    } else {
+        if (node->sons.size() > 1) {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = sym_visit_ast_node(src1_node, isSecond);
+            if (!left) {
+                return false;
+            }
+            struct ast_node *src2_node = node->sons[1];
+            struct ast_node *right = sym_visit_ast_node(src2_node);
+            if (!right) {
+                return false;
+            }
+        } else {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = sym_visit_ast_node(src1_node);
+            if (!left) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 static bool sym_index(struct ast_node *node)
 {
     // 数组索引第一个孩子节点是变量名
@@ -333,48 +394,23 @@ static bool sym_index(struct ast_node *node)
     if (!array_name) {
         return false;
     }
-    std::vector<struct ast_node *>::iterator pIter;
-    Value *val = nullptr;
-    // 第一步首先确定所有全局变量
-    bool idFlag = false;
-    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = sym_visit_ast_node(*pIter);
-        if (temp->val->isId) {
-            idFlag = true;
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            val->isId = true;
-            temp->val = val;
-        }
-    }
-    printf("数组引用\n");
-    // 求偏移量
-    // 假设最大支持10维数组
-    int *dims = array_name->val->dims;
-    int offsets[10] = { 1,1,1,1,1,1,1,1,1,1 };
-    for (int i = 0; i < 10 && dims[i] != 0; i++) {
-        // printf("%d ", dims[i]);
-        for (int j = i + 1; j < 10 && dims[j] != 0; j++) {
-            offsets[i] *= dims[j];
-        }
-    }
-    int offset = 0;
-    for (int i = 1; i < node->sons.size(); ++i) {
-        offset += node->sons[i]->val->intVal * offsets[i - 1];
-    }
+    Value *val;
 
-    // printf("%s 数组引用结束 %d\n", array_name->attr.id, val->intVal);
-    if (idFlag) {
-        array_name->val = val;
-        val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-        val->intVal = offset * 4;
-
-    } else {
-        val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-        val->intVal = offset * 4;
-        array_name->val = val;
+    struct ast_node *temp_dims = node->sons[1];
+    // 第二个孩子是数组维度节点
+    struct ast_node *right = sym_visit_ast_node(temp_dims);
+    if (!right) {
+        // return false;
     }
-    val = newTempValue(ValueType::ValueType_Int, FuncName);
+    sym_visit_ast_node(temp_dims, true);
+
+    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+    printf("新建指针变量 %s\n", val->getName().c_str());
+    val->type = ValueType::ValueType_Int_ptr;
     node->val = val;
+    node->sons[0]->val = val;
+    newTempValue(ValueType::ValueType_Int, FuncName);
+    // val->type = ValueType::ValueType_Int_ptr;
     return true;
 }
 static bool sym_assign(struct ast_node *node)
@@ -842,6 +878,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         break;
     case AST_OP_INDEX:
         result = sym_index(node);
+        break;
+    case AST_DIMS:
+        result = sym_dimensions(node, isLeft);
         break;
     case AST_FUNC_CALL:
         result = sym_func_call(node, isLeft);

@@ -246,7 +246,7 @@ defdata : ident varrdef{
 
 /* 多维数组a[5][9][2] */
 varrdef : {$$ = NULL; }
-        | '[' num ']' varrdef
+        | '[' num ']' varrdef 
         {
             $$ = new_ast_node(AST_DIMS,$2,$4);
         }
@@ -385,12 +385,10 @@ lval    : ident {$$ = $1;}  // 变量
             }  // 变量数组
 
 lvaltail :'[' expr ']' {$$ = new_ast_node(AST_DIMS,$2);}
-         | lvaltail '[' expr ']' 
+         |  lvaltail '[' expr ']'
          {
-            // $3->parent = $1;
-            // $1->sons.push_back($3);
-            // $$ = $1;
-            $$ = new_ast_node(AST_DIMS,$1,$3);
+            struct ast_node * temp_node = new_ast_node(AST_EMPTY);
+            $$ = new_ast_node(AST_DIMS,$1,$3,temp_node);
          }
 
 realarg     :  realargs {$$ = $1;}

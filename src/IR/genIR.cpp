@@ -7,6 +7,8 @@ static int ReturnFlag = 0;
 static bool WhileBlock = false;
 extern bool ExitLabel;
 static int IFflag = 0;
+int dimFlag = 0;
+std::string ArrName;
 extern std::string FuncName;
 // #include <iostream>
 extern std::unordered_map<std::string, Value *> varsMap;
@@ -343,6 +345,20 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     node->blockInsts.addInst(right->blockInsts);
     Value *leftValue = left->val;
     Value *rightValue = right->val;
+    if (left->type == AST_OP_INDEX) {
+        Value *dstVal = left->val;
+        Value *val = left->sons[0]->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (right->type == AST_OP_INDEX) {
+        Value *dstVal = right->val;
+        Value *val = right->sons[0]->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
     if (left->val->isId) {
         Value *val = findValue(left->attr.id, FuncName, true);
         Value *dstVal = left->val;
@@ -358,20 +374,7 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
         );
     }
 
-    if (left->type == AST_OP_INDEX) {
-        Value *dstVal = left->val;
-        Value *val = left->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (right->type == AST_OP_INDEX) {
-        Value *dstVal = right->val;
-        Value *val = right->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
+
     if ((leftValue->isConst) and (rightValue->isConst)) {
         ;
     } else {
@@ -409,42 +412,86 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     return true;
 }
+static bool ir_dimensions(struct ast_node *node, bool isSecond)
+{
+
+    if (isSecond) {
+        dimFlag++;
+        if (node->sons.size() > 1) {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = ir_visit_ast_node(src1_node, isSecond);
+            node->blockInsts.addInst(left->blockInsts);
+            Value *val = findValue(ArrName, FuncName, true);
+            int dim = val->dims[val->dim - dimFlag + 1];
+            if (dimFlag == 1) {
+                dim = 4;
+            }
+            if (node->sons[1]->val->isConst) {
+                node->blockInsts.addInst(
+                        new BinaryIRInst(IRINST_OP_ADD, node->sons[2]->val, node->sons[0]->val, node->sons[1]->val)
+                );
+            } else {
+                Value *offsetVal = newConstValue(dim);
+                node->blockInsts.addInst(
+                    new BinaryIRInst(IRINST_OP_ADD, node->sons[2]->val, node->sons[0]->val, node->sons[1]->val)
+                );
+                node->blockInsts.addInst(
+                    new BinaryIRInst(IRINST_OP_MUL, node->val, node->sons[2]->val, offsetVal)
+                );
+            }
+
+        } else {
+            if (node->sons[0]->val->isConst) {
+
+            } else {
+                Value *val = findValue(ArrName, FuncName, true);
+                int dim = val->dims[val->dim - dimFlag + 1];
+                if (dimFlag == 1) {
+                    dim = 4;
+                }
+                Value *offsetVal = newConstValue(dim);
+                node->blockInsts.addInst(
+                    new BinaryIRInst(IRINST_OP_MUL, node->val, node->sons[0]->val, offsetVal)
+                );
+            }
+
+        }
+        dimFlag--;
+    } else {
+        if (node->sons.size() > 1) {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = ir_visit_ast_node(src1_node, isSecond);
+            struct ast_node *src2_node = node->sons[1];
+            struct ast_node *right = ir_visit_ast_node(src2_node);
+            node->blockInsts.addInst(left->blockInsts);
+            node->blockInsts.addInst(right->blockInsts);
+        } else {
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = ir_visit_ast_node(src1_node);
+            node->blockInsts.addInst(left->blockInsts);
+        }
+    }
+    return true;
+}
 static bool ir_index(struct ast_node *node)
 {
     // 数组索引第一个孩子节点是变量名
+    // printf("数组索引\n");
     struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
     struct ast_node *array_name = ir_visit_ast_node(src1_node);
     if (!array_name) {
         return false;
     }
-    Value *val = nullptr;
-    std::vector<struct ast_node *>::iterator pIter;
-
-    // 第一步首先确定所有全局变量
-    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = ir_visit_ast_node(*pIter);
-        node->blockInsts.addInst(temp->blockInsts);
-    }
-    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = (*pIter);
-        if (temp->val->isId) {
-            Value *rightVal = newConstValue(4);
-            Value *val = findValue(temp->attr.id, FuncName);
-            node->blockInsts.addInst(
-                new BinaryIRInst(IRINST_OP_MUL, temp->val, val, rightVal)
-            );
-        } else if (temp->val->isTemp) {
-            Value *rightVal = newConstValue(4);
-            Value *val = findValue(temp->attr.id, FuncName);
-            node->blockInsts.addInst(
-                new BinaryIRInst(IRINST_OP_MUL, temp->val, val, rightVal)
-            );
-        }
-    }
-    val = findValue(array_name->attr.id, FuncName, true);
-    Value *offsetVal = newConstValue(node->sons[0]->val->intVal);
+    ArrName = array_name->attr.id;
+    // struct ast_node *right;
+    ir_visit_ast_node(src2_node);
+    dimFlag = 0;
+    ir_visit_ast_node(src2_node, true, false);
+    node->blockInsts.addInst(src2_node->blockInsts);
+    Value *val = findValue(array_name->attr.id, FuncName);
     node->blockInsts.addInst(
-        new BinaryIRInst(IRINST_OP_ADD, node->sons[0]->val, val, offsetVal)
+        new BinaryIRInst(IRINST_OP_ADD, node->sons[0]->val, val, src2_node->val)
     );
     return true;
 }
@@ -487,6 +534,7 @@ static bool ir_assign(struct ast_node *node)
     if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
         if (left->type == AST_OP_INDEX) {
             leftValue = left->sons[0]->val;
+            leftValue->type = ValueType::ValueType_Int_ptr;
         }
         // 右侧是数组变量，要把数组变量复制给临时变量，再将临时变量复制给左值
         if (right->type == AST_OP_INDEX) {
@@ -627,17 +675,17 @@ static bool ir_while(struct ast_node *node)
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     WhileBlock = true;
-    printf("while ir 0");
+    // printf("while ir 0");
     struct ast_node *left = ir_visit_ast_node(src1_node);
     if (!left) {
         return false;
     }
-    printf("while ir 0.5");
+    // printf("while ir 0.5");
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
         return false;
     }
-    printf("while ir 1");
+    // printf("while ir 1");
     node->blockInsts.addInst(
             new JumpIRInst(IRINST_JUMP_BR, node->label)
     );
@@ -709,11 +757,14 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
     if (nullptr == node) {
         return nullptr;
     }
-    if (!node->visited) {
-        node->visited = true;
-    } else {
-        return nullptr;
+    if (node->type != AST_DIMS) {
+        if (!node->visited) {
+            node->visited = true;
+        } else {
+            return nullptr;
+        }
     }
+
     bool result = true;
 
     switch (node->type) {
@@ -725,6 +776,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
     case AST_OP_CONTINUE:
     case AST_EMPTY:
         result = true;
+        break;
+    case AST_DIMS:
+        result = ir_dimensions(node, isLast);
         break;
     case AST_OP_INDEX:
         result = ir_index(node);
