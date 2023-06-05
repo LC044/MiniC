@@ -25,7 +25,7 @@ public:
 
     // 添加一条中间指令
     void addInst(IRInst *inst);
-
+    int getCodeSize();
     //获取中间代码序列
     std::vector<IRInst *> &getInsts();
 

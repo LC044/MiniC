@@ -9,12 +9,14 @@ static int ReturnFlag = 0;
 bool ExitLabel = false;
 bool WhileBlock = false;
 int BreakFlag = 0;
+int ContinueFlag = 0;
+int IFflag = 0;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
-static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false);
+static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false, bool isLast = false);
 void BFS(struct ast_node *node)
 {
     // 广搜所有局部变量定义
@@ -47,7 +49,13 @@ static bool sym_block(struct ast_node *node)
             (*pIter)->next = node->parent->next;
         }
         // 遍历Block的每个语句，进行显示或者运算
-        struct ast_node *temp = sym_visit_ast_node(*pIter, true);
+        struct ast_node *temp;
+        if (pIter == node->sons.end() - 1) {
+            temp = sym_visit_ast_node(*pIter, true, true);
+        } else {
+            // 遍历Block的每个语句，进行显示或者运算
+            temp = sym_visit_ast_node(*pIter, true, false);
+        }
         if (!temp) {
             return false;
         }
@@ -451,8 +459,9 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
 
     return true;
 }
-static bool sym_if(struct ast_node *node)
+static bool sym_if(struct ast_node *node, bool isLast)
 {
+    IFflag++;
     if (!node->next) {
         node->next = node->parent->next;
     }
@@ -467,7 +476,6 @@ static bool sym_if(struct ast_node *node)
         struct ast_node *temp = new_ast_node(AST_EMPTY);
         temp->label = label3;
         node->next = temp;
-        printf("label:%s  没有下一个节点\n", label3.c_str());
     } else {
         if (node->next->label.size() == 0) {
             node->next->label = label3;
@@ -483,9 +491,12 @@ static bool sym_if(struct ast_node *node)
     }
     bool true_break = false, false_break = false;
     bool true_return = false, false_return = false;
+    bool true_continue = false, false_continue = false;
     // true表达式
     int returnflag = ReturnFlag;
     int break_flag = BreakFlag;
+    int continue_flag = ContinueFlag;
+    int trueIfFlag = IFflag;
     struct ast_node *true_node = sym_visit_ast_node(src2_node);
     if (!true_node) {
         // if后面没有语句
@@ -501,23 +512,43 @@ static bool sym_if(struct ast_node *node)
     if (BreakFlag > break_flag) {
         true_break = true;
     }
+    if (ContinueFlag > continue_flag) {
+        true_continue = true;
+    }
     if (node->sons.size() == 3) {
         if (true_break) {
             BreakFlag = false;
             node->labels[0] = node->next->label;
             true_node->next = node->next;
+            true_node->labels = node->labels;
+        }
+        if (true_continue) {
+            node->labels[0] = node->label;
+            true_node->next = node;
+            true_node->labels = node->labels;
         }
         struct ast_node *src3_node = node->sons[2];
         returnflag = ReturnFlag;
         break_flag = BreakFlag;
+        continue_flag = ContinueFlag;
+        int falseIfFlag = IFflag;
         struct ast_node *false_node = sym_visit_ast_node(src3_node);
         if (BreakFlag > break_flag) {
             false_break = true;
+        }
+        if (ContinueFlag > continue_flag) {
+            false_continue = true;
         }
         if (false_break) {
             BreakFlag = false;
             node->labels[1] = node->next->label;
             false_node->next = node->next;
+            false_node->labels = node->labels;
+        }
+        if (false_continue) {
+            node->labels[1] = node->label;
+            false_node->next = node;
+            false_node->labels = node->labels;
         }
         if (!false_node) {
             // else 里没有语句
@@ -529,6 +560,12 @@ static bool sym_if(struct ast_node *node)
         if (ReturnFlag > returnflag) {
             ExitLabel = true;
             false_return = true;
+        }
+        if (IFflag != trueIfFlag or (isLast and WhileBlock)) {
+            true_node->jump = false;
+        }
+        if (IFflag != falseIfFlag or (isLast and WhileBlock)) {
+            false_node->jump = false;
         }
         if (true_return and false_return) {
             // return语句直接跳转到L2
@@ -576,6 +613,12 @@ static bool sym_if(struct ast_node *node)
 
                 printf("Break next label :%s\n", node->next->label.c_str());
                 true_node->next = node->next;
+            } else if (true_continue) {
+                node->labels[0] = label1;
+                node->labels[1] = node->next->label;
+                printf("Continue next label :%s\n", node->next->label.c_str());
+                true_node->next = node;
+                true_node->labels = node->labels;
             } else {
                 node->labels[1] = node->next->label;
                 if (node->next) {
@@ -583,7 +626,7 @@ static bool sym_if(struct ast_node *node)
                 } else {}
             }
         }
-        if (WhileBlock and !true_break) {
+        if (WhileBlock and !true_break and !true_continue) {
             node->labels[1] = node->label;
         }
     }
@@ -763,7 +806,7 @@ static bool sym_leaf_node(struct ast_node *node, bool isLeft)
     node->val = val;
     return true;
 }
-static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
+static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, bool isLast)
 {
     // 非法节点
     if (nullptr == node) {
@@ -783,6 +826,10 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         result = true;
         BreakFlag++;
         break;
+    case AST_OP_CONTINUE:
+        result = true;
+        ContinueFlag++;
+        break;
     case AST_OP_INDEX:
         result = sym_index(node);
         break;
@@ -797,7 +844,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         result = sym_cu(node);
         break;
     case AST_OP_IF:
-        result = sym_if(node);
+        result = sym_if(node, isLast);
         break;
     case AST_OP_CMP:
         result = sym_cmp(node, isLeft);

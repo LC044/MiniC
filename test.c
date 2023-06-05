@@ -1,4 +1,4 @@
-//test break
+//test continue
 int main()
 {
 	int i;
@@ -7,7 +7,8 @@ int main()
 	sum = 0;
 	while (i < 100) {
 		if (i == 50) {
-			break;
+			i = i + 1;
+			continue;
 		}
 		sum = sum + i;
 		i = i + 1;

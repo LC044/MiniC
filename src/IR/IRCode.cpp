@@ -27,7 +27,11 @@ void InterCode::addInst(InterCode &block)
     // 当然，这里也可不清理，但InterCode的析构函数不能清理，需专门的函数清理即可。
     insert.clear();
 }
-
+// 添加一条中间指令
+int InterCode::getCodeSize()
+{
+    return code.size();
+}
 // 添加一条中间指令
 void InterCode::addInst(IRInst *inst)
 {

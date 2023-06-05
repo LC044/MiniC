@@ -550,23 +550,18 @@ static bool ir_if(struct ast_node *node, bool isLast)
         return false;
     }
     node->blockInsts.addInst(cond->blockInsts);
-    // return true;
     std::string label1 = node->labels[0];  // true语句
     std::string label2 = node->labels[1];  // false语句
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
-        int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        int falseIfFlag = IFflag;
         struct ast_node *false_node = ir_visit_ast_node(src3_node);
         if (true_node->type != AST_EMPTY and false_node->type != AST_EMPTY) {
             node->blockInsts.addInst(
-                            new UselessIRInst(label1 + ":")
+                        new UselessIRInst(label1 + ":")
             );
             node->blockInsts.addInst(true_node->blockInsts);
-            if (IFflag != trueIfFlag or (isLast and WhileBlock)) {
-
-            } else {
+            if (true_node->jump) {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
@@ -575,9 +570,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
                 new UselessIRInst(label2 + ":")
             );
             node->blockInsts.addInst(false_node->blockInsts);
-            if (IFflag != falseIfFlag or (isLast and WhileBlock)) {
-
-            } else {
+            if (false_node->jump) {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, false_node->next->label)
                 );
@@ -588,7 +581,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
     } else {
         int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        if (true_node->type == AST_EMPTY or (true_node->sons.size() > 0 and true_node->sons[0]->type == AST_OP_BREAK)) {
+        if (true_node->blockInsts.getCodeSize() == 0) {
 
         } else {
             node->blockInsts.addInst(
@@ -706,6 +699,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         result = ir_leaf_node(node, isLast);
         break;
     case AST_OP_BREAK:
+    case AST_OP_CONTINUE:
     case AST_EMPTY:
         result = true;
         break;

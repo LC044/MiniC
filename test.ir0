@@ -12,6 +12,8 @@ define i32 @main() {
 	declare i32 %t10
 	declare i32 %t11
 	declare i32 %t12
+	declare i32 %t13
+	declare i32 %t14
 	entry
 	%l1 = 0
 	%l2 = 0
@@ -23,18 +25,23 @@ define i32 @main() {
 .L4:
 	%t5 = %l1
 	%t6 = cmp eq %t5, 50
-	bc %t6, label .L5, label .L8
+	bc %t6, label .L6, label .L8
+.L6:
+	%t7 = %l1
+	%t8 = add %t7, 1
+	%l1 = %t8
+	br label .L3
 .L8:
-	%t7 = %l2
-	%t8 = %l1
-	%t9 = add %t7, %t8
-	%l2 = %t9
+	%t9 = %l2
 	%t10 = %l1
-	%t11 = add %t10, 1
-	%l1 = %t11
+	%t11 = add %t9, %t10
+	%l2 = %t11
+	%t12 = %l1
+	%t13 = add %t12, 1
+	%l1 = %t13
 	br label .L3
 .L5:
 	%l0 = %l2
-	%t12 = %l0
-	exit %t12
+	%t14 = %l0
+	exit %t14
 }
