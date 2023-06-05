@@ -1,16 +1,37 @@
-//test continue
+// int ifWhile()
+// {
+// 	int a;
+// 	a = 0;
+// 	int b;
+// 	b = 3;
+// 	if (a == 5) {
+// 		while (b == 2) {
+// 			b = b + 2;
+// 		}
+// 		b = b + 25;
+// 	} else
+// 		while (a < 5) {
+// 			b = b * 2;
+// 			a = a + 1;
+// 		}
+// 	return (b);
+// }
+
+
+// int main()
+// {
+// 	return (ifWhile());
+// }
+int arr[6][8][3];
+
 int main()
 {
-	int i;
+	int i, sum;
+
 	i = 0;
-	int sum;
 	sum = 0;
-	while (i < 100) {
-		if (i == 50) {
-			i = i + 1;
-			continue;
-		}
-		sum = sum + i;
+	while (i < 6) {
+		sum = sum + arr[i - 1][i + 1][i];
 		i = i + 1;
 	}
 	return sum;

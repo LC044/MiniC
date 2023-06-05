@@ -1,3 +1,4 @@
+declare i32 @arr[6][8][3]
 define i32 @main() {
 	declare i32 %l0
 	declare i32 %l1 ; variable: i
@@ -5,7 +6,7 @@ define i32 @main() {
 	declare i32 %t3
 	declare i1 %t4
 	declare i32 %t5
-	declare i1 %t6
+	declare i32 %t6
 	declare i32 %t7
 	declare i32 %t8
 	declare i32 %t9
@@ -13,35 +14,43 @@ define i32 @main() {
 	declare i32 %t11
 	declare i32 %t12
 	declare i32 %t13
-	declare i32 %t14
+	declare i32* %t14
+	declare i32 %t15
+	declare i32 %t16
+	declare i32 %t17
+	declare i32 %t18
+	declare i32 %t19
+	declare i32 %t20
+	declare i32 %t21
 	entry
 	%l1 = 0
 	%l2 = 0
 	br label .L3
 .L3:
 	%t3 = %l1
-	%t4 = cmp lt %t3, 100
+	%t4 = cmp lt %t3, 6
 	bc %t4, label .L4, label .L5
 .L4:
 	%t5 = %l1
-	%t6 = cmp eq %t5, 50
-	bc %t6, label .L6, label .L8
-.L6:
+	%t6 = sub %t5, 1
 	%t7 = %l1
 	%t8 = add %t7, 1
-	%l1 = %t8
-	br label .L3
-.L8:
-	%t9 = %l2
-	%t10 = %l1
-	%t11 = add %t9, %t10
-	%l2 = %t11
-	%t12 = %l1
-	%t13 = add %t12, 1
-	%l1 = %t13
+	%t9 = mul %t6, 8
+	%t10 = add %t9, %t8
+	%t11 = mul %t10, 3
+	%t12 = add %t11, %l1
+	%t13 = mul %t12, 4
+	%t14 = add @arr, %t13
+	%t16 = *%t14
+	%t17 = %l2
+	%t18 = add %t17, %t16
+	%l2 = %t18
+	%t19 = %l1
+	%t20 = add %t19, 1
+	%l1 = %t20
 	br label .L3
 .L5:
 	%l0 = %l2
-	%t14 = %l0
-	exit %t14
+	%t21 = %l0
+	exit %t21
 }

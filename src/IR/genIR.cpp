@@ -418,6 +418,29 @@ static bool ir_index(struct ast_node *node)
         return false;
     }
     Value *val = nullptr;
+    std::vector<struct ast_node *>::iterator pIter;
+
+    // 第一步首先确定所有全局变量
+    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp = ir_visit_ast_node(*pIter);
+        node->blockInsts.addInst(temp->blockInsts);
+    }
+    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp = (*pIter);
+        if (temp->val->isId) {
+            Value *rightVal = newConstValue(4);
+            Value *val = findValue(temp->attr.id, FuncName);
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_MUL, temp->val, val, rightVal)
+            );
+        } else if (temp->val->isTemp) {
+            Value *rightVal = newConstValue(4);
+            Value *val = findValue(temp->attr.id, FuncName);
+            node->blockInsts.addInst(
+                new BinaryIRInst(IRINST_OP_MUL, temp->val, val, rightVal)
+            );
+        }
+    }
     val = findValue(array_name->attr.id, FuncName, true);
     Value *offsetVal = newConstValue(node->sons[0]->val->intVal);
     node->blockInsts.addInst(

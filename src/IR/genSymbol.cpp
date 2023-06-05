@@ -336,9 +336,15 @@ static bool sym_index(struct ast_node *node)
     std::vector<struct ast_node *>::iterator pIter;
     Value *val = nullptr;
     // 第一步首先确定所有全局变量
+    bool idFlag = false;
     for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
         struct ast_node *temp = sym_visit_ast_node(*pIter);
-        if (temp == NULL) return false;
+        if (temp->val->isId) {
+            idFlag = true;
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            val->isId = true;
+            temp->val = val;
+        }
     }
     printf("数组引用\n");
     // 求偏移量
@@ -351,18 +357,22 @@ static bool sym_index(struct ast_node *node)
             offsets[i] *= dims[j];
         }
     }
-    // printf("\n");
-    // for (int i = 0; i < 10 && dims[i] != 0; i++) {
-    //     printf("%d ", offsets[i]);
-    // }
     int offset = 0;
     for (int i = 1; i < node->sons.size(); ++i) {
         offset += node->sons[i]->val->intVal * offsets[i - 1];
     }
-    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-    val->intVal = offset * 4;
-    printf("%s 数组引用结束 %d\n", array_name->attr.id, val->intVal);
-    array_name->val = val;
+
+    // printf("%s 数组引用结束 %d\n", array_name->attr.id, val->intVal);
+    if (idFlag) {
+        array_name->val = val;
+        val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+        val->intVal = offset * 4;
+
+    } else {
+        val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+        val->intVal = offset * 4;
+        array_name->val = val;
+    }
     val = newTempValue(ValueType::ValueType_Int, FuncName);
     node->val = val;
     return true;
