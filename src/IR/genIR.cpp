@@ -518,10 +518,11 @@ static bool ir_cmp(struct ast_node *node)
     node->blockInsts.addInst(
         new BinaryIRInst(IRINST_OP_CMP, cmp_node->attr.id, node->val, left->val, right->val)
     );
+    printf("cmp指令0\n");
     node->blockInsts.addInst(
             new JumpIRInst(IRINST_JUMP_BC, node->val, node->labels[0], node->labels[1])
     );
-    printf("cmp指令\n");
+    printf("cmp指1\n");
     return true;
 }
 static bool ir_if(struct ast_node *node, bool isLast)
@@ -584,6 +585,25 @@ static bool ir_if(struct ast_node *node, bool isLast)
             }
         }
     }
+    return true;
+}
+static bool ir_while(struct ast_node *node)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    printf("while ir 0");
+    struct ast_node *left = ir_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    printf("while ir 0.5");
+    struct ast_node *right = ir_visit_ast_node(src2_node);
+    if (!right) {
+        return false;
+    }
+    printf("while ir 1");
+    node->blockInsts.addInst(left->blockInsts);
+    node->blockInsts.addInst(right->blockInsts);
     return true;
 }
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
@@ -676,6 +696,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         break;
     case AST_OP_IF:
         result = ir_if(node, isLast);
+        break;
+    case AST_OP_WHILE:
+        result = ir_while(node);
         break;
     case AST_OP_CMP:
         result = ir_cmp(node);

@@ -113,4 +113,12 @@ CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj: \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
-  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stack \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/deque \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_deque.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/deque.tcc \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_stack.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/queue \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_heap.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_queue.h

@@ -2,6 +2,8 @@
 #include "IRCode.h"
 #include <string.h>
 #include "symbol.h"
+#include <stack>
+#include <queue>
 std::string FuncName;
 static int ReturnFlag = 0;
 bool ExitLabel = false;
@@ -11,22 +13,26 @@ static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
 static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false);
-
+void PreorderNonRecursive(struct ast_node *node)
+{
+    std::queue <struct ast_node *> q;
+    q.push(node);//节点入栈
+    while (!q.empty()) {
+        struct ast_node *temp = q.front();//栈顶元素出栈并且访问该节点
+        if (temp->type == AST_DEF_LIST) {
+            sym_def_list(temp, true);
+        }
+        q.pop();
+        std::vector<struct ast_node *>::iterator pIter;
+        // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
+        for (pIter = temp->sons.begin(); pIter != temp->sons.end(); ++pIter) {
+            q.push(*pIter);
+        }
+    }
+}
 static bool sym_block(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
-    // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        // 判断是否有局部变量定义
-        if ((*pIter)->type == AST_DEF_LIST) {
-            // 第一个孩子为变量类型
-            bool result = sym_def_list(*pIter, true);
-            if (!result) {
-                return false;
-            }
-        }
-    }
-
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
@@ -114,6 +120,7 @@ static bool sym_def_func(struct ast_node *node)
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
     printf("返回值复制给临时变量0\n");
+    PreorderNonRecursive(node->sons[3]);
     struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     // 返回值复制给临时变量
     newTempValue(ValueType::ValueType_Int, FuncName);
@@ -605,6 +612,36 @@ static bool sym_neg(struct ast_node *node)
 
     return true;
 }
+static bool sym_while(struct ast_node *node)
+{
+    std::string label1 = newLabel(FuncName);  // true语句
+    std::string label2 = newLabel(FuncName);  // false语句
+    std::string label3 = newLabel(FuncName);  // 下一条语句
+    node->labels.push_back(label2);
+    node->labels.push_back(label3);
+    node->labels.push_back(label1);
+    if (!node->next) {
+        struct ast_node *temp = new_ast_node(AST_EMPTY);
+        temp->label = label3;
+        node->next = temp;
+    } else {
+        if (node->next->label.size() == 0) {
+            node->next->label = label3;
+        }
+    }
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    struct ast_node *right = sym_visit_ast_node(src2_node);
+    if (!right) {
+        return false;
+    }
+    sym_visit_ast_node(src1_node, true);
+    return true;
+}
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
 {
 
@@ -723,6 +760,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_OP_CMP:
         result = sym_cmp(node, isLeft);
+        break;
+    case AST_OP_WHILE:
+        result = sym_while(node);
         break;
     case AST_OP_OR:
         result = sym_logical_operation(node, AST_OP_OR, isLeft);

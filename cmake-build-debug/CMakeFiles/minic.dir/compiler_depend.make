@@ -456,7 +456,12 @@ CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj: D:/Project/Compile/lab3/MiniC/src
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/erase_if.h \
   D:/Project/Compile/lab3/MiniC/include/common.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h \
-  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stack \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/deque \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_deque.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/deque.tcc \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_stack.h
 
 CMakeFiles/minic.dir/src/ast.cpp.obj: D:/Project/Compile/lab3/MiniC/src/ast.cpp \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/iostream \
@@ -2071,17 +2076,9 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512v
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvnniintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvbmi2intrin.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vpopcntdqintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_init_exception.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/fma4intrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/vadefs.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsock.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/exception:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512cdintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ios:
 
@@ -2092,6 +2089,10 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/ktmtypes.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/io.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/sdkddkver.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/x86intrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/x86gprintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/winnetwk.h:
 
@@ -2137,6 +2138,8 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512f
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_deque.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/sstream.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tuple:
@@ -2177,11 +2180,7 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/string_view:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable_policy.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/timeapi.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_secapi.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_stdio_config.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_stack.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/ostream_insert.h:
 
@@ -2251,15 +2250,21 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/reason.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cwchar:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/fma4intrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/vadefs.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvbmi2intrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_init_exception.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/pshpack4.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/basic_ios.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stringfwd.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/exception_ptr.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_funcs.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stack:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/poly_laguerre.tcc:
 
@@ -2298,6 +2303,8 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ext/numeric_t
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/allocator.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/range_access.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/deque:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/pstl/pstl_config.h:
 
@@ -2403,6 +2410,10 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_pair
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stdexcept:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vnniintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/alloc_traits.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_vector.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_bvector.h:
@@ -2410,6 +2421,14 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_bvec
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlvp2intersectintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/functional_hash.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/timeapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_stdio_config.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_secapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/deque.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/oleidl.h:
 
@@ -2441,19 +2460,9 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/crtdefs.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/vector.tcc:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_types.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/typeinfo:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/concurrencysal.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/ptr_traits.h:
 
 D:/Project/Compile/lab3/MiniC/include/symbol.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/__stddef_max_align_t.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/string_s.h:
 
@@ -2478,6 +2487,24 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_forced.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsock.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/exception:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_funcs.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/exception_ptr.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/__stddef_max_align_t.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/string.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_iterator_base_types.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/typeinfo:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/concurrencysal.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/nested_exception.h:
 
@@ -2557,8 +2584,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/windef.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/geom.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vpopcntdqintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/cwctype:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/emmintrin.h:
@@ -2584,6 +2609,12 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/special_f
 D:/Project/Compile/lab3/MiniC/src/ast.cpp:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/istream:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vpopcntdqvlintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_off_t.h:
+
+D:/Project/Compile/lab3/MiniC/src/common.cpp:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/specstrings.h:
 
@@ -2667,10 +2698,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/psdk_inc/intrin-impl.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/basetsd.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/x86intrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/x86gprintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/ia32intrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/uintrintrin.h:
@@ -2712,15 +2739,3 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt_wstdlib.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/istream.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx2intrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_off_t.h:
-
-D:/Project/Compile/lab3/MiniC/src/common.cpp:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vpopcntdqvlintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512cdintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/alloc_traits.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vnniintrin.h:

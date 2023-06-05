@@ -1,21 +1,62 @@
-declare i32 @a
-define i32 @main() {
-	declare i32 %l0
-	declare i32 %t1
-	declare i1 %t2
+define i32 @get_one(i32 %t0) {
+	declare i32 %l1 ; variable: a
+	declare i32 %l2
 	declare i32 %t3
 	entry
-	@a = 10
-	%t1 = @a
-	%t2 = cmp gt %t1, 0
-	bc %t2, label .L3, label .L5
-.L3:
-	%l0 = 1
-	br label .L2
-.L5:
-	%l0 = 0
-	br label .L2
-.L2:
-	%t3 = %l0
+	%l1 = %t0
+	%l2 = 1
+	%t3 = %l2
 	exit %t3
+}
+define i32 @deepWhileBr(i32 %t0, i32 %t1) {
+	declare i32 %l2 ; variable: a
+	declare i32 %l3 ; variable: b
+	declare i32 %l4
+	declare i32 %l5 ; variable: c
+	declare i32 %l6 ; variable: d
+	declare i32 %t7
+	declare i32 %t8
+	declare i32 %t9
+	declare i32 %t10
+	declare i1 %t11
+	declare i32 %t12
+	entry
+	%l2 = %t0
+	%l3 = %t1
+	%t7 = %l2
+	%t8 = %l3
+	%t9 = add %t7, %t8
+	%l5 = %t9
+	br label .L3
+.L3:
+	%t10 = %l5
+	%t11 = cmp lt %t10, 75
+	bc %t11, label .L4, label .L5
+.L4:
+	%l6 = 42
+	br label .L3
+.L5:
+	%l4 = %l5
+	%t12 = %l4
+	exit %t12
+}
+define i32 @main() {
+	declare i32 %l0
+	declare i32 %l1 ; variable: p
+	declare i32 %t2
+	declare i32 %t3
+	declare i32 %t4
+	declare i32 %t5
+	declare i32 %t6
+	entry
+	%l1 = 2
+	%t2 = %l1
+	%t3 = %l1
+	%t4 = call i32 @deepWhileBr(i32 %t2,i32 %t3)
+	%l1 = %t4
+	%t5 = %l1
+	call void @putint(i32 %t5)
+	%l0 = 0
+	%t6 = %l0
+	exit %t6
 }
