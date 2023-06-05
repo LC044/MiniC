@@ -461,7 +461,10 @@ CMakeFiles/minic.dir/src/IR/genSymbol.cpp.obj: D:/Project/Compile/lab3/MiniC/src
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/deque \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_deque.h \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/deque.tcc \
-  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_stack.h
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_stack.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/queue \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_heap.h \
+  D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_queue.h
 
 CMakeFiles/minic.dir/src/ast.cpp.obj: D:/Project/Compile/lab3/MiniC/src/ast.cpp \
   D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/iostream \
@@ -2080,13 +2083,15 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512v
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512cdintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ios:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/vaesintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/wow64apiset.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlbitalgintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/ktmtypes.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512bwintrin.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/io.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512fintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/sdkddkver.h:
 
@@ -2099,8 +2104,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/winnetwk.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/locale_classes.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/apiset.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ostream:
 
 D:/Project/Compile/lab3/MiniC/src/IR/genIR.cpp:
 
@@ -2118,12 +2121,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/commdlg.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/hashtable.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tbmintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/pathgeom.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/sys/timeb_s.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/poly_hermite.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/bmiintrin.h:
@@ -2133,8 +2130,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/wincrypt.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/node_handle.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/modified_bessel_func.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512fintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/enable_special_members.h:
 
@@ -2153,6 +2148,16 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/limits.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdlib.h:
 
 D:/Project/Compile/lab3/MiniC/src/main.cpp:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/queue:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/prsht.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsmcrd.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/threadpoolapiset.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/riemann_zeta.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/fltwinerror.h:
 
@@ -2199,10 +2204,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/mciapi.h:
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/localefwd.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/math.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/iostream:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/bmi2intrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/swprintf.inl:
 
@@ -2267,12 +2268,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stringfw
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stack:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/poly_laguerre.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/vaesintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlbitalgintrin.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512bwintrin.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/type_traits:
 
@@ -2404,6 +2399,12 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/ctype.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/stdint.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_heap.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/streambuf:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/f16cintrin.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/_mingw_mac.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_pair.h:
@@ -2470,6 +2471,8 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/char_tra
 
 D:/Project/Compile/lab3/MiniC/include/IRInst.h:
 
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/stl_queue.h:
+
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/_timeval.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/stdint.h:
@@ -2486,7 +2489,33 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/corecrt.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/cxxabi_forced.h:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/avx512vlintrin.h:
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/mmeapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/processtopologyapi.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/guiddef.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sdks/_mingw_ddk.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/iostream:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/bmi2intrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ostream:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/ios:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/tbmintrin.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/sec_api/sys/timeb_s.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/graphviz/pathgeom.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/wow64apiset.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/ktmtypes.h:
+
+D:/Project/Compile/CompilerTools/msys64/mingw64/include/io.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsock.h:
 
@@ -2566,10 +2595,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/include/signal.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/system_error:
 
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/streambuf:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/f16cintrin.h:
-
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/stdlib.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/x86_64-w64-mingw32/bits/c++allocator.h:
@@ -2647,22 +2672,6 @@ D:/Project/Compile/CompilerTools/msys64/mingw64/lib/clang/15.0.7/include/invpcid
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/ell_integral.tcc:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/hypergeometric.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/prsht.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/winsmcrd.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/threadpoolapiset.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/tr1/riemann_zeta.tcc:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/mmeapi.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/processtopologyapi.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/sdks/_mingw_ddk.h:
-
-D:/Project/Compile/CompilerTools/msys64/mingw64/include/guiddef.h:
 
 D:/Project/Compile/CompilerTools/msys64/mingw64/include/c++/12.2.0/bits/concept_check.h:
 

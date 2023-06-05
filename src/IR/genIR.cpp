@@ -4,7 +4,7 @@
 #include "symbol.h"
 // std::string FuncName;
 static int ReturnFlag = 0;
-// static bool BlockBreak = false;
+static bool WhileBlock = false;
 extern bool ExitLabel;
 static int IFflag = 0;
 extern std::string FuncName;
@@ -20,7 +20,18 @@ extern std::vector<std::string > funcsName;
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast = false, bool isLeft = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
+static bool isJump(struct ast_node *node)
+{
+    switch (node->type) {
+    case AST_OP_IF:
+        return true;
+    case AST_OP_WHILE:
+        return true;
+    default:
+        return false;
+    }
 
+}
 // 从抽象语法树的根开始遍历，然后输出计算出表达式的值
 static bool ir_cu(struct ast_node *node)
 {
@@ -76,7 +87,7 @@ static bool ir_block(struct ast_node *node)
         }
         // if语句的后一句一定是一个新的label
         // 下一条语句
-        if (pIter != node->sons.begin() and (*(pIter - 1))->type == AST_OP_IF) {
+        if (pIter != node->sons.begin() and isJump(*(pIter - 1))) {
             node->blockInsts.addInst(
                     new UselessIRInst(temp->label + ":")
             );
@@ -553,7 +564,9 @@ static bool ir_if(struct ast_node *node, bool isLast)
                             new UselessIRInst(label1 + ":")
             );
             node->blockInsts.addInst(true_node->blockInsts);
-            if (IFflag == trueIfFlag) {
+            if (IFflag != trueIfFlag or (isLast and WhileBlock)) {
+
+            } else {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
@@ -562,7 +575,9 @@ static bool ir_if(struct ast_node *node, bool isLast)
                 new UselessIRInst(label2 + ":")
             );
             node->blockInsts.addInst(false_node->blockInsts);
-            if (IFflag == falseIfFlag) {
+            if (IFflag != falseIfFlag or (isLast and WhileBlock)) {
+
+            } else {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, false_node->next->label)
                 );
@@ -573,12 +588,16 @@ static bool ir_if(struct ast_node *node, bool isLast)
     } else {
         int trueIfFlag = IFflag;
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        if (true_node->type != AST_EMPTY) {
+        if (true_node->type == AST_EMPTY or (true_node->sons.size() > 0 and true_node->sons[0]->type == AST_OP_BREAK)) {
+
+        } else {
             node->blockInsts.addInst(
                             new UselessIRInst(label1 + ":")
             );
             node->blockInsts.addInst(true_node->blockInsts);
-            if (IFflag == trueIfFlag) {
+            if (IFflag != trueIfFlag or (isLast and WhileBlock)) {
+
+            } else {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
@@ -591,6 +610,7 @@ static bool ir_while(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
+    WhileBlock = true;
     printf("while ir 0");
     struct ast_node *left = ir_visit_ast_node(src1_node);
     if (!left) {
@@ -602,8 +622,21 @@ static bool ir_while(struct ast_node *node)
         return false;
     }
     printf("while ir 1");
+    node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BR, node->label)
+    );
+    node->blockInsts.addInst(
+            new UselessIRInst(node->label + ":")
+    );
     node->blockInsts.addInst(left->blockInsts);
+    node->blockInsts.addInst(
+            new UselessIRInst(node->labels[0] + ":")
+    );
     node->blockInsts.addInst(right->blockInsts);
+    node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BR, node->label)
+    );
+    WhileBlock = false;
     return true;
 }
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
@@ -672,6 +705,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         // 叶子节点
         result = ir_leaf_node(node, isLast);
         break;
+    case AST_OP_BREAK:
     case AST_EMPTY:
         result = true;
         break;

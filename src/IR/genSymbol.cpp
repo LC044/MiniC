@@ -7,14 +7,17 @@
 std::string FuncName;
 static int ReturnFlag = 0;
 bool ExitLabel = false;
+bool WhileBlock = false;
+int BreakFlag = 0;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
 static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false);
-void PreorderNonRecursive(struct ast_node *node)
+void BFS(struct ast_node *node)
 {
+    // 广搜所有局部变量定义
     std::queue <struct ast_node *> q;
     q.push(node);//节点入栈
     while (!q.empty()) {
@@ -24,7 +27,6 @@ void PreorderNonRecursive(struct ast_node *node)
         }
         q.pop();
         std::vector<struct ast_node *>::iterator pIter;
-        // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
         for (pIter = temp->sons.begin(); pIter != temp->sons.end(); ++pIter) {
             q.push(*pIter);
         }
@@ -39,11 +41,6 @@ static bool sym_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
-        // if ((*pIter)->parent) {
-        //     if ((*pIter)->parent->type == AST_OP_IF) {
-
-        //     }
-        // }
         if (pIter != node->sons.end() - 1) {
             (*pIter)->next = *(pIter + 1);
         } else {
@@ -120,7 +117,7 @@ static bool sym_def_func(struct ast_node *node)
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
     printf("返回值复制给临时变量0\n");
-    PreorderNonRecursive(node->sons[3]);
+    BFS(node->sons[3]);
     struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     // 返回值复制给临时变量
     newTempValue(ValueType::ValueType_Int, FuncName);
@@ -459,7 +456,7 @@ static bool sym_if(struct ast_node *node)
     if (!node->next) {
         node->next = node->parent->next;
     }
-
+    node->label = node->parent->label;        // 供while语句使用
     std::string label1 = newLabel(FuncName);  // true语句
     std::string label2 = newLabel(FuncName);  // false语句
     std::string label3 = newLabel(FuncName);  // 下一条语句
@@ -470,6 +467,7 @@ static bool sym_if(struct ast_node *node)
         struct ast_node *temp = new_ast_node(AST_EMPTY);
         temp->label = label3;
         node->next = temp;
+        printf("label:%s  没有下一个节点\n", label3.c_str());
     } else {
         if (node->next->label.size() == 0) {
             node->next->label = label3;
@@ -477,14 +475,17 @@ static bool sym_if(struct ast_node *node)
     }
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
+    src2_node->label = node->label;    // 供while语句使用
     // 条件表达式
     struct ast_node *cond = sym_visit_ast_node(src1_node);
     if (!cond) {
         return false;
     }
+    bool true_break = false, false_break = false;
     bool true_return = false, false_return = false;
     // true表达式
     int returnflag = ReturnFlag;
+    int break_flag = BreakFlag;
     struct ast_node *true_node = sym_visit_ast_node(src2_node);
     if (!true_node) {
         // if后面没有语句
@@ -497,12 +498,27 @@ static bool sym_if(struct ast_node *node)
         ExitLabel = true;
         true_return = true;
     }
-
+    if (BreakFlag > break_flag) {
+        true_break = true;
+    }
     if (node->sons.size() == 3) {
-
+        if (true_break) {
+            BreakFlag = false;
+            node->labels[0] = node->next->label;
+            true_node->next = node->next;
+        }
         struct ast_node *src3_node = node->sons[2];
         returnflag = ReturnFlag;
+        break_flag = BreakFlag;
         struct ast_node *false_node = sym_visit_ast_node(src3_node);
+        if (BreakFlag > break_flag) {
+            false_break = true;
+        }
+        if (false_break) {
+            BreakFlag = false;
+            node->labels[1] = node->next->label;
+            false_node->next = node->next;
+        }
         if (!false_node) {
             // else 里没有语句
             src3_node->label = label3;
@@ -552,10 +568,23 @@ static bool sym_if(struct ast_node *node)
             true_node->next = temp;
             node->labels[1] = node->next->label;
         } else {
-            node->labels[1] = node->next->label;
-            if (node->next) {
+            // printf("Break next label :%s\n", node->next->label.c_str());
+            if (true_break) {
+                node->labels[1] = node->next->label;
+                node->next = node->parent->next;
+                node->labels[0] = node->next->label;
+
+                printf("Break next label :%s\n", node->next->label.c_str());
                 true_node->next = node->next;
-            } else {}
+            } else {
+                node->labels[1] = node->next->label;
+                if (node->next) {
+                    true_node->next = node->next;
+                } else {}
+            }
+        }
+        if (WhileBlock and !true_break) {
+            node->labels[1] = node->label;
         }
     }
     node->val = node->sons[0]->val;
@@ -614,23 +643,30 @@ static bool sym_neg(struct ast_node *node)
 }
 static bool sym_while(struct ast_node *node)
 {
-    std::string label1 = newLabel(FuncName);  // true语句
-    std::string label2 = newLabel(FuncName);  // false语句
-    std::string label3 = newLabel(FuncName);  // 下一条语句
+    WhileBlock = true;
+    std::string label1 = newLabel(FuncName);
+    std::string label2 = newLabel(FuncName);
+    std::string label3 = newLabel(FuncName);
     node->labels.push_back(label2);
     node->labels.push_back(label3);
     node->labels.push_back(label1);
+    // label1会一直往子语句块传下去，if语句没有else跳转到该label
+    node->label = label1;// 供while语句使用
     if (!node->next) {
         struct ast_node *temp = new_ast_node(AST_EMPTY);
         temp->label = label3;
         node->next = temp;
+        printf("label:%s  while没有下一个节点\n", label3.c_str());
     } else {
         if (node->next->label.size() == 0) {
             node->next->label = label3;
+            printf("label:%s  while有下一个节点\n", label3.c_str());
         }
     }
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
+    src2_node->label = node->label;
+    src2_node->next = node->next;
     struct ast_node *left = sym_visit_ast_node(src1_node);
     if (!left) {
         return false;
@@ -640,6 +676,7 @@ static bool sym_while(struct ast_node *node)
         return false;
     }
     sym_visit_ast_node(src1_node, true);
+    WhileBlock = false;
     return true;
 }
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
@@ -741,6 +778,10 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_EMPTY:
         result = false;
+        break;
+    case AST_OP_BREAK:
+        result = true;
+        BreakFlag++;
         break;
     case AST_OP_INDEX:
         result = sym_index(node);

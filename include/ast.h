@@ -89,6 +89,8 @@ struct ast_node {
     std::vector<struct ast_node *> sons; // 孩子节点
     struct ast_node *next;    // 同级的下一个节点
     enum ast_operator_type type; // 节点类型
+    bool jump = true;            //
+    bool newLabel = true;        //
     std::string label;           //
     std::vector<std::string > labels;
     struct ast_node_attr attr;   // node的其它属性
