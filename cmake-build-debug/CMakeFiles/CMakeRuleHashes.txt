@@ -1,3 +1,0 @@
-# Hashes of file build rules.
-8ba0b0a5203bc1c66b3e03255d40c737 D:/Project/Compile/lab3/MiniC/src/minic/calculator_lex.cpp
-cfb3847ca8ba7bfb4e21d3f41db8cc66 D:/Project/Compile/lab3/MiniC/src/minic/calculator_yacc.cpp
