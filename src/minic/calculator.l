@@ -33,6 +33,7 @@
 /* 辅助定义式或者宏，后面使用时带上大括号 */
 
 d			[0-9]
+o           [0-7]
 l           [a-zA-Z|_]
 h           [0-9a-fA-F]
 white		[\t\040]
@@ -73,6 +74,12 @@ white_line  [\r\n]
            }
 "0"(x|X){h}+	{
                 yylval.integer_num.val = (int)strtol(yytext, (char **)NULL, 16);
+                yylval.integer_num.lineno = yylineno;
+                // printf("%s  %d\n",yytext, yylval.integer_num.val);
+                return T_DIGIT;
+            }
+"0"{o}+	{
+                yylval.integer_num.val = (int)strtol(yytext, (char **)NULL, 8);
                 yylval.integer_num.lineno = yylineno;
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
