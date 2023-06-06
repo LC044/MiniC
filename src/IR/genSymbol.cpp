@@ -331,17 +331,14 @@ static bool sym_dimensions(struct ast_node *node, bool isSecond)
 {
 
     if (isSecond) {
-
+        Value *val;
         if (node->sons.size() > 1) {
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *left = sym_visit_ast_node(src1_node, isSecond);
-            if (node->sons[1]->val->isConst) {
-                node->val = node->sons[1]->val;
-                node->val->intVal *= 4;
+            if (node->sons[0]->val->isConst and node->sons[1]->val->isConst) {
+                node->val = node->sons[0]->val;
             } else {
-                Value *val;
                 val = newTempValue(ValueType::ValueType_Int, FuncName);
-
                 node->sons[2]->val = val;
                 val = newTempValue(ValueType::ValueType_Int, FuncName);
                 node->val = val;
@@ -352,13 +349,10 @@ static bool sym_dimensions(struct ast_node *node, bool isSecond)
             }
         } else {
             if (node->sons[0]->val->isConst) {
-
                 node->val = node->sons[0]->val;
-                node->val->intVal *= 4;
             } else {
                 Value *val;
                 val = newTempValue(ValueType::ValueType_Int, FuncName);
-                // val = newTempValue(ValueType::ValueType_Int, FuncName);
                 node->val = val;
             }
 
@@ -405,7 +399,7 @@ static bool sym_index(struct ast_node *node)
     sym_visit_ast_node(temp_dims, true);
 
     val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-    printf("新建指针变量 %s\n", val->getName().c_str());
+    // printf("新建指针变量 %s\n", val->getName().c_str());
     val->type = ValueType::ValueType_Int_ptr;
     node->val = val;
     node->sons[0]->val = val;

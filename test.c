@@ -22,25 +22,22 @@
 // {
 // 	return (ifWhile());
 // }
-int arr[6];
-
 int main()
 {
-	int i, sum;
+	int a[4][2];
+	int b[4][2];
+	int c[4][2];
+	int d[4][2];
+	int e[4][2][1];
+	int i;
+	i = 1;
+	a[2][0] = 7;
+	d[3][0] = a[3][0];
+	d[2][1] = 1;
+	// e[0][i + 1][0] = d[2][1];
+	e[0][i][0] = 0;
+	e[3][1][0] = 5;
 
-	arr[0] = 1;
-	arr[1] = 2;
-	arr[2] = 33;
-	arr[3] = 4;
-	arr[4] = 5;
-	arr[5] = 6;
-
-	i = 0;
-	sum = 0;
-	while (i < 6) {
-		sum = sum + arr[i];
-		i = i + 1;
-	}
-	return sum;
+	return e[1 * 2][1][0] + e[0][0][0] + e[0][1][0] + d[3][0];
 }
 

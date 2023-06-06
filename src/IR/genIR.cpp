@@ -426,10 +426,9 @@ static bool ir_dimensions(struct ast_node *node, bool isSecond)
             if (dimFlag == 1) {
                 dim = 4;
             }
-            if (node->sons[1]->val->isConst) {
-                node->blockInsts.addInst(
-                        new BinaryIRInst(IRINST_OP_ADD, node->sons[2]->val, node->sons[0]->val, node->sons[1]->val)
-                );
+            if (node->sons[0]->val->isConst and node->sons[1]->val->isConst) {
+                node->val->intVal = (node->sons[0]->val->intVal + node->sons[1]->val->intVal) * dim;
+
             } else {
                 Value *offsetVal = newConstValue(dim);
                 node->blockInsts.addInst(
@@ -441,14 +440,15 @@ static bool ir_dimensions(struct ast_node *node, bool isSecond)
             }
 
         } else {
+            Value *val = findValue(ArrName, FuncName, true);
+            int dim = val->dims[val->dim - dimFlag + 1];
+            if (dimFlag == 1) {
+                dim = 4;
+            }
             if (node->sons[0]->val->isConst) {
-
+                node->val->intVal *= dim;
             } else {
-                Value *val = findValue(ArrName, FuncName, true);
-                int dim = val->dims[val->dim - dimFlag + 1];
-                if (dimFlag == 1) {
-                    dim = 4;
-                }
+
                 Value *offsetVal = newConstValue(dim);
                 node->blockInsts.addInst(
                     new BinaryIRInst(IRINST_OP_MUL, node->val, node->sons[0]->val, offsetVal)
