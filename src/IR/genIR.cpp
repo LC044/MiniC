@@ -563,7 +563,7 @@ static bool ir_neg(struct ast_node *node)
         return false;
     }
     node->blockInsts.addInst(left->blockInsts);
-    if (left->val->isId) {
+    if (!left->val->isConst) {
         node->blockInsts.addInst(
         new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
     }
@@ -754,6 +754,34 @@ static bool ir_or(struct ast_node *node)
     printf("or运算符1\n");
     return true;
 }
+static bool ir_not(struct ast_node *node, bool isLeft)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = ir_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    if (left->val->isConst) {
+    } else {
+        if (left->val->isId) {
+            Value *val = findValue(left->attr.id, FuncName, true);
+            Value *dstVal = left->val;
+            node->blockInsts.addInst(
+                    new AssignIRInst(dstVal, val)
+            );
+        }
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_CMP, "ne", node->val, left->val, constVal)
+        );
+        printf("cmp指令0\n");
+        node->blockInsts.addInst(
+                new JumpIRInst(IRINST_JUMP_BC, node->val, node->labels[0], node->labels[1])
+        );
+    }
+
+    return true;
+}
 // 递归遍历抽象语法树进行计算
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bool isLeft)
 {
@@ -816,6 +844,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
     case AST_OP_AND:
         result = ir_or(node);
         // result = true;
+        break;
+    case AST_OP_NOT:
+        result = ir_not(node, isLeft);
         break;
     case AST_RETURN:
         result = ir_return(node);

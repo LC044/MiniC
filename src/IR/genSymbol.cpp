@@ -8,6 +8,7 @@ std::string FuncName;
 static int ReturnFlag = 0;
 bool ExitLabel = false;
 bool WhileBlock = false;
+bool Ifcmp = false;
 int BreakFlag = 0;
 int ContinueFlag = 0;
 int IFflag = 0;
@@ -504,6 +505,7 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
 }
 static bool sym_if(struct ast_node *node, bool isLast)
 {
+    Ifcmp = true;
     IFflag++;
     if (!node->next) {
         node->next = node->parent->next;
@@ -524,8 +526,13 @@ static bool sym_if(struct ast_node *node, bool isLast)
             node->next->label = label3;
         }
     }
-
+    // bool ifcmp = true;
     struct ast_node *src1_node = node->sons[0];
+    if (src1_node->type == AST_OP_CMP) {
+
+    } else {
+        // ifcmp = false;
+    }
     struct ast_node *src2_node = node->sons[1];
     if (node->sons.size() == 3) {
         node->sons[1]->label = label1;
@@ -695,40 +702,44 @@ static bool sym_if(struct ast_node *node, bool isLast)
     }
     node->val = node->sons[0]->val;
     sym_visit_ast_node(src1_node, true);
-
+    // Ifcmp = false;
     return true;
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
 {
-    if (isSecond) {
-        node->labels = node->parent->labels;
-        return true;
+    if (true) {
+        if (isSecond) {
+            node->labels = node->parent->labels;
+            return true;
+        }
+        // 仅第一次访问有效
+        struct ast_node *src1_node = node->sons[0];
+        struct ast_node *src2_node = node->sons[2];
+        struct ast_node *left = sym_visit_ast_node(src1_node);
+        if (!left) {
+            return false;
+        }
+        struct ast_node *right = sym_visit_ast_node(src2_node);
+        if (!right) {
+            return false;
+        }
+        Value *val = nullptr;
+        // 变量当右值要先复制给临时变量再进行计算
+        if (left->val->isId) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            val->isId = true;
+            left->val = val;
+        }
+        if (right->val->isId) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            val->isId = true;
+            right->val = val;
+        }
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        node->val = val;
+    } else {
+
     }
-    // 仅第一次访问有效
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[2];
-    struct ast_node *left = sym_visit_ast_node(src1_node);
-    if (!left) {
-        return false;
-    }
-    struct ast_node *right = sym_visit_ast_node(src2_node);
-    if (!right) {
-        return false;
-    }
-    Value *val = nullptr;
-    // 变量当右值要先复制给临时变量再进行计算
-    if (left->val->isId) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        val->isId = true;
-        left->val = val;
-    }
-    if (right->val->isId) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        val->isId = true;
-        right->val = val;
-    }
-    val = newTempValue(ValueType::ValueType_Bool, FuncName);
-    node->val = val;
     return true;
 }
 static bool sym_neg(struct ast_node *node)
@@ -738,12 +749,13 @@ static bool sym_neg(struct ast_node *node)
     if (!left) {
         return false;
     }
-    if (left->val->isId) {
-        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-        node->val = val;
-    } else {
+    if (left->val->isConst) {
         left->val->intVal = -left->val->intVal;
         node->val = left->val;
+
+    } else {
+        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->val = val;
     }
 
     return true;
@@ -805,10 +817,25 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
 {
 
     if (type == AST_OP_NOT) {
+        // node->labels = node->parent->labels;
         struct ast_node *src1_node = node->sons[0];
         struct ast_node *left = sym_visit_ast_node(src1_node);
         if (!left) {
             return false;
+        }
+        if (left->val->isConst) {
+            node->val = left->val;
+            node->val->intVal = left->val->intVal != 0 ? 0 : 1;
+        } else {
+
+            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+            node->val = val;
+            std::string label1 = newLabel(FuncName);  // true语句
+            std::string label2 = newLabel(FuncName);  // false语句
+            std::string label3 = newLabel(FuncName);  // 下一条语句
+            node->labels.push_back(label1);
+            node->labels.push_back(label2);
+            node->labels.push_back(label3);
         }
     } else {
         if (!isSecond) {
@@ -888,6 +915,57 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
             // printf("逻辑运算\n");
         }
 
+    }
+    return true;
+}
+static bool sym_not(struct ast_node *node, bool isSecond)
+{
+    if (Ifcmp) {
+        if (isSecond) {
+            node->labels = node->parent->labels;
+            std::string label = node->labels[0];
+            node->labels[0] = node->labels[1];
+            node->labels[1] = label;
+            return true;
+        } else {
+            node->labels = node->parent->labels;
+            // return true;
+            struct ast_node *src1_node = node->sons[0];
+            struct ast_node *left = sym_visit_ast_node(src1_node);
+            if (!left) {
+                return false;
+            }
+            Value *val;
+            // 变量当右值要先复制给临时变量再进行计算
+            if (left->val->isId) {
+                val = newTempValue(ValueType::ValueType_Int, FuncName);
+                val->isId = true;
+                left->val = val;
+            }
+            val = newTempValue(ValueType::ValueType_Bool, FuncName);
+            node->val = val;
+        }
+    } else {
+        // node->labels = node->parent->labels;
+        struct ast_node *src1_node = node->sons[0];
+        struct ast_node *left = sym_visit_ast_node(src1_node);
+        if (!left) {
+            return false;
+        }
+        if (left->val->isConst) {
+            node->val = left->val;
+            node->val->intVal = left->val->intVal != 0 ? 0 : 1;
+        } else {
+
+            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+            node->val = val;
+            std::string label1 = newLabel(FuncName);  // true语句
+            std::string label2 = newLabel(FuncName);  // false语句
+            std::string label3 = newLabel(FuncName);  // 下一条语句
+            node->labels.push_back(label1);
+            node->labels.push_back(label2);
+            node->labels.push_back(label3);
+        }
     }
     return true;
 }
@@ -977,6 +1055,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         break;
     case AST_OP_AND:
         result = sym_logical_operation(node, AST_OP_AND, isLeft);
+        break;
+    case AST_OP_NOT:
+        result = sym_not(node, isLeft);
         break;
     case AST_DEF_LIST:
         result = sym_def_list(node);

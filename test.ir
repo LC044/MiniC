@@ -1,17 +1,12 @@
-declare i32 @a
-declare i32 @b
-declare i32 @c
-declare i32 @d
-declare i32 @e
 define i32 @main() {
     declare i32 %l0 ; variable: return
-    declare i32 %l1 ; variable: flag
-    declare i32 %t2
-    declare i32 %t3
-    declare i1 %t4
-    declare i32 %t5
+    declare i32 %l1 ; variable: a
+    declare i32 %l2 ; variable: b
+    declare i32 %l3 ; variable: c
+    declare i32 %l4 ; variable: d
+    declare i32 %l5 ; variable: result
     declare i32 %t6
-    declare i1 %t7
+    declare i32 %t7
     declare i32 %t8
     declare i32 %t9
     declare i32 %t10
@@ -20,61 +15,66 @@ define i32 @main() {
     declare i32 %t13
     declare i32 %t14
     declare i32 %t15
-    declare i1 %t16
+    declare i32 %t16
     declare i32 %t17
-    declare i1 %t18
+    declare i32 %t18
     declare i32 %t19
-    declare i1 %t20
+    declare i32 %t20
     declare i32 %t21
-    declare i1 %t22
+    declare i32 %t22
     declare i32 %t23
     declare i32 %t24
+    declare i32 %t25
+    declare i32 %t26
+    declare i32 %t27
+    declare i32 %t28
+    declare i32 %t29
+    declare i32 %t30
+    declare i32 %t31
+    declare i32 %t32
+    declare i32 %t33
+    declare i32 %t34
+    declare i32 %t35
     entry
-    @a = 1
-    @b = 0
-    @c = 1
-    @d = 2
-    @e = 4
-    %l1 = 0
-    %t2 = @a
-    %t3 = @b
-    %t4 = cmp eq %t2, %t3
-    bc %t4, label .L6, label .L7
-.L6:
-    %t5 = @a
-    %t6 = @d
-    %t7 = cmp le %t5, %t6
-    bc %t7, label .L3, label .L7
-.L7:
-    %t8 = @b
-    %t9 = @c
-    %t10 = mul %t8, %t9
-    %t11 = @a
-    %t12 = @c
-    %t13 = div %t11, %t12
-    %t14 = @d
-    %t15 = sub %t14, %t13
-    %t16 = cmp eq %t10, %t15
-    bc %t16, label .L3, label .L8
-.L8:
-    %t17 = @a
-    %t18 = cmp gt %t17, 2
-    bc %t18, label .L9, label .L5
-.L9:
-    %t19 = @b
-    %t20 = cmp ne %t19, 3
-    bc %t20, label .L10, label .L5
-.L10:
-    %t21 = @c
-    %t22 = cmp eq %t21, 4
-    bc %t22, label .L3, label .L5
-.L3:
-    %l1 = 1
-    br label .L5
-.L5:
-    %t23 = %l1
-    call void @putint(i32 %t23)
-    %l0 = %l1
-    %t24 = %l0
-    exit %t24
+    %l1 = 5
+    %l2 = 5
+    %l3 = 1
+    %l4 = -2
+    %t6 = %l4
+    %t7 = mul %t6, 1
+    %t8 = div %t7, 2
+    %t9 = %l1
+    %t10 = %l2
+    %t11 = sub %t9, %t10
+    %t12 = add %t8, %t11
+    %t13 = %l3
+    %t14 = add %t13, 3
+    %t15 = neg %t14
+    %t16 = mod %t15, 2
+    %t17 = sub %t12, %t16
+    %l5 = %t17
+    %t18 = %l5
+    call void @putint(i32 %t18)
+    %t19 = %l4
+    %t20 = mod %t19, 2
+    %t21 = add %t20, 67
+    %t22 = %l1
+    %t23 = %l2
+    %t24 = sub %t22, %t23
+    %t25 = neg %t24
+    %t26 = add %t21, %t25
+    %t27 = %l3
+    %t28 = add %t27, 2
+    %t29 = mod %t28, 2
+    %t30 = neg %t29
+    %t31 = sub %t26, %t30
+    %l5 = %t31
+    %t32 = %l5
+    %t33 = add %t32, 3
+    %l5 = %t33
+    %t34 = %l5
+    call void @putint(i32 %t34)
+    %l0 = 0
+    %t35 = %l0
+    exit %t35
 }

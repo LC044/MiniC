@@ -265,6 +265,9 @@ Agnode_t *graph_visit_ast_node(Agraph_t *g, struct ast_node *astnode)
     case AST_OP_AND:
         graph_node = genBlockGraphNode(g, astnode, "AND");
         break;
+    case AST_OP_NOT:
+        graph_node = genBlockGraphNode(g, astnode, "NOT");
+        break;
     case AST_OP_OR:
         graph_node = genBlockGraphNode(g, astnode, "OR");
         break;

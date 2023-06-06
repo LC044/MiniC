@@ -76,7 +76,7 @@ void yyerror(char * msg);
 %left T_CMP
 %left "++" "--"
 %left '+' '-'
-%left '*' '/'
+%left '*' '/' '%'
 %right UMINUS '!' 
 
 %nonassoc LOWER_THEN_ELSE
