@@ -145,10 +145,13 @@ static bool ir_def_list(struct ast_node *node)
 // 函数定义IR
 static bool ir_def_func(struct ast_node *node)
 {
-    struct ast_node *func_type = node->sons[0];
+    // struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
-    if (strcmp(func_type->attr.id, "void") == 0) {
-        printf("void value\n");
+    // if (strcmp(func_type->attr.id, "void") == 0) {
+    //     printf("void value\n");
+    //     return true;
+    // }
+    if (node->sons[3]->type == AST_EMPTY) {
         return true;
     }
     // 第二个孩子是函数名
@@ -579,8 +582,9 @@ static bool ir_cmp(struct ast_node *node)
         return false;
     }
     // 创建临时变量保存IR的值，以及线性IR指令
-    node->blockInsts.addInst(right->blockInsts);
     node->blockInsts.addInst(left->blockInsts);
+    node->blockInsts.addInst(right->blockInsts);
+
     if (left->val->isId) {
         Value *val = findValue(left->attr.id, FuncName, true);
         Value *dstVal = left->val;
@@ -744,7 +748,7 @@ static bool ir_or(struct ast_node *node)
     }
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(
-            new UselessIRInst(node->label + ":")
+            new UselessIRInst(right->label + ":")
     );
     node->blockInsts.addInst(right->blockInsts);
     printf("or运算符1\n");

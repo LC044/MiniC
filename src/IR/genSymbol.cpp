@@ -74,6 +74,9 @@ static bool sym_block(struct ast_node *node)
 }
 static bool sym_def_func(struct ast_node *node)
 {
+    // if (node->sons[3]->type == AST_EMPTY) {
+    //     return true;
+    // }
     struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
 
@@ -521,8 +524,23 @@ static bool sym_if(struct ast_node *node, bool isLast)
             node->next->label = label3;
         }
     }
+
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
+    if (node->sons.size() == 3) {
+        node->sons[1]->label = label1;
+        node->sons[2]->label = label2;
+        node->true_next = node->sons[1];
+        node->false_next = node->sons[2];
+    } else {
+        node->sons[1]->label = label1;
+        node->true_next = node->sons[1];
+        node->false_next = node->next;
+    }
+    src1_node->next = node->next;
+    src1_node->true_next = node->true_next;
+    src1_node->false_next = node->false_next;
+    src1_node->next = node->next;
     src2_node->label = node->label;    // 供while语句使用
     // 条件表达式
     struct ast_node *cond = sym_visit_ast_node(src1_node);
@@ -537,6 +555,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
     int break_flag = BreakFlag;
     int continue_flag = ContinueFlag;
     int trueIfFlag = IFflag;
+
     struct ast_node *true_node = sym_visit_ast_node(src2_node);
     if (!true_node) {
         // if后面没有语句
@@ -556,6 +575,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
         true_continue = true;
     }
     if (node->sons.size() == 3) {
+        node->true_next = src2_node;
         if (true_break) {
             BreakFlag = false;
             node->labels[0] = node->next->label;
@@ -568,6 +588,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
             true_node->labels = node->labels;
         }
         struct ast_node *src3_node = node->sons[2];
+        node->false_next = src3_node;
         returnflag = ReturnFlag;
         break_flag = BreakFlag;
         continue_flag = ContinueFlag;
@@ -639,6 +660,8 @@ static bool sym_if(struct ast_node *node, bool isLast)
             }
         }
     } else {
+        node->true_next = src2_node;
+        node->false_next = node->next;
         if (true_return) {
             struct ast_node *temp = new_ast_node(AST_EMPTY);
             temp->label = ".L2";
@@ -651,12 +674,12 @@ static bool sym_if(struct ast_node *node, bool isLast)
                 node->next = node->parent->next;
                 node->labels[0] = node->next->label;
 
-                printf("Break next label :%s\n", node->next->label.c_str());
+                // printf("Break next label :%s\n", node->next->label.c_str());
                 true_node->next = node->next;
             } else if (true_continue) {
                 node->labels[0] = label1;
                 node->labels[1] = node->next->label;
-                printf("Continue next label :%s\n", node->next->label.c_str());
+                // printf("Continue next label :%s\n", node->next->label.c_str());
                 true_node->next = node;
                 true_node->labels = node->labels;
             } else {
@@ -672,6 +695,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
     }
     node->val = node->sons[0]->val;
     sym_visit_ast_node(src1_node, true);
+
     return true;
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
@@ -762,6 +786,21 @@ static bool sym_while(struct ast_node *node)
     WhileBlock = false;
     return true;
 }
+static struct ast_node *or_and_next_node(struct ast_node *node, enum ast_operator_type type)
+{
+    if (node->type == AST_OP_CMP) {
+        return node;
+    }
+    struct ast_node *temp_node = node->sons[1];
+    while (temp_node) {
+        if (temp_node->type == AST_OP_CMP) {
+            return temp_node;
+        } else {
+            temp_node = temp_node->sons[0];
+        }
+    }
+    return node;
+}
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
 {
 
@@ -773,39 +812,77 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
         }
     } else {
         if (!isSecond) {
-            std::string label = newLabel(FuncName);
-            node->label = label;
+            // node->next = node->parent->next;
+            node->labels = node->parent->labels;
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *src2_node = node->sons[1];
+            // printf("AST_OP_or0\n");
+            if (type == AST_OP_OR) {
+                src1_node->next = src2_node;
+                src1_node->true_next = node->true_next;
+                src1_node->false_next = src2_node;
+                src2_node->next = node->next;
+                src2_node->true_next = node->true_next;
+                src2_node->false_next = node->false_next;
+                // printf("AST_OP_or1\n");
+            } else if (type == AST_OP_AND) {
+                src1_node->next = node->next;
+                src1_node->true_next = src2_node;
+                src1_node->false_next = node->false_next;
+                src2_node->next = node->next;
+                src2_node->true_next = node->true_next;
+                src2_node->false_next = node->false_next;
+            } else {
+
+            }
+            // printf("AST_OP_or2\n");
             struct ast_node *left = sym_visit_ast_node(src1_node);
             if (!left) {
                 return false;
             }
+            // printf("AST_OP_or3\n");
+            std::string label = newLabel(FuncName);
+            node->label = label;
+            // printf("新建label：%s\n", label.c_str());
+            struct ast_node *temp = or_and_next_node(node, type);
+
             struct ast_node *right = sym_visit_ast_node(src2_node);
             if (!right) {
                 return false;
             }
+
+            // left->label = label;
+            temp->label = label;
             right->label = label;
-            // printf("逻辑运算\n");
+            // printf("AST_OP_or4\n");
         } else {
-            node->labels = node->parent->labels;
+            // printf("当前节点的label %s\n", node->label.c_str());
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *src2_node = node->sons[1];
+            src1_node->labels = node->labels;
+            src2_node->labels = node->labels;
             struct ast_node *left = sym_visit_ast_node(src1_node, true);
             if (!left) {
                 return false;
             }
-
             struct ast_node *right = sym_visit_ast_node(src2_node, true);
             if (!right) {
                 return false;
             }
+
             if (type == AST_OP_OR) {
-                left->labels[1] = node->label;
-                left->next = right;
+                // printf("AST_OP_or0\n");
+                // left->labels[1] = node->label;
+                left->labels[0] = left->true_next->label;
+                left->labels[1] = left->false_next->label;
+                right->labels[0] = right->true_next->label;
+                right->labels[1] = right->false_next->label;
+                // printf("AST_OP_or1\n");
             } else {
-                left->labels[0] = node->label;
-                left->next = right;
+                left->labels[0] = left->true_next->label;
+                left->labels[1] = left->false_next->label;
+                right->labels[0] = right->true_next->label;
+                right->labels[1] = right->false_next->label;
             }
 
             // printf("逻辑运算\n");

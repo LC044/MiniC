@@ -1,74 +1,80 @@
+declare i32 @a
+declare i32 @b
+declare i32 @c
+declare i32 @d
+declare i32 @e
 define i32 @main() {
     declare i32 %l0 ; variable: return
-    declare i32 %l1[4][2] ; variable: a[4][2]
-    declare i32 %l2[4][2] ; variable: b[4][2]
-    declare i32 %l3[4][2] ; variable: c[4][2]
-    declare i32 %l4[4][2] ; variable: d[4][2]
-    declare i32 %l5[4][2][1] ; variable: e[4][2][1]
-    declare i32 %l6 ; variable: i
-    declare i32* %t7
+    declare i32 %l1 ; variable: flag
+    declare i32 %t2
+    declare i32 %t3
+    declare i1 %t4
+    declare i32 %t5
+    declare i32 %t6
+    declare i1 %t7
     declare i32 %t8
-    declare i32* %t9
+    declare i32 %t9
     declare i32 %t10
-    declare i32* %t11
+    declare i32 %t11
     declare i32 %t12
     declare i32 %t13
-    declare i32* %t14
+    declare i32 %t14
     declare i32 %t15
-    declare i32 %t16
+    declare i1 %t16
     declare i32 %t17
-    declare i32 %t18
+    declare i1 %t18
     declare i32 %t19
-    declare i32* %t20
+    declare i1 %t20
     declare i32 %t21
-    declare i32* %t22
+    declare i1 %t22
     declare i32 %t23
-    declare i32* %t24
-    declare i32 %t25
-    declare i32* %t26
-    declare i32 %t27
-    declare i32 %t28
-    declare i32 %t29
-    declare i32 %t30
-    declare i32* %t31
-    declare i32 %t32
-    declare i32 %t33
-    declare i32 %t34
-    declare i32* %t35
-    declare i32 %t36
-    declare i32 %t37
-    declare i32 %t38
-    declare i32 %t39
+    declare i32 %t24
     entry
-    %l6 = 1
-    %t7 = add %l1, 16
-    *%t7 = 7
-    %t9 = add %l4, 24
-    %t11 = add %l1, 24
-    %t13 = *%t11
-    *%t9 = %t13
-    %t14 = add %l4, 20
-    *%t14 = 1
-    %t16 = add 0, %l6
-    %t17 = mul %t16, 1
-    %t18 = add %t17, 0
-    %t19 = mul %t18, 4
-    %t20 = add %l5, %t19
-    *%t20 = 0
-    %t22 = add %l5, 28
-    *%t22 = 5
-    %t24 = add %l5, 20
-    %t26 = add %l5, 0
-    %t28 = *%t24
-    %t29 = *%t26
-    %t30 = add %t28, %t29
-    %t31 = add %l5, 4
-    %t33 = *%t31
-    %t34 = add %t30, %t33
-    %t35 = add %l4, 24
-    %t37 = *%t35
-    %t38 = add %t34, %t37
-    %l0 = %t38
-    %t39 = %l0
-    exit %t39
+    @a = 1
+    @b = 0
+    @c = 1
+    @d = 2
+    @e = 4
+    %l1 = 0
+    %t2 = @a
+    %t3 = @b
+    %t4 = cmp eq %t2, %t3
+    bc %t4, label .L6, label .L7
+.L6:
+    %t5 = @a
+    %t6 = @d
+    %t7 = cmp le %t5, %t6
+    bc %t7, label .L3, label .L7
+.L7:
+    %t8 = @b
+    %t9 = @c
+    %t10 = mul %t8, %t9
+    %t11 = @a
+    %t12 = @c
+    %t13 = div %t11, %t12
+    %t14 = @d
+    %t15 = sub %t14, %t13
+    %t16 = cmp eq %t10, %t15
+    bc %t16, label .L3, label .L8
+.L8:
+    %t17 = @a
+    %t18 = cmp gt %t17, 2
+    bc %t18, label .L9, label .L5
+.L9:
+    %t19 = @b
+    %t20 = cmp ne %t19, 3
+    bc %t20, label .L10, label .L5
+.L10:
+    %t21 = @c
+    %t22 = cmp eq %t21, 4
+    bc %t22, label .L3, label .L5
+.L3:
+    %l1 = 1
+    br label .L5
+.L5:
+    %t23 = %l1
+    call void @putint(i32 %t23)
+    %l0 = %l1
+    %t24 = %l0
+    exit %t24
 }

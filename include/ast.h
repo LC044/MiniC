@@ -88,6 +88,8 @@ struct ast_node {
     struct ast_node *parent;    // 父节点
     std::vector<struct ast_node *> sons; // 孩子节点
     struct ast_node *next;    // 同级的下一个节点
+    struct ast_node *false_next;
+    struct ast_node *true_next;
     enum ast_operator_type type; // 节点类型
     bool jump = true;            //
     bool newLabel = true;        //
