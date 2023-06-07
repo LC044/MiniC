@@ -32,7 +32,6 @@ static bool isJump(struct ast_node *node)
     default:
         return false;
     }
-
 }
 // 从抽象语法树的根开始遍历，然后输出计算出表达式的值
 static bool ir_cu(struct ast_node *node)
@@ -627,29 +626,38 @@ static bool ir_if(struct ast_node *node, bool isLast)
     node->blockInsts.addInst(cond->blockInsts);
     std::string label1 = node->labels[0];  // true语句
     std::string label2 = node->labels[1];  // false语句
+    printf("%s,%s\n", label1.c_str(), label2.c_str());
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
         struct ast_node *true_node = ir_visit_ast_node(src2_node);
         struct ast_node *false_node = ir_visit_ast_node(src3_node);
+        printf("if 语句结束\n");
         if (true_node->type != AST_EMPTY and false_node->type != AST_EMPTY) {
-            node->blockInsts.addInst(
+            if (true_node->newLabel) {
+                node->blockInsts.addInst(
                         new UselessIRInst(label1 + ":")
-            );
+                );
+            }
+
             node->blockInsts.addInst(true_node->blockInsts);
             if (true_node->jump) {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, true_node->next->label)
                 );
             }
-            node->blockInsts.addInst(
+            printf("if 语句结束1\n");
+            if (false_node->newLabel) {
+                node->blockInsts.addInst(
                 new UselessIRInst(label2 + ":")
-            );
+                );
+            }
             node->blockInsts.addInst(false_node->blockInsts);
             if (false_node->jump) {
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BR, false_node->next->label)
                 );
             }
+            printf("if 语句结束2\n");
         } else if (true_node->type != AST_EMPTY and false_node->type == AST_EMPTY) {
 
         }
@@ -670,6 +678,7 @@ static bool ir_if(struct ast_node *node, bool isLast)
             }
         }
     }
+    printf("if ir end\n");
     return true;
 }
 static bool ir_while(struct ast_node *node)
@@ -677,17 +686,17 @@ static bool ir_while(struct ast_node *node)
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     WhileBlock = true;
-    // printf("while ir 0");
+    printf("while ir 0\n");
     struct ast_node *left = ir_visit_ast_node(src1_node);
     if (!left) {
         return false;
     }
-    // printf("while ir 0.5");
+    printf("while ir 0.5\n");
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
         return false;
     }
-    // printf("while ir 1");
+    printf("while ir 1\n");
     node->blockInsts.addInst(
             new JumpIRInst(IRINST_JUMP_BR, node->label)
     );
@@ -696,7 +705,7 @@ static bool ir_while(struct ast_node *node)
     );
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(
-            new UselessIRInst(node->labels[0] + ":")
+            new UselessIRInst(right->label + ":")
     );
     node->blockInsts.addInst(right->blockInsts);
     node->blockInsts.addInst(
@@ -894,11 +903,6 @@ bool genIR(struct ast_node *root, InterCode &IRCode)
         return false;
     }
     printf("*** end genIR *** \n");
-    // 第一步遍历符号表，声明所有全局变量
-    // result = global_var_def(root);
-    // if (!result) {
-    //     return false;
-    // }
     IRCode.addInst(root->blockInsts);
     // 第二步遍历函数表，定义函数语句
     return true;
