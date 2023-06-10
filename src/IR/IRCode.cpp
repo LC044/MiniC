@@ -8,12 +8,12 @@ InterCode::InterCode()
 InterCode::~InterCode()
 {
     // 资源清理
-    for (auto inst : code) {
+    // for (auto inst : code) {
 
-        delete inst;
-    }
+    //     delete inst;
+    // }
 
-    code.clear();
+    // code.clear();
 }
 
 // 添加一个指令块,添加到尾部，并清除原来指令块的内容
@@ -25,7 +25,7 @@ void InterCode::addInst(InterCode &block)
 
     // InterCode析构会清理资源，因此移动指令到code中后必须清理，否则会释放多次导致程序例外
     // 当然，这里也可不清理，但InterCode的析构函数不能清理，需专门的函数清理即可。
-    insert.clear();
+    // insert.clear();
 }
 // 添加一条中间指令
 int InterCode::getCodeSize()

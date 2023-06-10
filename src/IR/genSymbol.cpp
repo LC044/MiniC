@@ -22,9 +22,9 @@ void BFS(struct ast_node *node)
 {
     // 广搜所有局部变量定义
     std::queue <struct ast_node *> q;
-    q.push(node);//节点入栈
+    q.push(node);//节点入队
     while (!q.empty()) {
-        struct ast_node *temp = q.front();//栈顶元素出栈并且访问该节点
+        struct ast_node *temp = q.front();//栈顶元素出队并且访问该节点
         if (temp->type == AST_DEF_LIST) {
             sym_def_list(temp, true);
         }
@@ -34,6 +34,7 @@ void BFS(struct ast_node *node)
             q.push(*pIter);
         }
     }
+
 }
 static struct ast_node *last_node(struct ast_node *node)
 {
@@ -54,11 +55,6 @@ static bool sym_block(struct ast_node *node)
         if ((*pIter)->type == AST_DEF_LIST) {
             continue;
         }
-        if (pIter != node->sons.end() - 1) {
-            (*pIter)->next = *(pIter + 1);
-        } else {
-            (*pIter)->next = node->parent->next;
-        }
         // 遍历Block的每个语句，进行显示或者运算
         struct ast_node *temp;
         if (pIter == node->sons.end() - 1) {
@@ -70,15 +66,6 @@ static bool sym_block(struct ast_node *node)
         if (!temp) {
             return false;
         }
-        if (temp->type == AST_OP_IF) {
-            node->labels = temp->labels;
-        }
-        // 如果if节点里含有两个return，就把后面的节点删除
-        if (ReturnFlag == 2) {
-            node->sons.erase(pIter + 1, node->sons.end());
-            // ReturnFlag = 0;
-            break;
-        }
         temp->parent = node;
     }
     node->label = node->sons[0]->label;
@@ -89,7 +76,7 @@ static bool sym_def_func(struct ast_node *node)
     // if (node->sons[3]->type == AST_EMPTY) {
     //     return true;
     // }
-    // struct ast_node *func_type = node->sons[0];
+    struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
 
     struct ast_node *func_name = node->sons[1];
@@ -106,18 +93,10 @@ static bool sym_def_func(struct ast_node *node)
         return false;
     }
     func_name->val = val;
-    // if (strcmp(func_type->attr.id, "void") == 0) {
-    //     // printf("int value\n");
-    //     return true;
-    // }
     // 第三个孩子是参数列表
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
     for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
-        // 获取参数类型
-        // struct ast_node *arg_type = (*pIter)->sons[0];
-        // 获取参数名
-        // struct ast_node *arg_name = (*pIter)->sons[1];
         // todo 暂时只考虑int类型
         newTempValue(ValueType::ValueType_Int, func_name->attr.id, true);
     }
@@ -135,16 +114,19 @@ static bool sym_def_func(struct ast_node *node)
     }
     // 返回值定义
         // todo 暂时只考虑int类型
-    newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
+    if (strcmp(func_type->attr.id, "int") == 0) {
+        newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
+    }
+
     // 第四个孩子是语句块
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
-    printf("返回值复制给临时变量0\n");
+    // printf("返回值复制给临时变量0\n");
     BFS(node->sons[3]);
     struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     // 返回值复制给临时变量
     newTempValue(ValueType::ValueType_Int, FuncName);
-    printf("返回值复制给临时变量\n");
+    // printf("返回值复制给临时变量\n");
     ReturnFlag = 0;
     if (func_block == NULL) return true;
     return true;
@@ -518,206 +500,49 @@ static bool sym_if(struct ast_node *node, bool isLast)
 {
     Ifcmp = true;
     IFflag++;
-    if (!node->next) {
-        node->next = node->parent->next;
-    }
-    // 仅第一次访问有效
-    // printf("If语句0\n");
+
+    // bool ifcmp = true;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
+    // 条件表达式
+    printf("条件进入\n");
     struct ast_node *cond = sym_visit_ast_node(src1_node);
     if (!cond) {
         return false;
     }
-    // printf("If语句1\n");
-    // 假设if里面是cmp类型
-    if (cond->type == AST_OP_CMP) {
-        if (!node->next) {
-            struct ast_node *temp = new_ast_node(AST_EMPTY);
-            temp->label = cond->labels[2];
-            node->next = temp;
-        } else {
-            printf("if 的下一个节点label：%s\n", cond->labels[2].c_str());
-            node->next->label = cond->labels[2];
+    printf("条件出来\n");
+    if (src1_node->type == AST_OP_AND || src1_node->type == AST_OP_OR || src1_node->type == AST_OP_CMP || src1_node->type == AST_OP_NOT) {
+    } else {
+        printf("非逻辑运算\n");
+        Value *val;
+        if (src1_node->val->isId) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            val->isId = true;
+            src1_node->val = val;
         }
+        if (src1_node->val->type == ValueType::ValueType_Bool) {
+            node->val = src1_node->val;
+        } else {
+            val = newTempValue(ValueType::ValueType_Bool, FuncName);
+            // val->isId = true;
+            node->val = val;
+        }
+
     }
-    src2_node->label = cond->labels[0];
-    node->label = cond->labels[0];
-    bool true_break = false, false_break = false;
-    bool true_return = false, false_return = false;
-    bool true_continue = false, false_continue = false;
-    // true表达式
-    int returnflag = ReturnFlag;
-    int break_flag = BreakFlag;
-    int continue_flag = ContinueFlag;
-    // int trueIfFlag = IFflag;
-    struct ast_node *true_node = sym_visit_ast_node(src2_node);
+    struct ast_node *true_node = sym_visit_ast_node(src2_node, true);
     if (!true_node) {
-        return false;
-    }
-    if (ReturnFlag > returnflag) {
-        ExitLabel = true;
-        true_return = true;
-    }
-    if (BreakFlag > break_flag) {
-        true_break = true;
-    }
-    if (ContinueFlag > continue_flag) {
-        true_continue = true;
-    }
-    if (true_node->label.length() == 0) {
-        true_node->label = cond->labels[0];
+        // if后面没有语句
     } else {
-        true_node->jump = false;
     }
-    /*  判断if里面有没有嵌套其他if，else */
-    if (true_node->type == AST_OP_BLOCK) {
-        enum ast_operator_type type;
-        type = true_node->sons[true_node->sons.size() - 1]->type;
-        if (type == AST_OP_IF) {
-            true_node->jump = false;
-        } else if (type == AST_OP_WHILE) {
-            true_node->jump = false;
-        }
-        type = true_node->sons[0]->type;
-        if (type == AST_OP_WHILE) {
-            true_node->newLabel = false;
-        }
-    } else if (true_node->type == AST_OP_IF) {
-        true_node->jump = false;
-    } else if (true_node->type == AST_OP_WHILE) {
-        true_node->newLabel = false;
-        true_node->jump = false;
-    }
-    true_node->next = node->next;
-    // printf("If语句3\n");
-    cond->labels[0] = true_node->label;
-
-    if (node->sons.size() > 2) {
-
-        node->true_next = src2_node;
-        if (true_break) {
-            BreakFlag = false;
-            node->labels[0] = node->next->label;
-            true_node->next = node->next;
-            true_node->labels = node->labels;
-        }
-        if (true_continue) {
-            node->labels[0] = node->label;
-            true_node->next = node;
-            true_node->labels = node->labels;
-        }
-
+    if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
-        src3_node->label = cond->labels[1];
-        node->false_next = src3_node;
-        returnflag = ReturnFlag;
-        break_flag = BreakFlag;
-        continue_flag = ContinueFlag;
-        // int falseIfFlag = IFflag;
-        struct ast_node *false_node = sym_visit_ast_node(src3_node);
+        struct ast_node *false_node = sym_visit_ast_node(src3_node, true);
         if (!false_node) {
-            return false;
-        }
-        if (BreakFlag > break_flag) {
-            false_break = true;
-        }
-        if (ContinueFlag > continue_flag) {
-            false_continue = true;
-        }
-        if (false_break) {
-            BreakFlag = false;
-            node->labels[1] = node->next->label;
-            false_node->next = node->next;
-            false_node->labels = node->labels;
-        }
-        if (false_continue) {
-            node->labels[1] = node->label;
-            false_node->next = node;
-            false_node->labels = node->labels;
-        }
-        if (false_node->label.length() == 0) {
-            false_node->label = cond->labels[1];
         } else {
-            false_node->jump = false;
-        }
-        if (ReturnFlag > returnflag) {
-            ExitLabel = true;
-            false_return = true;
-        }
-        if (false_node->type == AST_OP_BLOCK) {
-            enum ast_operator_type type;
-            type = false_node->sons[false_node->sons.size() - 1]->type;
-            if (type == AST_OP_IF) {
-                false_node->jump = false;
-            } else if (type == AST_OP_WHILE) {
-                false_node->jump = false;
-            }
-            type = false_node->sons[0]->type;
-            if (type == AST_OP_WHILE) {
-                false_node->newLabel = false;
-            }
-        } else if (false_node->type == AST_OP_IF) {
-            false_node->jump = false;
-        } else if (false_node->type == AST_OP_WHILE) {
-            false_node->newLabel = false;
-            false_node->jump = false;
-        }
-        false_node->next = node->next;
-        cond->labels[1] = false_node->label;
-        if (true_return and false_return) {
-            // return语句直接跳转到L2
-            if (node->next) {
-                node->next->label = ".L2";
-            }
-            struct ast_node *temp = new_ast_node(AST_EMPTY);
-            temp->label = ".L2";
-            true_node->next = temp;
-            false_node->next = temp;
-        } else if (true_return and !false_return) {
-            if (node->next) {
-                node->next->label = false_node->labels[2];
-            }
-            struct ast_node *temp = new_ast_node(AST_EMPTY);
-            temp->label = ".L2";
-            true_node->next = temp;
-        } else if (!true_return and false_return) {
-            if (node->next) {
-                node->next->label = true_node->labels[2];
-            }
-            struct ast_node *temp = new_ast_node(AST_EMPTY);
-            temp->label = ".L2";
-            false_node->next = temp;
-        } else {
-            if (node->next) {
-                true_node->next = node->next;
-                false_node->next = node->next;
-            } else {
-
-            }
         }
     } else {
-        node->true_next = src2_node;
-        node->false_next = node->next;
-        if (true_return) {
-            struct ast_node *temp = new_ast_node(AST_EMPTY);
-            temp->label = ".L2";
-            true_node->next = temp;
-            cond->labels[1] = node->next->label;
-        } else {
-            if (true_break) {
-            } else if (true_continue) {
-            } else {
-                // node->labels[1] = node->next->label;
-                cond->labels[1] = node->next->label;
-                if (node->next) {
-                    true_node->next = node->next;
-                } else {}
-            }
-        }
     }
-    // printf("If语句4\n");
-    node->labels = cond->labels;
+    // node->val = node->sons[0]->val;
     return true;
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
@@ -766,7 +591,7 @@ static bool sym_neg(struct ast_node *node)
     if (!left) {
         return false;
     }
-    if (left->val->isConst) {
+    if (left->val->isConst or left->val->type == ValueType::ValueType_Bool) {
         left->val->intVal = -left->val->intVal;
         node->val = left->val;
 
@@ -782,8 +607,6 @@ static bool sym_while(struct ast_node *node)
     WhileBlock = true;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
-    src2_node->label = node->label;
-    src2_node->next = node->next;
     struct ast_node *left = sym_visit_ast_node(src1_node);
     if (!left) {
         return false;
@@ -814,13 +637,6 @@ static bool sym_while(struct ast_node *node)
     if (!right) {
         return false;
     }
-    if (right->label.length() == 0) {
-        right->label = left->labels[0];
-    } else {
-
-    }
-    left->labels[1] = node->next->label;
-    node->labels = left->labels;
     WhileBlock = false;
     return true;
 }
@@ -944,17 +760,12 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
     }
     return true;
 }
-static bool sym_not(struct ast_node *node, bool isSecond)
+static bool sym_not(struct ast_node *node, bool isLeft)
 {
     if (Ifcmp) {
-        if (isSecond) {
-            node->labels = node->parent->labels;
-            std::string label = node->labels[0];
-            node->labels[0] = node->labels[1];
-            node->labels[1] = label;
+        if (isLeft) {
             return true;
         } else {
-            node->labels = node->parent->labels;
             // return true;
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *left = sym_visit_ast_node(src1_node);
@@ -968,8 +779,13 @@ static bool sym_not(struct ast_node *node, bool isSecond)
                 val->isId = true;
                 left->val = val;
             }
-            val = newTempValue(ValueType::ValueType_Bool, FuncName);
-            node->val = val;
+            if (left->val->type == ValueType::ValueType_Bool) {
+                node->val = left->val;
+            } else {
+                val = newTempValue(ValueType::ValueType_Bool, FuncName);
+                node->val = val;
+            }
+            // node->
         }
     } else {
         // node->labels = node->parent->labels;
@@ -982,15 +798,6 @@ static bool sym_not(struct ast_node *node, bool isSecond)
             node->val = left->val;
             node->val->intVal = left->val->intVal != 0 ? 0 : 1;
         } else {
-
-            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
-            node->val = val;
-            std::string label1 = newLabel(FuncName);  // true语句
-            std::string label2 = newLabel(FuncName);  // false语句
-            std::string label3 = newLabel(FuncName);  // 下一条语句
-            node->labels.push_back(label1);
-            node->labels.push_back(label2);
-            node->labels.push_back(label3);
         }
     }
     return true;

@@ -25,7 +25,6 @@ void newVarValue(std::string name, ValueType type)
 {
     auto pIter = varsMap.find(name);
     if (pIter != varsMap.end()) {
-
         // 符号表中存在，则只是更新值
         pIter->second->type = type;
 

@@ -14,7 +14,9 @@ IRInst::IRInst()
 /// @param srcVal2 
 IRInst::IRInst(IRInstOperator _op, Value *_result) :
     op(_op), dstValue(_result)
-{}
+{
+
+}
 
 /// @brief 析构函数
 IRInst::~IRInst()
@@ -28,7 +30,10 @@ IRInstOperator IRInst::getOp()
 {
     return op;
 }
-
+std::string IRInst::getLabel()
+{
+    return ".L1";
+}
 /// @brief 获取源操作数列表
 /// @return 源操作数列表
 std::vector<Value *> &IRInst::getSrc()
@@ -188,6 +193,7 @@ void DeclearIRInst::toString(std::string &str)
         break;
     case ValueType::ValueType_Int_ptr:
         type = "i32*";
+        break;
     default:
         break;
     }
@@ -377,7 +383,9 @@ UnaryIRInst::UnaryIRInst(IRInstOperator _op, Value *_result, Value *_srcVal1) :
 {
     srcValues.push_back(_srcVal1);
 }
-
+UnaryIRInst::UnaryIRInst(IRInstOperator _op) :
+    IRInst(_op)
+{}
 /// @brief 析构函数
 UnaryIRInst::~UnaryIRInst()
 {
@@ -396,7 +404,11 @@ void UnaryIRInst::toString(std::string &str)
         str += result->getName() + " = neg " + src->getName();
         break;
     case IRINST_OP_RETURN:
-        str += "exit " + src->getName();
+        if (srcValues.size() > 0) {
+            str += "exit " + src->getName();
+        } else {
+            str += "exit";
+        }
         break;
     default:
         break;
@@ -451,6 +463,7 @@ void JumpIRInst::toString(std::string &str)
 UselessIRInst::UselessIRInst(std::string str) :
     useless_str(str)
 {
+    op = IRINST_OP_USELESS;
     // srcValues.push_back(_srcVal1);
 }
 
@@ -459,7 +472,10 @@ UselessIRInst::~UselessIRInst()
 {
 
 }
-
+std::string UselessIRInst::getLabel()
+{
+    return useless_str.substr(0, useless_str.size() - 1);
+}
 
 /// @brief 转换成字符串显示
 /// @param str 转换后的字符串

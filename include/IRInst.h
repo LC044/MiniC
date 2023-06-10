@@ -14,9 +14,9 @@ enum IRInstOperator {
     IRINST_OP_MOD,       // 取余指令，二元运算
     IRINST_OP_ASSIGN,    // 赋值指令，一元运算
     IRINST_OP_NEG,
-    IRINST_OP_CMP,  //
-    IRINST_JUMP_BR, //无条件跳转
-    IRINST_JUMP_BC, //有条件跳转
+    IRINST_OP_CMP,       //
+    IRINST_JUMP_BR,      //无条件跳转
+    IRINST_JUMP_BC,      //有条件跳转
     IRINST_JUMP_BF,
     IRINST_JUMP_BT,
     IRINST_OP_TYPECOV,   // 类型转换指令
@@ -24,7 +24,7 @@ enum IRInstOperator {
     IRINST_OP_VAR_DEF,   // 变量定义指令
     IRINST_OP_RETURN,    // 函数返回指令
     IRINST_OP_FUNC_CALL, // 函数调用，多目运算，个数不限
-
+    IRINST_OP_USELESS,
     IRINST_OP_MAX  // 最大指令码，也是无效指令
 };
 
@@ -45,11 +45,12 @@ protected:
 public:
     /// @brief 析构函数
     virtual ~IRInst();
-
+    std::string label1;
+    std::string label2;
     /// @brief 获取指令操作码
     /// @return 指令操作码
     IRInstOperator getOp();
-
+    virtual std::string getLabel();
     /// @brief 获取源操作数列表
     /// @return 源操作数列表
     std::vector<Value *> &getSrc();
@@ -213,7 +214,7 @@ public:
     /// @brief 构造函数
     /// @param result 
     UnaryIRInst(IRInstOperator op, Value *result, Value *src);
-
+    UnaryIRInst(IRInstOperator op);
     /// @brief 析构函数
     virtual ~UnaryIRInst() override;
 
@@ -225,8 +226,7 @@ public:
 class JumpIRInst : public IRInst {
 
 public:
-    std::string label1;
-    std::string label2;
+
     /// @brief 构造函数
     /// @param result 
     JumpIRInst(IRInstOperator op, Value *src1, std::string label1, std::string label2);
@@ -246,7 +246,7 @@ public:
     /// @brief 构造函数
     /// @param str 没啥用字符串 
     UselessIRInst(std::string str);
-
+    std::string getLabel() override;
     /// @brief 析构函数
     virtual ~UselessIRInst() override;
 

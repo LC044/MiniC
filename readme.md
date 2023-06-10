@@ -8,11 +8,13 @@ cmake-build-debug\minic.exe -a -o test.jpg  test.c
 
 git config --global --unset http.proxy
 
-git config –-global http.proxy http://127.0.0.1:7890
+git config --golbal http.proxy http://127.0.0.1:7890
 
 git commit -m
 
 git push -u origin main
+
+git reset --hard
 
 老师写好的程序运行方式
 

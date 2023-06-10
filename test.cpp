@@ -3,6 +3,7 @@
 #include <unordered_map>
 // #include<string.h>
 int a;
+int a;
 int add(int a, int b)
 {
     return a + b;
