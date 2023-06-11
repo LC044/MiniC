@@ -118,7 +118,7 @@ static bool sym_def_func(struct ast_node *node)
     // 第三个孩子是参数列表
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
-    for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
+    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter) {
         struct ast_node *arg_name = (*pIter)->sons[1];
         if (arg_name->type == AST_ARRAY) {
             sym_paras_array(arg_name, true);
@@ -465,7 +465,7 @@ static bool sym_assign(struct ast_node *node)
         //     Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
         //     node->val = val;
         // }
-        if (right->type == AST_OP_INDEX) {
+        if (right->type == AST_OP_INDEX and left->type == AST_OP_INDEX) {
             // leftValue = left->sons[0]->val;
             Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
             node->val = val;
@@ -473,8 +473,6 @@ static bool sym_assign(struct ast_node *node)
     } else {
         node->val = left->val;
     }
-    // printf("赋值指令symbol\n");
-
     return true;
 }
 static bool sym_return(struct ast_node *node)
@@ -512,7 +510,12 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
             // 变量当右值要先复制给临时变量再进行计算
             if (temp->val->isId) {
                 Value *val;
-                val = newTempValue(ValueType::ValueType_Int, FuncName);
+                if (temp->val->dims[0] != 0) {
+                    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+                } else {
+                    val = newTempValue(ValueType::ValueType_Int, FuncName);
+                }
+
                 val->isId = true;
                 temp->val = val;
             }
@@ -602,6 +605,14 @@ static bool sym_cmp(struct ast_node *node, bool isSecond)
         if (right->val->isId) {
             val = newTempValue(ValueType::ValueType_Int, FuncName);
             val->isId = true;
+            right->val = val;
+        }
+        if (left->type == AST_OP_INDEX) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
+            left->val = val;
+        }
+        if (right->type == AST_OP_INDEX) {
+            val = newTempValue(ValueType::ValueType_Int, FuncName);
             right->val = val;
         }
         val = newTempValue(ValueType::ValueType_Bool, FuncName);

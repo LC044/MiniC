@@ -197,7 +197,8 @@ public:
     /// @brief 构造函数
     /// @param result 
     /// @param srcVal1 
-    AssignIRInst(Value *result, Value *srcVal1);
+    bool check_ptr = false;
+    AssignIRInst(Value *result, Value *srcVal1, bool check_ptr = false);
 
     /// @brief 析构函数
     virtual ~AssignIRInst() override;

@@ -350,8 +350,11 @@ void FuncCallIRInst::toString(std::string &str)
     }
 
     for (size_t k = 0; k < srcValues.size(); ++k) {
-
-        str += "i32 " + srcValues[k]->getName();
+        std::string type = "i32 ";
+        if (srcValues[k]->type == ValueType::ValueType_Int_ptr) {
+            type = "i32* ";
+        }
+        str += type + srcValues[k]->getName();
 
         if (k != (srcValues.size() - 1)) {
 
@@ -365,9 +368,10 @@ void FuncCallIRInst::toString(std::string &str)
 /// @brief 赋值IR指令
 /// @param _result 
 /// @param _srcVal1 
-AssignIRInst::AssignIRInst(Value *_result, Value *_srcVal1) :
+AssignIRInst::AssignIRInst(Value *_result, Value *_srcVal1, bool _check_ptr) :
     IRInst(IRINST_OP_ASSIGN, _result)
 {
+    check_ptr = _check_ptr;
     srcValues.push_back(_srcVal1);
 }
 
@@ -387,7 +391,12 @@ void AssignIRInst::toString(std::string &str)
     std::string resultName, srcName;
     // 指针引用需要加 * 号
     if (result->type == ValueType::ValueType_Int_ptr) {
-        resultName = "*" + result->getName();
+        if (check_ptr) {
+            resultName = result->getName();
+        } else {
+            resultName = "*" + result->getName();
+        }
+
     } else {
         resultName = result->getName();
     }

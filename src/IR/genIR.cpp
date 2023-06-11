@@ -285,9 +285,12 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             if (temp->val->isId) {
                 Value *val = findValue(temp->attr.id, FuncName, true);
                 Value *dstVal = temp->val;
+                // ValueType type = dstVal->type;
+                // dstVal->type = ValueType::ValueType_Int;
                 node->blockInsts.addInst(
-                        new AssignIRInst(dstVal, val)
+                        new AssignIRInst(dstVal, val, true)
                 );
+                // dstVal->type = type;
             }
             node->blockInsts.addInst(temp->blockInsts);
         }
@@ -534,21 +537,28 @@ static bool ir_assign(struct ast_node *node)
     // return true;
     // 左值类型与右值类型相同
     // 加上这行代码才能判断是否要进行类型转换
-    left->val->type = right->val->type;
+    // left->val->type = right->val->type;
     Value *leftValue = left->val, *rightValue = right->val;
     if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
         if (left->type == AST_OP_INDEX) {
             leftValue = left->sons[0]->val;
             leftValue->type = ValueType::ValueType_Int_ptr;
         }
-        // 右侧是数组变量，要把数组变量复制给临时变量，再将临时变量复制给左值
-        if (right->type == AST_OP_INDEX) {
+        if (right->type == AST_OP_INDEX and left->type == AST_OP_INDEX) {
             rightValue = right->sons[0]->val;
             node->blockInsts.addInst(
             new AssignIRInst(node->val, rightValue)
             );
             rightValue = node->val;
         }
+        // 右侧是数组变量，要把数组变量复制给临时变量，再将临时变量复制给左值
+        // if (right->type == AST_OP_INDEX) {
+        //     rightValue = right->sons[0]->val;
+        //     node->blockInsts.addInst(
+        //     new AssignIRInst(node->val, rightValue)
+        //     );
+        //     rightValue = node->val;
+        // }
     }
     node->blockInsts.addInst(
         new AssignIRInst(leftValue, rightValue)
@@ -597,6 +607,20 @@ static bool ir_cmp(struct ast_node *node)
     if (right->val->isId) {
         Value *val = findValue(right->attr.id, FuncName, true);
         Value *dstVal = right->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (left->type == AST_OP_INDEX) {
+        Value *dstVal = left->val;
+        Value *val = left->sons[0]->val;
+        node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+        );
+    }
+    if (right->type == AST_OP_INDEX) {
+        Value *dstVal = right->val;
+        Value *val = right->sons[0]->val;
         node->blockInsts.addInst(
                 new AssignIRInst(dstVal, val)
         );
