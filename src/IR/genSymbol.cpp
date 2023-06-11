@@ -890,6 +890,7 @@ bool genSymbol(struct ast_node *root)
 {
     bool result = true;
     printf("*** start genSymbol *** \n");
+    // 先把几个内置函数加进来
     result = sym_cu(root);
     if (!result) {
         return false;

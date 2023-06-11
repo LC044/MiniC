@@ -1,0 +1,16 @@
+digraph{
+ node[shape = record];
+ entry [label="L0 | entry \l"];
+L1 [label="L1 |     %l1 = 0 \l     %l2 = 0 \l     br label .L3 \l  "];
+L3 [label="L3 |     %t3 = %l1 \l     %t4 = cmp lt %t3, 100 \l     bc %t4, label .L4, label .L5 \l  "];
+L4 [label="L4 |     %t5 = %l1 \l     %t6 = cmp eq %t5, 50 \l     bc %t6, label .L5, label .L8 \l  "];
+L8 [label="L8 |     %t7 = %l2 \l     %t8 = %l1 \l     %t9 = add %t7, %t8 \l     %l2 = %t9 \l     %t10 = %l1 \l     %t11 = add %t10, 1 \l     %l1 = %t11 \l     br label .L3 \l  "];
+L5 [label="L5 |     %l0 = %l2 \l     %t12 = %l0 \l     exit %t12 \l  "];
+entry -> L1
+L1 -> L3
+L3 -> L4
+L3 -> L5
+L4 -> L5
+L4 -> L8
+L8 -> L3
+}

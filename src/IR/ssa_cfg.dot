@@ -1,0 +1,32 @@
+digraph
+{
+    // 假定本文件为：ssa-cfg.dot
+    // 可通过命令dot ssa-cfg.dot -T pdf -o ssa-cfg.pdf来执行
+    // dot命令是graphviz包的一个命令，可在编译实验提供的终端上运行
+
+    nodesep = 1;
+    node[shape = record];
+
+    entry [label="B0 | entry \l"];
+    B1 [label="B1 | k=false \l i=1 \lj=2 \l"];
+
+    B2 [label="B2 | i\<=n"];
+    B3 [label="B3 | j=j*2 \l k=true \l i=i+1 \l"];
+
+    B4 [label="B4 | k \l"];
+    B5 [label="B5 | print j \l"];
+    B6 [label="B6 | i=i+1 \l"];
+    exit [label="B7 | exit \l"];
+
+    entry -> B1;
+
+    B1 -> B2;
+    B2 -> B3;
+    B3 -> B2;
+
+    B2:e -> B4:n;
+    B4 -> B5;
+    B4 -> B6;
+    B5 -> exit;
+    B6 -> exit;
+}
