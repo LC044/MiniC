@@ -63,7 +63,7 @@ void yyerror(char * msg);
 
 /* %token  */
 // 指定文法的非终结符号，<>可指定文法属性
-%type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras blockstat
+%type <node> program segment type def idtail deflist defdata varrdef functail para onepara paras paradata paradatatail blockstat
 %type <node> subprogram onestatement localdef statement 
 %type <node> expr lval rval lvaltail // 表达式, 左值,右值
 %type <node> factor realarg realargs
@@ -225,6 +225,14 @@ idtail : varrdef deflist
                 // 函数定义
                 $$ = new_ast_node(AST_FUNC_DEF,$2,$4);
             };
+        | '('  ')' functail
+            {
+                // 参数为空
+                struct ast_node * nd = new struct ast_node();
+                nd->type = AST_FARGS;
+                // 函数定义
+                $$ = new_ast_node(AST_FUNC_DEF,nd,$3);
+            }
 
 /* ********该部分为变量定义******* */
 
@@ -258,16 +266,7 @@ varrdef : {$$ = NULL; }
 functail : blockstat {$$ = $1;}
         | ';' {$$ = new_ast_node(AST_EMPTY);}
 /* 函数参数 */
-para    : {
-            // 参数为空
-            struct ast_node * nd = new struct ast_node();
-            nd->type = AST_FARGS;
-            $$ = nd;
-            }
-        | paras
-        {   
-            $$ = $1;
-        }
+para    : paras {$$ = $1;}
 /* 一个参数或多个参数 */
 paras   : onepara
         {
@@ -280,15 +279,26 @@ paras   : onepara
                 $3->sons.push_back($1);
                 $$ = $3;
             };
+
 /* 一个参数 int a */
-onepara : type T_ID
-            {
-                struct ast_node_attr temp_val;
-                temp_val.kind = DIGIT_KIND_ID;
-                temp_val.lineno = $2.lineno;
-                strncpy(temp_val.id, $2.id, sizeof(temp_val.id));
-                $$ = new_ast_node(AST_VAR_DECL, $1,new_ast_leaf_node(temp_val));
+onepara : type paradata
+            {   
+                $$ = new_ast_node(AST_VAR_DECL, $1,$2);
             };
+paradata : ident {$$ = $1;}
+         | ident paradatatail{$$ = new_ast_node(AST_ARRAY, $1,$2);}
+paradatatail : '[' ']'
+                {
+                    $$ = new_ast_node(AST_DIMS);
+                }
+             | '[' num ']'
+                {
+                    $$ = new_ast_node(AST_DIMS,$2);
+                }
+            | '[' num ']' paradatatail
+                {
+                    $$ = new_ast_node(AST_DIMS,$2,$4);
+                }
 
 /* ********该部分为函数里的语句块******* */
 

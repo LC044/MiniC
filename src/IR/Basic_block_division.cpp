@@ -16,6 +16,8 @@ struct DAGEdge {
     std::string fromNodeLabel; //
     std::string toNodeLabel; //
 };
+
+// 获取节点的下一个节点
 std::vector<DAGNode *> getNextNodes(DAGNode *node, std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable)
 {
     std::vector<DAGNode *> nodes;
@@ -31,6 +33,9 @@ std::vector<DAGNode *> getNextNodes(DAGNode *node, std::vector<DAGNode *> &nodeT
     }
     return nodes;
 }
+
+// 深搜遍历节点表，删除不需要的节点，然后修改边的指向
+
 void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, int curNodeID, bool *visited)
 {
     // 标记当前节点已经访问
@@ -83,6 +88,7 @@ void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, i
         }
     }
 }
+// 根据节点id获取节点的label
 int getNodeId(std::string label, std::vector<DAGNode *> &nodeTable)
 {
     // printf("节点表的大小%d\n", nodeTable.size());
@@ -105,6 +111,8 @@ InterCode *Basic_block_division(InterCode *blockInsts)
     node->label = ".L1";
     int id = 0;
     node->id = id++;
+    // 划分基本块
+    // 建立节点表和边表
     for (auto &inst : code) {
         if (inst->getOp() == IRINST_JUMP_BC) {
             DAGEdge *edge = new DAGEdge();
@@ -133,13 +141,14 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         }
     }
     nodeTable.push_back(node);
+    // 更新边表里的节点id
     for (int i = 0; i < edgeTable.size(); i++) {
         DAGEdge *e = edgeTable[i];
         e->fromNodeID = getNodeId(e->fromNodeLabel, nodeTable);
         e->toNodeID = getNodeId(e->toNodeLabel, nodeTable);
         printf("%s -> %s, %d -> %d\n", e->fromNodeLabel.c_str(), e->toNodeLabel.c_str(), e->fromNodeID, e->toNodeID);
     }
-    printf("\n代码块个数：%d\n", nodeTable.size());
+    printf("\n代码块个数:%d\n", nodeTable.size());
     if (nodeTable.size() == 1) {
         return blockInsts;
     }
@@ -147,12 +156,13 @@ InterCode *Basic_block_division(InterCode *blockInsts)
     for (int i = 0; i < id; i++) { visited[i] = false; }
 
     DFS(nodeTable, edgeTable, 0, visited);
-    printf("\n代码块个数：%d\n", nodeTable.size());
+    printf("\n代码块个数:%d\n", nodeTable.size());
 
     for (int i = 0; i < edgeTable.size(); i++) {
         DAGEdge *e = edgeTable[i];
         printf("%s -> %s, %d -> %d\n", e->fromNodeLabel.c_str(), e->toNodeLabel.c_str(), e->fromNodeID, e->toNodeID);
     }
+    // 
     for (int i = 0; i < nodeTable.size(); i++) {
         node = nodeTable[i];
         // printf("剩余label：%s\n", node->label.c_str());

@@ -71,6 +71,28 @@ static bool sym_block(struct ast_node *node)
     node->label = node->sons[0]->label;
     return true;
 }
+static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
+{
+    struct ast_node *arr_name = node->sons[0];
+    Value *localVarValue = nullptr;
+    if (isTemp) {
+        localVarValue = newTempValue(ValueType::ValueType_Int, FuncName, true);
+    } else {
+        localVarValue = newLocalVarValue(arr_name->attr.id, ValueType::ValueType_Int, FuncName);
+    }
+
+    localVarValue->dims[0] = 999;
+    int dim = 1;
+    struct ast_node *dim_node = node->sons[1];
+
+    while (dim_node) {
+        if (dim_node->sons.size() == 0) { break; }
+        localVarValue->dims[dim++] = dim_node->sons[0]->attr.integer_val;
+        dim_node = dim_node->sons[1];
+    }
+    node->val = localVarValue;
+    return true;
+}
 static bool sym_def_func(struct ast_node *node)
 {
     // if (node->sons[3]->type == AST_EMPTY) {
@@ -97,8 +119,14 @@ static bool sym_def_func(struct ast_node *node)
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
     for (pIter = func_paras->sons.begin(); pIter != func_paras->sons.end(); ++pIter) {
-        // todo 暂时只考虑int类型
-        newTempValue(ValueType::ValueType_Int, func_name->attr.id, true);
+        struct ast_node *arg_name = (*pIter)->sons[1];
+        if (arg_name->type == AST_ARRAY) {
+            sym_paras_array(arg_name, true);
+        } else {
+            // todo 暂时只考虑int类型
+            // true 代表函数形参，将形参添加到函数的形参表里
+            newTempValue(ValueType::ValueType_Int, func_name->attr.id, true);
+        }
     }
 
     // 形参定义
@@ -107,10 +135,14 @@ static bool sym_def_func(struct ast_node *node)
         // struct ast_node *arg_type = (*pIter)->sons[0];
         // 获取参数名
         struct ast_node *arg_name = (*pIter)->sons[1];
-        Value *localVarValue = nullptr;
-        // todo 暂时只考虑int类型
-        localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int, func_name->attr.id);
-        arg_name->val = localVarValue;
+        if (arg_name->type == AST_ARRAY) {
+            sym_paras_array(arg_name);
+        } else {
+            Value *localVarValue = nullptr;
+            // todo 暂时只考虑int类型
+            localVarValue = newLocalVarValue(arg_name->attr.id, ValueType::ValueType_Int, func_name->attr.id);
+            arg_name->val = localVarValue;
+        }
     }
     // 返回值定义
         // todo 暂时只考虑int类型
@@ -547,12 +579,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
 {
-    std::string label1 = newLabel(FuncName);  // true语句
-    std::string label2 = newLabel(FuncName);  // false语句
-    std::string label3 = newLabel(FuncName);  // 下一条语句
-    node->labels.push_back(label1);
-    node->labels.push_back(label2);
-    node->labels.push_back(label3);
+
     if (true) {
         // 仅第一次访问有效
         struct ast_node *src1_node = node->sons[0];
@@ -611,28 +638,6 @@ static bool sym_while(struct ast_node *node)
     if (!left) {
         return false;
     }
-    node->labels = left->labels;
-    // printf("while语句0\n");
-    // label1会一直往子语句块传下去，if语句没有else跳转到该label
-    node->label = left->labels[0];// 供while语句使用
-    src2_node->label = left->labels[1];
-    left->labels[1] = left->labels[2];
-    left->labels[0] = src2_node->label;
-    if (!node->next) {
-        struct ast_node *temp = new_ast_node(AST_EMPTY);
-        temp->label = left->labels[2];
-        node->next = node->parent->next;
-        if (!node->next) {
-            node->next = temp;
-        }
-        node->labels[1] = node->next->label;
-        left->labels[1] = node->next->label;
-    } else {
-        if (node->next->label.size() == 0) {
-            node->next->label = left->labels[2];
-        }
-    }
-    // printf("while语句1\n");
     struct ast_node *right = sym_visit_ast_node(src2_node);
     if (!right) {
         return false;
@@ -672,64 +677,22 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
 
             Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
             node->val = val;
-            std::string label1 = newLabel(FuncName);  // true语句
-            std::string label2 = newLabel(FuncName);  // false语句
-            std::string label3 = newLabel(FuncName);  // 下一条语句
-            node->labels.push_back(label1);
-            node->labels.push_back(label2);
-            node->labels.push_back(label3);
         }
     } else {
         if (!isSecond) {
-            // node->next = node->parent->next;
-            node->labels = node->parent->labels;
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *src2_node = node->sons[1];
-            // printf("AST_OP_or0\n");
-            if (type == AST_OP_OR) {
-                src1_node->next = src2_node;
-                src1_node->true_next = node->true_next;
-                src1_node->false_next = src2_node;
-                src2_node->next = node->next;
-                src2_node->true_next = node->true_next;
-                src2_node->false_next = node->false_next;
-                // printf("AST_OP_or1\n");
-            } else if (type == AST_OP_AND) {
-                src1_node->next = node->next;
-                src1_node->true_next = src2_node;
-                src1_node->false_next = node->false_next;
-                src2_node->next = node->next;
-                src2_node->true_next = node->true_next;
-                src2_node->false_next = node->false_next;
-            } else {
-
-            }
-            // printf("AST_OP_or2\n");
             struct ast_node *left = sym_visit_ast_node(src1_node);
             if (!left) {
                 return false;
             }
-            // printf("AST_OP_or3\n");
-            std::string label = newLabel(FuncName);
-            node->label = label;
-            // printf("新建label：%s\n", label.c_str());
-            struct ast_node *temp = or_and_next_node(node, type);
-
             struct ast_node *right = sym_visit_ast_node(src2_node);
             if (!right) {
                 return false;
             }
-
-            // left->label = label;
-            temp->label = label;
-            right->label = label;
-            // printf("AST_OP_or4\n");
         } else {
-            // printf("当前节点的label %s\n", node->label.c_str());
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *src2_node = node->sons[1];
-            src1_node->labels = node->labels;
-            src2_node->labels = node->labels;
             struct ast_node *left = sym_visit_ast_node(src1_node, true);
             if (!left) {
                 return false;
@@ -738,23 +701,6 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
             if (!right) {
                 return false;
             }
-
-            if (type == AST_OP_OR) {
-                // printf("AST_OP_or0\n");
-                // left->labels[1] = node->label;
-                left->labels[0] = left->true_next->label;
-                left->labels[1] = left->false_next->label;
-                right->labels[0] = right->true_next->label;
-                right->labels[1] = right->false_next->label;
-                // printf("AST_OP_or1\n");
-            } else {
-                left->labels[0] = left->true_next->label;
-                left->labels[1] = left->false_next->label;
-                right->labels[0] = right->true_next->label;
-                right->labels[1] = right->false_next->label;
-            }
-
-            // printf("逻辑运算\n");
         }
 
     }
@@ -785,10 +731,8 @@ static bool sym_not(struct ast_node *node, bool isLeft)
                 val = newTempValue(ValueType::ValueType_Bool, FuncName);
                 node->val = val;
             }
-            // node->
         }
     } else {
-        // node->labels = node->parent->labels;
         struct ast_node *src1_node = node->sons[0];
         struct ast_node *left = sym_visit_ast_node(src1_node);
         if (!left) {
@@ -816,7 +760,6 @@ static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 
         val = findValue(node->attr.id, FuncName, true);
         if (!isLeft) {
-            // val = newTempValue(ValueType::ValueType_MAX, FuncName);
         }
         if (!val) {
             printf("Line(%d) Variable(%s) not defined\n",

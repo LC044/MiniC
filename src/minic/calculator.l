@@ -34,7 +34,7 @@
 
 d			[0-9]
 o           [0-7]
-l           [a-zA-Z|_]
+l           [a-zA-Z]|_
 h           [0-9a-fA-F]
 white		[\t\040]
 white_line  [\r\n]
@@ -90,7 +90,6 @@ white_line  [\r\n]
 "--"         {return T_DEC;}
 "int"        {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
 "void"       {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_VOID;}
-
 "return"     {return T_RETURN;}
 "if"         {return T_IF;}
 "else"       {return T_ELSE;}
@@ -98,21 +97,6 @@ white_line  [\r\n]
 "for"        {return T_FOR;}
 "break"      {return T_BREAK;}
 "continue"   {return T_CONTINUE;}
-
-{l}+({d}|{l})* {
-                strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));
-                yylval.var_id.lineno = yylineno;
-                return T_ID;
-            }
-
-((({d}+\.{d}+)|({d}+(\.)?)|(\.{d}+))(e|E)(-|\+)?{d}+)|(({d}+\.{d}+)|({d}+\.)|(\.{d}+))		{
-                yylval.float_num.val = (double)strtod(yytext, (char **)NULL);
-                yylval.float_num.lineno = yylineno;
-                // printf("识别的数:%lf\n",yylval.float_num.val);
-                return T_FLOAT;
-            }
- 
-
 "("			|
 ")"			|
 "*"			|
@@ -128,6 +112,21 @@ white_line  [\r\n]
 "]"         |
 "!"         |
 ","         {return yytext[0];}
+{l}+({d}|{l})* {
+                strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));
+                yylval.var_id.lineno = yylineno;
+                return T_ID;
+            }
+
+((({d}+\.{d}+)|({d}+(\.)?)|(\.{d}+))(e|E)(-|\+)?{d}+)|(({d}+\.{d}+)|({d}+\.)|(\.{d}+))		{
+                yylval.float_num.val = (double)strtod(yytext, (char **)NULL);
+                yylval.float_num.lineno = yylineno;
+                // printf("识别的数:%lf\n",yylval.float_num.val);
+                return T_FLOAT;
+            }
+ 
+
+
 
 ">"         {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));

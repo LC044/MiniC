@@ -208,17 +208,32 @@ void DeclearIRInst::toString(std::string &str)
     }
     if (IsArray) {
         // 数组
-        for (int i = 0; result->dims[i] != 0; i++) {
-            str += "[" + int2str(result->dims[i]) + "]";
+        if (result->dims[0] == 999) {
+            str += "[0]";
+            for (int i = 1; result->dims[i] != 0; i++) {
+                str += "[" + int2str(result->dims[i]) + "]";
+            }
+        } else {
+            for (int i = 0; result->dims[i] != 0; i++) {
+                str += "[" + int2str(result->dims[i]) + "]";
+            }
         }
     }
     if (!IsGlobal and !IsTemp) {
         str += " ; variable: " + result->id_name;
         if (IsArray) {
             // 数组
-            for (int i = 0; result->dims[i] != 0; i++) {
-                str += "[" + int2str(result->dims[i]) + "]";
+            if (result->dims[0] == 999) {
+                str += "[0]";
+                for (int i = 1; result->dims[i] != 0; i++) {
+                    str += "[" + int2str(result->dims[i]) + "]";
+                }
+            } else {
+                for (int i = 0; result->dims[i] != 0; i++) {
+                    str += "[" + int2str(result->dims[i]) + "]";
+                }
             }
+
         }
     }
 }
@@ -257,7 +272,16 @@ void FuncDefIRInst::toString(std::string &str)
     for (size_t k = 0; k < srcValues.size(); ++k) {
 
         str += "i32 " + srcValues[k]->getName();
-
+        if (srcValues[k]->dims[0] == 999) {
+            str += "[0]";
+            for (int i = 1; srcValues[k]->dims[i] != 0; i++) {
+                str += "[" + int2str(srcValues[k]->dims[i]) + "]";
+            }
+        } else {
+            for (int i = 0; srcValues[k]->dims[i] != 0; i++) {
+                str += "[" + int2str(srcValues[k]->dims[i]) + "]";
+            }
+        }
         if (k != (srcValues.size() - 1)) {
 
             str += ", ";
