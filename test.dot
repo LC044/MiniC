@@ -1,16 +1,26 @@
 digraph{
  node[shape = record];
  entry [label="L0 | entry \l"];
-L1 [label="L1 |      %l1 = 0 \l     %l2 = 0 \l     br label .L3 \l  "];
-L3 [label="L3 |      %t3 = %l1 \l     %t4 = cmp lt %t3, 100 \l     bc %t4, label .L4, label .L5 \l  "];
-L4 [label="L4 |      %t5 = %l1 \l     %t6 = cmp eq %t5, 50 \l     bc %t6, label .L5, label .L8 \l  "];
-L8 [label="L8 |      %t7 = %l2 \l     %t8 = %l1 \l     %t9 = add %t7, %t8 \l     %l2 = %t9 \l     %t10 = %l1 \l     %t11 = add %t10, 1 \l     %l1 = %t11 \l     br label .L3 \l  "];
-L5 [label="L5 |      %l0 = %l2 \l     %t12 = %l0 \l     exit %t12 \l  "];
-entry -> L1
-L1 -> L3
-L3 -> L4
-L3 -> L5
-L4 -> L5
-L4 -> L8
-L8 -> L3
+L1 [label="L1 |      %l1 = 0 \l     %l2 = 0 \l     %t3 = %l1 \l     %t4 = cmp ne %t3, -1 \l     bc %t4, label .L3, label .L6 \l  "];
+L3 [label="L3 |      %l0 = 0 \l     br label .L2 \l  "];
+L6 [label="L6 |      %t5 = %l1 \l     %t6 = cmp lt %t5, 100 \l     bc %t6, label .L7, label .L5 \l  "];
+L7 [label="L7 |      %t7 = %l1 \l     %t8 = cmp eq %t7, 50 \l     bc %t8, label .L5, label .L11 \l  "];
+L11 [label="L11 |      %t9 = %l1 \l     %t10 = mod %t9, 2 \l     %t11 = cmp eq %t10, 0 \l     bc %t11, label .L12, label .L14 \l  "];
+L12 [label="L12 |      %t12 = %l2 \l     %t13 = %l1 \l     %t14 = add %t12, %t13 \l     %l2 = %t14 \l     br label .L6 \l  "];
+L14 [label="L14 |      %t15 = %l1 \l     %t16 = mul %t15, 2 \l     %t17 = %l2 \l     %t18 = add %t17, %t16 \l     %l2 = %t18 \l     %t19 = %l1 \l     %t20 = add %t19, 1 \l     %l1 = %t20 \l     br label .L6 \l  "];
+L5 [label="L5 |      %l0 = %l2 \l     br label .L2 \l  "];
+L2 [label="L2 |      %t21 = %l0 \l     exit %t21 \l  "];
+entry -> L1;
+L1 -> L3;
+L1 -> L6;
+L3 -> L2;
+L6 -> L7;
+L6 -> L5;
+L7 -> L5;
+L7 -> L11;
+L11 -> L12;
+L11 -> L14;
+L12 -> L6;
+L14 -> L6;
+L5 -> L2;
 }

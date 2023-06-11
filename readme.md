@@ -11,7 +11,12 @@
     cmake-build-debug\minic.exe -i -o test.ir  test.c
 
 3. 选项-d可产生控制流图
+
     cmake-build-debug\minic.exe -d -o test.dot  test.c
+
+    dot test.dot -T pdf -o test.pdf
+
+    dot test.dot -Tpng -o Blockgraph.png
 
 
 git config --global --unset http.proxy

@@ -10,6 +10,7 @@ std::string gDotFile = "ssa_cfg.dot";
 struct DAGNode {
     InterCode blockInsts;  // 代码块
     int id;                // 唯一标识符
+    bool Del = false; //
     std::string label;     // 标签
 };
 std::vector<DAGNode *> resultNodeTable;
@@ -51,20 +52,44 @@ bool isDelete(DAGNode *node)
     }
     return flag;
 }
+// 根据节点id获取节点的label
+int getNodeId(std::string label, std::vector<DAGNode *> &nodeTable)
+{
+    // printf("节点表的大小%d\n", nodeTable.size());
+    for (DAGNode *Node : nodeTable) {
+        if (Node->label == label) {
+            return Node->id;
+        }
+    }
+    return -1;
+}
+DAGNode *getNodeById(int id, std::vector<DAGNode *> &nodeTable)
+{
+    for (DAGNode *Node : nodeTable) {
+        if (Node->id == id) {
+            return Node;
+        }
+    }
+    return nullptr;
+}
 // 深搜遍历节点表，删除不需要的节点，然后修改边的指向
 void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, int curNodeID, bool *visited)
 {
     // 标记当前节点已经访问
     visited[curNodeID] = true;
-    // printf("访问的节点id:%d\n", curNodeID);
+
     // 获取当前节点信息
-    DAGNode *currentNode = nodeTable[curNodeID];
+    DAGNode *currentNode = getNodeById(curNodeID, nodeTable);
+    // printf("访问的节点\n", curNodeID);
+    printf("访问的节点为: %s,id:%d\n", currentNode->label.c_str(), curNodeID);
     // and (code[0]->getOp() == IRINST_JUMP_BR or code[0]->getOp() == IRINST_JUMP_BC)
     // 判断当前节点是否需要删除
     std::vector<IRInst *> code = currentNode->blockInsts.getInsts();
     if (isDelete(currentNode)) {
         // 删除当前节点
-        nodeTable.erase(nodeTable.begin() + curNodeID);
+        // std::remove(nodeTable);
+        // nodeTable.remove(currentNode);
+        nodeTable[curNodeID]->Del = true;
         printf("删除的节点为: %s\n", currentNode->label.c_str());
         // 更新所有出边的终点（即当前节点）为当前节点的后继节点
         std::vector<DAGNode *> nextNodes = getNextNodes(currentNode, nodeTable, edgeTable);
@@ -105,21 +130,11 @@ void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, i
         }
     }
 }
-// 根据节点id获取节点的label
-int getNodeId(std::string label, std::vector<DAGNode *> &nodeTable)
-{
-    // printf("节点表的大小%d\n", nodeTable.size());
-    for (DAGNode *Node : nodeTable) {
-        if (Node->label == label) {
-            return Node->id;
-        }
-    }
-    return -1;
-}
+
 void outputDot(const std::string &filePath, std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable)
 {
     // 这里使用C的文件操作，也可以使用C++的文件操作
-
+    // SetFileApisToOEM();
     FILE *fp = fopen(filePath.c_str(), "w");
     if (nullptr == fp) {
         printf("fopen() failed\n");
@@ -130,6 +145,9 @@ void outputDot(const std::string &filePath, std::vector<DAGNode *> &nodeTable, s
 
     for (int i = 0;i < nodeTable.size();i++) {
         DAGNode *node = nodeTable[i];
+        if (node->Del) {
+            continue;
+        }
         std::vector<IRInst *> code;
         code = node->blockInsts.getInsts();
         std::string Block;
@@ -139,17 +157,21 @@ void outputDot(const std::string &filePath, std::vector<DAGNode *> &nodeTable, s
             std::string instStr;
             inst->toString(instStr);
             Block += instStr + " \\l ";
+            if (inst->getOp() == IRINST_JUMP_BR) {
+                // break;
+            }
+            // if()
         }
         Block += " \"];";
         fprintf(fp, "%s\n", Block.c_str());
     }
-    std::string edges = "entry -> " + nodeTable[0]->label.substr(1, nodeTable[0]->label.length() - 1);
+    std::string edges = "entry -> " + nodeTable[0]->label.substr(1, nodeTable[0]->label.length() - 1) + ";";
     fprintf(fp, "%s\n", edges.c_str());
     for (int i = 0;i < edgeTable.size();i++) {
         DAGEdge *edge = edgeTable[i];
         std::string label1 = edge->fromNodeLabel.substr(1, edge->fromNodeLabel.length() - 1);
         std::string label2 = edge->toNodeLabel.substr(1, edge->toNodeLabel.length() - 1);
-        edges = label1 + " -> " + label2;
+        edges = label1 + " -> " + label2 + ";";
         fprintf(fp, "%s\n", edges.c_str());
     }
     // 遍历所有的线性IR指令，文本输出
@@ -184,6 +206,12 @@ InterCode *Basic_block_division(InterCode *blockInsts)
             edgeTable.push_back(edge);
             node->blockInsts.addInst(inst);
         } else if (inst->getOp() == IRINST_JUMP_BR) {
+            std::vector<IRInst *> code = node->blockInsts.getInsts();
+            if (code.size() > 0) {
+                if (code[code.size() - 1]->getOp() == IRINST_JUMP_BR) {
+                    continue;
+                }
+            }
             DAGEdge *edge = new DAGEdge();
             edge->fromNodeLabel = node->label;
             edge->toNodeLabel = inst->label1;
@@ -224,6 +252,9 @@ InterCode *Basic_block_division(InterCode *blockInsts)
     // 
     for (int i = 0; i < nodeTable.size(); i++) {
         node = nodeTable[i];
+        if (node->Del) {
+            continue;
+        }
         // printf("剩余label：%s\n", node->label.c_str());
         if (i != 0) {
             BlockInsts->addInst(
