@@ -1,10 +1,18 @@
 # minic
 
-cmake-build-debug\minic.exe -a -o test.jpg  test.c
+## 功能
 
-cmake-build-debug\minic.exe -i -o test.ir  test.c
+1. 选项-a可产生抽象语法树AST
 
-cmake-build-debug\minic.exe -a -o test.jpg  test.c
+    cmake-build-debug\minic.exe -a -o test.jpg  test.c
+
+2. 选项-r可产生线性IR
+
+    cmake-build-debug\minic.exe -i -o test.ir  test.c
+
+3. 选项-d可产生控制流图
+    cmake-build-debug\minic.exe -d -o test.dot  test.c
+
 
 git config --global --unset http.proxy
 
@@ -19,14 +27,6 @@ git reset --hard
 老师写好的程序运行方式
 
 .\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir0 test.c
-
-## 主要功能
-
-选项-a可产生抽象语法树AST
-
-选项-r可产生线性IR
-
-选项-R可直接运行得出计算器结果
 
 ## 源代码构成
 

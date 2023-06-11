@@ -24,14 +24,16 @@ int gGenIr = 0;
 // 直接运行，默认运行
 int gDirectRun = 0;
 
+// 产生控制流图
+extern int gDot;
 std::string gInputFile;
 std::string gOutputFile;
-
+extern std::string gDotFile;
 void showHelp(const std::string &exeName)
 {
     std::cout << exeName + " [-o output] -a source" << std::endl;
     std::cout << exeName + " [-o output] -i source" << std::endl;
-    std::cout << exeName + " -R source" << std::endl;
+    std::cout << exeName + " [-o output] -d source" << std::endl;
 }
 
 // 删除字符串的前后空格
@@ -53,7 +55,7 @@ std::string trim(const std::string &str)
 int ArgsAnalysis(int argc, char *argv[])
 {
     int ch;
-    const char options[] = "ho:aiR";
+    const char options[] = "ho:aiRd";
 
     opterr = 1;
 
@@ -62,6 +64,9 @@ lb_check:
         switch (ch) {
         case 'o':
             gOutputFile = optarg;
+            break;
+        case 'd':
+            gDot = 1;
             break;
         case 'a':
             gShowAST = 1;
@@ -105,7 +110,7 @@ lb_check:
 
     // 这三者只能指定一个
     // !
-    int flag = gShowAST + gGenIr + gDirectRun;
+    int flag = gShowAST + gGenIr + gDirectRun + gDot;
     if (flag != 1) {
         return -1;
     }
@@ -117,6 +122,8 @@ lb_check:
             gOutputFile = "ast.png";
         } else if (gGenIr) {
             gOutputFile = "ir.txt";
+        } else if (gDot) {
+            gDotFile = "ssa_cfg.dot";
         }
     } else {
 
@@ -192,7 +199,22 @@ int main(int argc, char *argv[])
         // 输出IR
         IRCode.outputIR(gOutputFile);
     }
-
+    if (gDot) {
+        gDotFile = gOutputFile;
+        InterCode IRCode;
+        // 产生符号表
+        result = genSymbol(ast_root);
+        if (!result) {
+            printf("genSymbol failed\n");
+            return -1;
+        }
+        // 产生IR
+        result = genIR(ast_root, IRCode);
+        if (!result) {
+            printf("genIR failed\n");
+            return -1;
+        }
+    }
     if (gDirectRun) {
 
         // 遍历抽象语法树，进行表达式运算

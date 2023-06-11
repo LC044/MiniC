@@ -5,6 +5,8 @@
 #include <string.h>
 #include "symbol.h"
 #include <stack>
+int gDot = 0;
+std::string gDotFile = "ssa_cfg.dot";
 struct DAGNode {
     InterCode blockInsts;  // 代码块
     int id;                // 唯一标识符
@@ -132,7 +134,7 @@ void outputDot(const std::string &filePath, std::vector<DAGNode *> &nodeTable, s
         code = node->blockInsts.getInsts();
         std::string Block;
         std::string label = node->label.substr(1, node->label.length() - 1);
-        Block += label + " [label=\"" + label + " | ";
+        Block += label + " [label=\"" + label + " |  ";
         for (auto &inst : code) {
             std::string instStr;
             inst->toString(instStr);
@@ -265,6 +267,8 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         }
 
     }
-    outputDot("ssa_cfg.dot", nodeTable, edgeTable);
+    if (gDot) {
+        outputDot(gDotFile, nodeTable, edgeTable);
+    }
     return BlockInsts;
 }
