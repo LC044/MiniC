@@ -1,25 +1,26 @@
-//test break
+int g;
+
+int getint();
+void putint(int k);
+
+int func(int n)
+{
+	g = g + n;
+	putint(g);
+	return g;
+}
+
 int main()
 {
 	int i;
-	i = 0;
-	int sum;
-	sum = 0;
-	if (i != -1) {
-		return 0;
-	} else {
-		while (i < 100) {
-			if (i == 50) {
-				break;
-			}
-			if (i % 2 == 0) {
-				sum = sum + i;
-				continue;
-			}
-			sum = sum + i * 2;
-			i = i + 1;
-		}
-	}
-
-	return sum;
+	i = getint();
+	if (i > 10 && func(i)) i = 1; else i = 0;
+	// i = getint();
+	// if (i > 11 && func(i)) i = 1; else i = 0;
+	// i = getint();
+	// if (i <= 99 || func(i)) i = 1; else i = 0;
+	// i = getint();
+	// if (i <= 100 || func(i)) i = 1; else i = 0;
+	// if (!func(99) && func(100)) i = 1; else i = 0;
+	return 0;
 }

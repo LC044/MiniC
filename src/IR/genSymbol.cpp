@@ -539,16 +539,12 @@ static bool sym_if(struct ast_node *node, bool isLast)
     // bool ifcmp = true;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
-    // 条件表达式
-    printf("条件进入\n");
     struct ast_node *cond = sym_visit_ast_node(src1_node);
     if (!cond) {
         return false;
     }
-    printf("条件出来\n");
     if (src1_node->type == AST_OP_AND || src1_node->type == AST_OP_OR || src1_node->type == AST_OP_CMP || src1_node->type == AST_OP_NOT) {
     } else {
-        printf("非逻辑运算\n");
         Value *val;
         if (src1_node->val->isId) {
             val = newTempValue(ValueType::ValueType_Int, FuncName);
@@ -562,7 +558,6 @@ static bool sym_if(struct ast_node *node, bool isLast)
             // val->isId = true;
             node->val = val;
         }
-
     }
     struct ast_node *true_node = sym_visit_ast_node(src2_node, true);
     if (!true_node) {
@@ -577,7 +572,6 @@ static bool sym_if(struct ast_node *node, bool isLast)
         }
     } else {
     }
-    // node->val = node->sons[0]->val;
     return true;
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
@@ -701,6 +695,7 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
             if (!right) {
                 return false;
             }
+            node->val = left->val;
         } else {
             struct ast_node *src1_node = node->sons[0];
             struct ast_node *src2_node = node->sons[1];
@@ -712,6 +707,7 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
             if (!right) {
                 return false;
             }
+            node->val = left->val;
         }
 
     }

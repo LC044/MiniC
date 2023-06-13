@@ -157,6 +157,54 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
             new FuncDefIRInst(func_name->val)
     );
+
+    // return true;
+    // 第四个孩子是语句块
+    struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
+
+    // return true;
+    // InterCode *blockInsts = &(func_block->blockInsts);
+    InterCode *blockInsts = new InterCode();
+    for (int i = 0; i < func_name->val->fargs.size(); ++i) {
+        Value *srcValue = nullptr;
+        srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
+        Value *resultValue = nullptr;
+        resultValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
+        blockInsts->addInst(
+            new AssignIRInst(resultValue, srcValue)
+        );
+    }
+    blockInsts->addInst(func_block->blockInsts);
+    printf("指令长度：%d\n", blockInsts->getCodeSize());
+
+    // 如果if里有return语句则在exit这里加个label
+    if (ExitLabel) {
+        blockInsts->addInst(
+            new JumpIRInst(IRINST_JUMP_BR, ".L2")
+        );
+        blockInsts->addInst(
+            new UselessIRInst(".L2:")
+        );
+    }
+    ExitLabel = false;
+    // return语句
+    Value *returnValue = findValue("return", FuncName, true);
+    Value *srcValue = nullptr;
+    srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[func_name->val->tempVarsName.size() - 1]];
+    srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
+    if (strcmp(func_type->attr.id, "int") == 0) {
+        blockInsts->addInst(
+            new AssignIRInst(srcValue, returnValue)
+        );
+
+        blockInsts->addInst(
+            new UnaryIRInst(IRINST_OP_RETURN, srcValue, srcValue)
+        );
+    } else {
+        blockInsts->addInst(
+            new UnaryIRInst(IRINST_OP_RETURN)
+        );
+    }
     // 添加局部变量定义IR指令
     printf("函数局部变量个数:%d\n", func_name->val->localVarsName.size());
     for (int i = 0; i < func_name->val->localVarsName.size(); ++i) {
@@ -179,51 +227,7 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst("    entry")
     );
-    InterCode *blockInsts = new InterCode();
-    for (int i = 0; i < func_name->val->fargs.size(); ++i) {
-        Value *srcValue = nullptr;
-        srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
-        Value *resultValue = nullptr;
-        resultValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
-        blockInsts->addInst(
-            new AssignIRInst(resultValue, srcValue)
-        );
-    }
-    // return true;
-    // 第四个孩子是语句块
-    struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
-    // return true;
-    // InterCode *blockInsts = &(func_block->blockInsts);
-    blockInsts->addInst(func_block->blockInsts);
-    printf("指令长度：%d\n", blockInsts->getCodeSize());
 
-    // 如果if里有return语句则在exit这里加个label
-    if (ExitLabel) {
-        blockInsts->addInst(
-            new JumpIRInst(IRINST_JUMP_BR, ".L2")
-        );
-        blockInsts->addInst(
-            new UselessIRInst(".L2:")
-        );
-    }
-    ExitLabel = false;
-    // return语句
-    Value *returnValue = findValue("return", FuncName, true);
-    Value *srcValue = nullptr;
-    srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[func_name->val->tempVarsName.size() - 1]];
-    if (strcmp(func_type->attr.id, "int") == 0) {
-        blockInsts->addInst(
-            new AssignIRInst(srcValue, returnValue)
-        );
-
-        blockInsts->addInst(
-            new UnaryIRInst(IRINST_OP_RETURN, srcValue, srcValue)
-        );
-    } else {
-        blockInsts->addInst(
-            new UnaryIRInst(IRINST_OP_RETURN)
-        );
-    }
 
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // node->blockInsts.addInst(*blockInsts);
@@ -848,10 +852,34 @@ static bool ir_or(struct ast_node *node)
         return false;
     }
     node->blockInsts.addInst(left->blockInsts);
+    if (!(left->val->type == ValueType::ValueType_Bool)) {
+        Value *val = nullptr;
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, "ne", val, left->val, constVal)
+        );
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+        );
+        node->val = val;
+    }
     node->blockInsts.addInst(
             new UselessIRInst(label1 + ":")
     );
     node->blockInsts.addInst(right->blockInsts);
+    if (!(right->val->type == ValueType::ValueType_Bool)) {
+        Value *val = nullptr;
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, "ne", val, right->val, constVal)
+        );
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+        );
+        node->val = val;
+    }
     printf("or运算符1\n");
 
     return true;
@@ -875,10 +903,34 @@ static bool ir_and(struct ast_node *node)
     }
 
     node->blockInsts.addInst(left->blockInsts);
+    if (!(left->val->type == ValueType::ValueType_Bool)) {
+        Value *val = nullptr;
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, "ne", val, left->val, constVal)
+        );
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+        );
+        node->val = val;
+    }
     node->blockInsts.addInst(
             new UselessIRInst(label1 + ":")
     );
     node->blockInsts.addInst(right->blockInsts);
+    if (!(right->val->type == ValueType::ValueType_Bool)) {
+        Value *val = nullptr;
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, "ne", val, right->val, constVal)
+        );
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+        );
+        node->val = val;
+    }
     return true;
 }
 static bool ir_not(struct ast_node *node, bool isLeft)
@@ -910,7 +962,7 @@ static bool ir_not(struct ast_node *node, bool isLeft)
                 );
             }
             if (left->val->type == ValueType::ValueType_Bool) {
-
+                node->val = left->val;
             } else {
                 Value *constVal = newConstValue(0);
                 node->blockInsts.addInst(
@@ -920,10 +972,17 @@ static bool ir_not(struct ast_node *node, bool isLeft)
                 node->blockInsts.addInst(
                         new JumpIRInst(IRINST_JUMP_BC, node->val, Bc1Labels.top(), Bc2Labels.top())
                 );
+
             }
 
         }
     }
+    label1 = Bc1Labels.top();
+    Bc1Labels.pop();
+    label2 = Bc2Labels.top();
+    Bc2Labels.pop();
+    Bc1Labels.push(label2);
+    Bc2Labels.push(label1);
     return true;
 }
 // 递归遍历抽象语法树进行计算
