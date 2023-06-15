@@ -386,20 +386,23 @@ lval    : ident {$$ = $1;}  // 变量
         | ident lvaltail {  // 数组引用
             // $$ = new_ast_node(AST_OP_INDEX,$1,$2);
             struct ast_node * temp_node;
-            temp_node = new_ast_node(AST_OP_INDEX,$1,$2);
-            // std::vector<struct ast_node *>::iterator pIterNode;
-            // for (pIterNode = $2->sons.begin(); pIterNode != $2->sons.end(); ++pIterNode) {
-            //     temp_node->sons.push_back(*pIterNode);
-            //     (*pIterNode)->parent = temp_node;
-            // }
+            temp_node = new_ast_node(AST_OP_INDEX,$1);
+            std::vector<struct ast_node *>::iterator pIterNode;
+            for (pIterNode = $2->sons.begin(); pIterNode != $2->sons.end(); ++pIterNode) {
+                temp_node->sons.push_back(*pIterNode);
+                (*pIterNode)->parent = temp_node;
+            }
             $$ = temp_node;
             }  // 变量数组
 
 lvaltail :'[' expr ']' {$$ = new_ast_node(AST_DIMS,$2);}
          |  lvaltail '[' expr ']'
          {
-            struct ast_node * temp_node = new_ast_node(AST_EMPTY);
-            $$ = new_ast_node(AST_DIMS,$1,$3,temp_node);
+            $3->parent = $1;
+            $1->sons.push_back($3);
+            $$ = $1;
+            // struct ast_node * temp_node = new_ast_node(AST_EMPTY);
+            // $$ = new_ast_node(AST_DIMS,$1,$3,temp_node);
          }
 
 realarg     :  realargs {$$ = $1;}

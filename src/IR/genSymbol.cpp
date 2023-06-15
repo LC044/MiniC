@@ -155,12 +155,12 @@ static bool sym_def_func(struct ast_node *node)
     node->sons[3]->parent = node;
     // printf("返回值复制给临时变量0\n");
     BFS(node->sons[3]);
-    struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
+    // struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     // 返回值复制给临时变量
-    newTempValue(ValueType::ValueType_Int, FuncName);
-    // printf("返回值复制给临时变量\n");
-    ReturnFlag = 0;
-    if (func_block == NULL) return true;
+    // newTempValue(ValueType::ValueType_Int, FuncName);
+    // // printf("返回值复制给临时变量\n");
+    // ReturnFlag = 0;
+    // if (func_block == NULL) return true;
     return true;
 }
 static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
@@ -302,27 +302,6 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     Value *leftValue = left->val;
     Value *rightValue = right->val;
-    Value *val = nullptr;
-    // 变量当右值要先复制给临时变量再进行计算
-    if (left->type == AST_OP_INDEX) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        left->val = val;
-    }
-    if (right->type == AST_OP_INDEX) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        right->val = val;
-    }
-    if (left->val->isId) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        val->isId = true;
-        left->val = val;
-    }
-    if (right->val->isId) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        val->isId = true;
-        right->val = val;
-    }
-
     // 左右值都是常量就直接计算出来，代码优化 
     Value *resultValue = nullptr;
     if ((leftValue->isConst) and (rightValue->isConst)) {
@@ -409,7 +388,7 @@ static bool sym_dimensions(struct ast_node *node, bool isSecond)
 
     return true;
 }
-static bool sym_index(struct ast_node *node)
+static bool sym_index(struct ast_node *node, bool isLeft)
 {
     // 数组索引第一个孩子节点是变量名
     struct ast_node *src1_node = node->sons[0];
@@ -755,7 +734,7 @@ static bool sym_not(struct ast_node *node, bool isLeft)
 }
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
-
+    return true;
     Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
@@ -809,7 +788,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         ContinueFlag++;
         break;
     case AST_OP_INDEX:
-        result = sym_index(node);
+        result = sym_index(node, isLeft);
         break;
     case AST_DIMS:
         result = sym_dimensions(node, isLeft);

@@ -26,7 +26,7 @@ extern std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
 extern std::vector<std::string > funcsName;
 extern InterCode *Basic_block_division(InterCode *blockInsts);
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast = false, bool isLeft = false);
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 
@@ -85,12 +85,7 @@ static bool ir_block(struct ast_node *node)
         }
 
         struct ast_node *temp;
-        if (pIter == node->sons.end() - 1) {
-            temp = ir_visit_ast_node(*pIter, true, true);
-        } else {
-            // 遍历Block的每个语句，进行显示或者运算
-            temp = ir_visit_ast_node(*pIter, false, true);
-        }
+        temp = ir_visit_ast_node(*pIter, true);
         if (!temp) {
             continue;
         }
@@ -188,10 +183,13 @@ static bool ir_def_func(struct ast_node *node)
     }
     ExitLabel = false;
     // return语句
+
     Value *returnValue = findValue("return", FuncName, true);
     Value *srcValue = nullptr;
-    srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[func_name->val->tempVarsName.size() - 1]];
+    printf("return 语句\n");
+    // srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[func_name->val->tempVarsName.size() - 1]];
     srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
+    printf("return 语句\n");
     if (strcmp(func_type->attr.id, "int") == 0) {
         blockInsts->addInst(
             new AssignIRInst(srcValue, returnValue)
@@ -230,9 +228,9 @@ static bool ir_def_func(struct ast_node *node)
 
 
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
-    // node->blockInsts.addInst(*blockInsts);
-    InterCode *BlockInsts = Basic_block_division(blockInsts);
-    node->blockInsts.addInst(*BlockInsts);
+    node->blockInsts.addInst(*blockInsts);
+    // InterCode *BlockInsts = Basic_block_division(blockInsts);
+    // node->blockInsts.addInst(*BlockInsts);
 
     // 语句块结束之后应该加一个 '}'
     node->blockInsts.addInst(
@@ -357,40 +355,33 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     node->blockInsts.addInst(right->blockInsts);
     Value *leftValue = left->val;
     Value *rightValue = right->val;
-    if (left->type == AST_OP_INDEX) {
-        Value *dstVal = left->val;
-        Value *val = left->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (right->type == AST_OP_INDEX) {
-        Value *dstVal = right->val;
-        Value *val = right->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (left->val->isId) {
-        Value *val = findValue(left->attr.id, FuncName, true);
-        Value *dstVal = left->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (right->val->isId) {
-        Value *val = findValue(right->attr.id, FuncName, true);
-        Value *dstVal = right->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-
-
+    Value *resultValue = nullptr;
     if ((leftValue->isConst) and (rightValue->isConst)) {
-        ;
+        int result = 0;
+        switch (type) {
+        case AST_OP_ADD:
+            result = rightValue->intVal + leftValue->intVal;
+            break;
+        case AST_OP_SUB:
+            result = rightValue->intVal - leftValue->intVal;
+            break;
+        case AST_OP_MUL:
+            result = rightValue->intVal * leftValue->intVal;
+            break;
+        case AST_OP_DIV:
+            result = rightValue->intVal / leftValue->intVal;
+            break;
+        case AST_OP_MOD:
+            result = rightValue->intVal % leftValue->intVal;
+            break;
+        default:
+            break;
+        }
+        resultValue = newConstValue(result);
+        node->val = resultValue;
     } else {
-
+        resultValue = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->val = resultValue;
         switch (type) {
         case AST_OP_ADD:
             node->blockInsts.addInst(
@@ -485,26 +476,92 @@ static bool ir_dimensions(struct ast_node *node, bool isSecond)
     }
     return true;
 }
-static bool ir_index(struct ast_node *node)
+static bool ir_index(struct ast_node *node, bool isLeft)
 {
     // 数组索引第一个孩子节点是变量名
     // printf("数组索引\n");
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
-    struct ast_node *array_name = ir_visit_ast_node(src1_node);
-    if (!array_name) {
-        return false;
-    }
+    struct ast_node *array_name = src1_node;
     ArrName = array_name->attr.id;
+    Value *ArrVal = findValue(ArrName, FuncName, true);
+    std::vector<struct ast_node *>::iterator pIter;
+    for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp;
+        temp = ir_visit_ast_node(*pIter, true);
+        if (!temp) {
+            continue;
+        }
+        node->blockInsts.addInst(temp->blockInsts);
+    }
+    Value *Resultval1 = node->sons[1]->val;
+    if (node->sons.size() > 2) {
+        int i = 0;
+        for (pIter = node->sons.begin() + 2; pIter != node->sons.end(); ++pIter, ++i) {
+            struct ast_node *temp1 = (*(pIter - 1));
+            struct ast_node *temp2 = (*pIter);
+            int dim = ArrVal->dims[ArrVal->dim - i - 1];
+            // printf("数组维度: %d\n", dim);
+            if (temp1->val->isConst and temp2->val->isConst) {
+                temp2->val->intVal = (temp1->val->intVal + temp2->val->intVal) * dim;
+                Resultval1 = temp2->val;
+            } else {
+                Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+                Value *offsetVal = newConstValue(dim);
+                node->blockInsts.addInst(
+                    new BinaryIRInst(IRINST_OP_MUL, val, temp1->val, offsetVal)
+                );
+                Resultval1 = newTempValue(ValueType::ValueType_Int, FuncName);
+                node->blockInsts.addInst(
+                    new BinaryIRInst(IRINST_OP_ADD, Resultval1, val, temp2->val)
+                );
+            }
+        }
+    }
+    Value *Resultval3;
+    int dim = ArrVal->dims[ArrVal->dim - 1];
+    if (ArrVal->dim == 1) { dim = 4; }
+    if (Resultval1->isConst) {
+        Resultval3 = newConstValue(Resultval1->intVal * dim);
+    } else {
+        Resultval3 = newTempValue(ValueType::ValueType_Int, FuncName);
+        Value *offsetVal = newConstValue(dim);
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_MUL, Resultval3, Resultval1, offsetVal)
+        );
+    }
+
+    Value *Resultval2 = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+    node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_ADD, Resultval2, ArrVal, Resultval3)
+    );
+    node->val = Resultval2;
+    newTempValue(ValueType::ValueType_Int, FuncName);
+    if (!isLeft) {
+        // 数组索引做右值，要先赋值给临时变量
+        // a = b[0] + 1;
+        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->blockInsts.addInst(
+        new AssignIRInst(val, Resultval2)
+        );
+        node->val = val;
+    } else {
+        // newTempValue(ValueType::ValueType_Int, FuncName);
+    }
+    return true;
     // struct ast_node *right;
-    ir_visit_ast_node(src2_node);
+    // ir_visit_ast_node(src2_node);
     dimFlag = 0;
-    ir_visit_ast_node(src2_node, true, false);
+
+    // ir_visit_ast_node(src2_node, true);
+
     node->blockInsts.addInst(src2_node->blockInsts);
     Value *val = findValue(array_name->attr.id, FuncName);
     node->blockInsts.addInst(
         new BinaryIRInst(IRINST_OP_ADD, node->sons[0]->val, val, src2_node->val)
     );
+
+
     return true;
 }
 // 赋值操作
@@ -518,7 +575,7 @@ static bool ir_assign(struct ast_node *node)
     // 赋值节点，自右往左运算
 
     // 赋值运算符的左侧操作数
-    struct ast_node *left = ir_visit_ast_node(son1_node, true, true);
+    struct ast_node *left = ir_visit_ast_node(son1_node, true);
     if (!left) {
         // 某个变量没有定值
         // 这里缺省设置变量不存在则创建，因此这里不会错误
@@ -537,33 +594,7 @@ static bool ir_assign(struct ast_node *node)
     // 创建临时变量保存IR的值，以及线性IR指令
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
-
-    // return true;
-    // 左值类型与右值类型相同
-    // 加上这行代码才能判断是否要进行类型转换
-    // left->val->type = right->val->type;
     Value *leftValue = left->val, *rightValue = right->val;
-    if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
-        if (left->type == AST_OP_INDEX) {
-            leftValue = left->sons[0]->val;
-            leftValue->type = ValueType::ValueType_Int_ptr;
-        }
-        if (right->type == AST_OP_INDEX and left->type == AST_OP_INDEX) {
-            rightValue = right->sons[0]->val;
-            node->blockInsts.addInst(
-            new AssignIRInst(node->val, rightValue)
-            );
-            rightValue = node->val;
-        }
-        // 右侧是数组变量，要把数组变量复制给临时变量，再将临时变量复制给左值
-        // if (right->type == AST_OP_INDEX) {
-        //     rightValue = right->sons[0]->val;
-        //     node->blockInsts.addInst(
-        //     new AssignIRInst(node->val, rightValue)
-        //     );
-        //     rightValue = node->val;
-        // }
-    }
     node->blockInsts.addInst(
         new AssignIRInst(leftValue, rightValue)
     );
@@ -641,7 +672,7 @@ static bool ir_cmp(struct ast_node *node)
     // printf("cmp指1\n");
     return true;
 }
-static bool ir_if(struct ast_node *node, bool isLast)
+static bool ir_if(struct ast_node *node)
 {
     // if 有三个孩子节点，比较运算、true代码块、false代码块(false可能不存在)
     // node->labels存储三个跳转节点的label，供bc指令跳转用
@@ -964,35 +995,39 @@ static bool ir_not(struct ast_node *node, bool isLeft)
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
 
-    // Value *val = nullptr;
+    Value *val = nullptr;
 
-    // if (node->attr.kind == DIGIT_KIND_ID) {
-    //     // 新建一个ID型Value
-    //     // TODO 类型没有指定，有问题，需要修改
+    if (node->attr.kind == DIGIT_KIND_ID) {
+        // 变量，则需要在符号表中查找对应的值
+        val = findValue(node->attr.id, FuncName, true);
+        if (!val) {
+            printf("Line(%d) Variable(%s) not defined\n",
+                   node->attr.lineno,
+                   node->attr.id);
+            return false;
+        }
+        node->val = val;
+        if (!isLeft) {
+            // 变量做右值需要先复制给临时变量
+            Value *dstVal = newTempValue(ValueType::ValueType_Int, FuncName);
+            node->blockInsts.addInst(
+                    new AssignIRInst(dstVal, val)
+            );
+            node->val = dstVal;
+        }
+    } else if (node->attr.kind == DIGIT_KIND_INT) {
+        // 新建一个整数常量Value
+        val = newConstValue(node->attr.integer_val);
+        node->val = val;
+    } else {
+        // 新建一个实数型常量Value
+        val = newConstValue(node->attr.real_val);
+        node->val = val;
+    }
 
-    //     // 变量，则需要在符号表中查找对应的值
-    //     // 若变量之前没有有定值，则采用默认的值为0
-
-    //     val = findValue(node->attr.id, FuncName, true);
-    //     if (!isLeft) {
-    //     }
-    //     if (!val) {
-    //         printf("Line(%d) Variable(%s) not defined\n",
-    //                node->attr.lineno,
-    //                node->attr.id);
-    //         return false;
-    //     }
-    // } else if (node->attr.kind == DIGIT_KIND_INT) {
-    //     // 新建一个整数常量Value
-    //     val = newConstValue(node->attr.integer_val);
-    // } else {
-    //     // 新建一个实数型常量Value
-    //     val = newConstValue(node->attr.real_val);
-    // }
-    node->val = val;
     return true;
 }
-static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bool isLeft)
+static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
 {
     // 非法节点
     if (nullptr == node) {
@@ -1011,7 +1046,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
     switch (node->type) {
     case AST_OP_NULL:
         // 叶子节点
-        result = ir_leaf_node(node, isLast);
+        result = ir_leaf_node(node, isLeft);
         break;
     case AST_OP_BREAK:
         result = ir_break(node);
@@ -1023,10 +1058,10 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         result = true;
         break;
     case AST_DIMS:
-        result = ir_dimensions(node, isLast);
+        result = ir_dimensions(node, isLeft);
         break;
     case AST_OP_INDEX:
-        result = ir_index(node);
+        result = ir_index(node, isLeft);
         break;
     case AST_FUNC_CALL:
         result = ir_func_call(node, isLeft);
@@ -1045,7 +1080,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bo
         result = ir_neg(node);
         break;
     case AST_OP_IF:
-        result = ir_if(node, isLast);
+        result = ir_if(node);
         break;
     case AST_OP_WHILE:
         result = ir_while(node);

@@ -1,22 +1,17 @@
-int n;
-
-int counting_sort(int ini_arr[], int sorted_arr[], int n)
-{
-	int count_arr[10];
-	int j;
-	count_arr[ini_arr[j - 1]] = count_arr[ini_arr[j - 1]] - 1;
-	sorted_arr[count_arr[ini_arr[j - 1]]] = ini_arr[j - 1];
-	return 0;
-}
-
-void putint(int k);
-void putch(int k);
 int main()
 {
-	n = 10;
-	int a[10];
-	int i;
-	int b[10];
-	i = counting_sort(a, b, n);
-	return 0;
+	int a[4][2];
+	int b[4][2];
+	int c[4][2];
+	int d[4][2];
+	int e[4][2][1];
+
+	// a[3][0] = 7;
+	d[3][0] = a[3][0];
+	// d[2][1] = 1;
+	// e[0][0][0] = d[2][1];
+	// e[0][1][0] = 0;
+	// e[3][1][0] = 5;
+
+	return e[3][1][0] + e[0][0][0] + e[0][1][0] + d[3][0];
 }
