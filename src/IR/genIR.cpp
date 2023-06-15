@@ -809,32 +809,7 @@ static bool ir_continue(struct ast_node *node)
     );
     return true;
 }
-static bool ir_leaf_node(struct ast_node *node, bool isLeft)
-{
 
-    // Value *val = nullptr;
-
-    if (node->attr.kind == DIGIT_KIND_ID) {
-        // 新建一个ID型Value
-        // TODO 类型没有指定，有问题，需要修改
-
-        // 变量，则需要在符号表中查找对应的值
-        // 若变量之前没有有定值，则采用默认的值为0
-        if (isLeft) {
-            // val = findValue(node->attr.id, FuncName, true);
-            // node->val = val;
-        } else {
-            // val = findValue(node->attr.id, FuncName, true);
-            // Value *dstVal = node->val;
-            // node->blockInsts.addInst(
-            //     new AssignIRInst(dstVal, val)
-            // );
-        }
-
-        // node->val = val;
-    }
-    return true;
-}
 static bool ir_or(struct ast_node *node)
 {
     printf("or运算符0\n");
@@ -986,6 +961,37 @@ static bool ir_not(struct ast_node *node, bool isLeft)
     return true;
 }
 // 递归遍历抽象语法树进行计算
+static bool ir_leaf_node(struct ast_node *node, bool isLeft)
+{
+
+    // Value *val = nullptr;
+
+    // if (node->attr.kind == DIGIT_KIND_ID) {
+    //     // 新建一个ID型Value
+    //     // TODO 类型没有指定，有问题，需要修改
+
+    //     // 变量，则需要在符号表中查找对应的值
+    //     // 若变量之前没有有定值，则采用默认的值为0
+
+    //     val = findValue(node->attr.id, FuncName, true);
+    //     if (!isLeft) {
+    //     }
+    //     if (!val) {
+    //         printf("Line(%d) Variable(%s) not defined\n",
+    //                node->attr.lineno,
+    //                node->attr.id);
+    //         return false;
+    //     }
+    // } else if (node->attr.kind == DIGIT_KIND_INT) {
+    //     // 新建一个整数常量Value
+    //     val = newConstValue(node->attr.integer_val);
+    // } else {
+    //     // 新建一个实数型常量Value
+    //     val = newConstValue(node->attr.real_val);
+    // }
+    node->val = val;
+    return true;
+}
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLast, bool isLeft)
 {
     // 非法节点

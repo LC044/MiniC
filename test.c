@@ -1,26 +1,22 @@
-int g;
+int n;
 
-int getint();
-void putint(int k);
-
-int func(int n)
+int counting_sort(int ini_arr[], int sorted_arr[], int n)
 {
-	g = g + n;
-	putint(g);
-	return g;
+	int count_arr[10];
+	int j;
+	count_arr[ini_arr[j - 1]] = count_arr[ini_arr[j - 1]] - 1;
+	sorted_arr[count_arr[ini_arr[j - 1]]] = ini_arr[j - 1];
+	return 0;
 }
 
+void putint(int k);
+void putch(int k);
 int main()
 {
+	n = 10;
+	int a[10];
 	int i;
-	i = getint();
-	if (i > 10 && func(i)) i = 1; else i = 0;
-	// i = getint();
-	// if (i > 11 && func(i)) i = 1; else i = 0;
-	// i = getint();
-	// if (i <= 99 || func(i)) i = 1; else i = 0;
-	// i = getint();
-	// if (i <= 100 || func(i)) i = 1; else i = 0;
-	// if (!func(99) && func(100)) i = 1; else i = 0;
+	int b[10];
+	i = counting_sort(a, b, n);
 	return 0;
 }

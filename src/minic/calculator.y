@@ -152,6 +152,7 @@ type   :  T_INT {
                 temp_val.kind = KEYWORD_ID;
                 temp_val.lineno = $1.lineno;
                 strncpy(temp_val.id, $1.id, sizeof(temp_val.id));
+                // strncpy(temp_val.id, "int", sizeof("int"));
                 // printf("%s\n", temp_val.id);
                 $$ = new_ast_leaf_node(temp_val);
             }
