@@ -371,10 +371,10 @@ cmp     : T_CMP{
         }
 factor      : '-' factor %prec UMINUS {$$ = new_ast_node(AST_OP_NEG, $2);}  //取负
             | '!' factor    {$$ = new_ast_node(AST_OP_NOT, $2);}            //逻辑非
-            | lval T_DEC    {$$ = new_ast_node(AST_OP_LDEC,$1);}
-            | lval T_INC    {$$ = new_ast_node(AST_OP_LINC,$1);}
-            | T_DEC lval    {$$ = new_ast_node(AST_OP_RDEC,$2);}
-            | T_INC lval    {$$ = new_ast_node(AST_OP_RINC,$2);}
+            | lval T_DEC    {$$ = new_ast_node(AST_OP_RDEC,$1);}
+            | lval T_INC    {$$ = new_ast_node(AST_OP_RINC,$1);}
+            | T_DEC lval    {$$ = new_ast_node(AST_OP_LDEC,$2);}
+            | T_INC lval    {$$ = new_ast_node(AST_OP_LINC,$2);}
             | rval          {$$ = $1;};
 
 rval    : lval          {$$=$1;}

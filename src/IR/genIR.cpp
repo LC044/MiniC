@@ -399,6 +399,66 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     return true;
 }
+static bool ir_inc_dec(struct ast_node *node, enum ast_operator_type type, bool isLeft)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = ir_visit_ast_node(src1_node, true);
+    if (!left) {
+        return false;
+    }
+    node->blockInsts.addInst(left->blockInsts);
+    Value *ConstVal = newConstValue(1);
+    Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+    switch (type) {
+    case AST_OP_LINC: {
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_ADD, val, left->val, ConstVal)
+        );
+        node->blockInsts.addInst(
+            new AssignIRInst(left->val, val)
+        );
+        node->val = left->val;
+        break;}
+    case AST_OP_RINC: {
+        node->blockInsts.addInst(
+            new AssignIRInst(val, left->val)
+        );
+        Value *tempval = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_ADD, tempval, left->val, ConstVal)
+        );
+        node->blockInsts.addInst(
+            new AssignIRInst(left->val, tempval)
+        );
+        node->val = val;
+        break;}
+    case AST_OP_LDEC: {
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_SUB, val, left->val, ConstVal)
+        );
+        node->blockInsts.addInst(
+            new AssignIRInst(left->val, val)
+        );
+        node->val = left->val;
+        break;}
+    case AST_OP_RDEC: {
+        node->blockInsts.addInst(
+            new AssignIRInst(val, left->val)
+        );
+        Value *tempval = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_SUB, tempval, left->val, ConstVal)
+        );
+        node->blockInsts.addInst(
+            new AssignIRInst(left->val, tempval)
+        );
+        node->val = val;
+        break;}
+    default:
+        break;
+    }
+    return true;
+}
 static bool ir_dimensions(struct ast_node *node, bool isSecond)
 {
 
@@ -1036,6 +1096,12 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
     case AST_OP_DIV:
     case AST_OP_MOD:
         result = ir_binary_op(node, node->type);
+        break;
+    case AST_OP_LINC:
+    case AST_OP_LDEC:
+    case AST_OP_RDEC:
+    case AST_OP_RINC:
+        result = ir_inc_dec(node, node->type, isLeft);
         break;
     case AST_OP_ASSIGN:
         result = ir_assign(node);

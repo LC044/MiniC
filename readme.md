@@ -14,7 +14,7 @@
 
     cmake-build-debug\minic.exe -d -o test.dot  test.c
 
-    dot test.dot -T pdf -o test.pdf
+    dot test.dot -Tpdf -o test.pdf
 
     dot test.dot -Tpng -o Blockgraph.png
 
