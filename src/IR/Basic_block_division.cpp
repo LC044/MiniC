@@ -81,7 +81,7 @@ void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, i
     // 获取当前节点信息
     DAGNode *currentNode = getNodeById(curNodeID, nodeTable);
     // printf("访问的节点\n", curNodeID);
-    printf("访问的节点为: %s,id:%d\n", currentNode->label.c_str(), curNodeID);
+    // printf("访问的节点为: %s,id:%d\n", currentNode->label.c_str(), curNodeID);
     // and (code[0]->getOp() == IRINST_JUMP_BR or code[0]->getOp() == IRINST_JUMP_BC)
     // 判断当前节点是否需要删除
     std::vector<IRInst *> code = currentNode->blockInsts.getInsts();
@@ -90,16 +90,16 @@ void DFS(std::vector<DAGNode *> &nodeTable, std::vector<DAGEdge *> &edgeTable, i
         // std::remove(nodeTable);
         // nodeTable.remove(currentNode);
         nodeTable[curNodeID]->Del = true;
-        printf("删除的节点为: %s\n", currentNode->label.c_str());
+        // printf("删除的节点为: %s\n", currentNode->label.c_str());
         // 更新所有出边的终点（即当前节点）为当前节点的后继节点
         std::vector<DAGNode *> nextNodes = getNextNodes(currentNode, nodeTable, edgeTable);
-        printf("删除节点的下一个节点的个数%d\n", nextNodes.size());
+        // printf("删除节点的下一个节点的个数%d\n", nextNodes.size());
         for (DAGNode *nextNode : nextNodes) {
             for (DAGEdge *edge : edgeTable) {
                 if (edge->toNodeID == currentNode->id) {
                     edge->toNodeID = nextNode->id;
                     edge->toNodeLabel = nextNode->label;
-                    printf("删除节点的下一个节点：%s\n", nextNode->label.c_str());
+                    // printf("删除节点的下一个节点：%s\n", nextNode->label.c_str());
                 }
             }
         }
@@ -222,7 +222,7 @@ InterCode *Basic_block_division(InterCode *blockInsts)
             node = new DAGNode();
             node->id = id++;
             node->label = inst->getLabel();
-            printf("%s %d\n", inst->getLabel().c_str(), node->id);
+            // printf("%s %d\n", inst->getLabel().c_str(), node->id);
         } else {
             node->blockInsts.addInst(inst);
         }
@@ -235,7 +235,7 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         e->toNodeID = getNodeId(e->toNodeLabel, nodeTable);
         printf("%s -> %s, %d -> %d\n", e->fromNodeLabel.c_str(), e->toNodeLabel.c_str(), e->fromNodeID, e->toNodeID);
     }
-    printf("\n代码块个数:%d\n", nodeTable.size());
+    // printf("\n代码块个数:%d\n", nodeTable.size());
     if (nodeTable.size() == 1) {
         return blockInsts;
     }
@@ -270,13 +270,13 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         }
         std::vector<IRInst *> code;
         code = node->blockInsts.getInsts();
-        printf("出度大小 %d \n", tolabels.size());
+        // printf("出度大小 %d \n", tolabels.size());
         if (tolabels.size() == 2) {
             for (int k = 0; k < code.size(); k++) {
                 if (code[k]->getOp() == IRINST_JUMP_BC) {
                     code[k]->label1 = tolabels[0];
                     code[k]->label2 = tolabels[1];
-                    printf("label2:%s\n", tolabels[1].c_str());
+                    // printf("label2:%s\n", tolabels[1].c_str());
                     break;
                 }
             }

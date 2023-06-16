@@ -1,57 +1,69 @@
-int buf[2][100];
+int map[10][10];
+int indegree[10];
+int queue[10];
 
-int getarray(int a[]);
-void putarray(int n, int d[]);
+int getint();
+void putint(int k);
+void putch(int k);
 
-// sort [l, r)
-void merge_sort(int l, int r)
+void topo(int n)
 {
-	if (l + 1 >= r)
-		return;
+	int m;
+	int t;
+	int i, j;
+	m = 0;
+	t = 0;
+	i = 1;
+	j = 1;
+	while (i <= n) {
+		j = 1;
+		while (j <= n) {
+			if (indegree[j] == 0) {
 
-	int mid;
-	mid = (l + r) / 2;
-	merge_sort(l, mid);
-	merge_sort(mid, r);
-
-	int i, j, k;
-	i = l;
-	j = mid;
-	k = l;
-	while (i < mid && j < r) {
-		if (buf[0][i] < buf[0][j]) {
-			buf[1][k] = buf[0][i];
-			i = i + 1;
-		} else {
-			buf[1][k] = buf[0][j];
+				m = j;
+				break;
+			}
 			j = j + 1;
 		}
-		k = k + 1;
-	}
-	while (i < mid) {
-		buf[1][k] = buf[0][i];
+		queue[t] = m;
+		t = t + 1;
+		indegree[m] = -1;
+		j = 1;
+		while (j <= n)
+
+		{
+			if (map[m][j]) {
+				indegree[j] = indegree[j] - 1;
+			}
+			j = j + 1;
+		}
 		i = i + 1;
-		k = k + 1;
 	}
-	while (j < r) {
-		buf[1][k] = buf[0][j];
-		j = j + 1;
-		k = k + 1;
+	i = 0;
+	while (i < n) {
+		putint(queue[i]);
+		putch(10);
+		i = i + 1;
 	}
 
-	while (l < r) {
-		buf[0][l] = buf[1][l];
-		l = l + 1;
-	}
 }
-
 int main()
 {
-	int n;
+	int n, p;
+	int i;
+	i = 1;
+	n = 5;
 
-	n = getarray(buf[0]);
+	while (i <= n) {
+		p = getint();
+		while (p != 0) {
+			map[i][p] = 1;
+			indegree[p] = indegree[p] + 1;
+			p = getint();
 
-	merge_sort(0, n);
-	putarray(n, buf[0]);
+		}
+		i = i + 1;
+	}
+	topo(n);
 	return 0;
 }

@@ -267,6 +267,9 @@ void FuncDefIRInst::toString(std::string &str)
     std::string type;
     if (ret_type == ValueType::ValueType_Int) {
         type = "i32";
+    } else if (ret_type == ValueType::ValueType_Void) {
+        type = "void";
+        printf("void 返回类型\n\n");
     }
     str = "define " + type + " @" + func_name->getName() + "(";
     for (size_t k = 0; k < srcValues.size(); ++k) {
@@ -430,14 +433,16 @@ UnaryIRInst::~UnaryIRInst()
 /// @param str 转换后的字符串
 void UnaryIRInst::toString(std::string &str)
 {
-    Value *result = dstValue, *src = srcValues[0];
+    Value *result = dstValue, *src;
     str = "    ";
     switch (op) {
     case IRINST_OP_NEG:
+        src = srcValues[0];
         str += result->getName() + " = neg " + src->getName();
         break;
     case IRINST_OP_RETURN:
         if (srcValues.size() > 0) {
+            src = srcValues[0];
             str += "exit " + src->getName();
         } else {
             str += "exit";

@@ -148,6 +148,8 @@ static bool sym_def_func(struct ast_node *node)
         // todo 暂时只考虑int类型
     if (strcmp(func_type->attr.id, "int") == 0) {
         newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
+    } else if (strcmp(func_type->attr.id, "void") == 0) {
+        func_name->val->type = ValueType::ValueType_Void;
     }
 
     // 第四个孩子是语句块

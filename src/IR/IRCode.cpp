@@ -60,7 +60,7 @@ void InterCode::outputIR(const std::string &filePath)
 
         std::string instStr;
         inst->toString(instStr);
-
+        printf("%s\n", instStr.c_str());
         if (!instStr.empty()) {
             fprintf(fp, "%s\n", instStr.c_str());
         }

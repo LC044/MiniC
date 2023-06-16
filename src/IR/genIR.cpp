@@ -93,7 +93,6 @@ static bool ir_block(struct ast_node *node)
     }
     return true;
 }
-
 static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
 
@@ -108,7 +107,6 @@ static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
     node->val = val;
     return true;
 }
-
 static bool ir_def_list(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
@@ -131,12 +129,17 @@ static bool ir_def_list(struct ast_node *node)
     }
     return true;
 }
-
 // 函数定义IR
 static bool ir_def_func(struct ast_node *node)
 {
     struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
+    ValueType type;
+    if (strcmp(func_type->attr.id, "int") == 0) {
+        type = ValueType::ValueType_Int;
+    } else if (strcmp(func_type->attr.id, "void") == 0) {
+        type = ValueType::ValueType_Void;
+    }
     if (node->sons[3]->type == AST_EMPTY) {
         return true;
     }
@@ -146,20 +149,14 @@ static bool ir_def_func(struct ast_node *node)
     FuncName = func_name->attr.id;
     val = funcsMap[FuncName];
     func_name->val = val;
-    // printf("Function: %s\n", func_name->attr.id);
     printf("Function: %s\n", val->getName().c_str());
-    // 添加函数定义IR指令
     node->blockInsts.addInst(
-            new FuncDefIRInst(func_name->val)
+        new FuncDefIRInst(func_name->val, type)
     );
-
-    // return true;
     // 第四个孩子是语句块
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
-
-    // return true;
-    // InterCode *blockInsts = &(func_block->blockInsts);
     InterCode *blockInsts = new InterCode();
+    // 形参赋值给局部变量
     for (int i = 0; i < func_name->val->fargs.size(); ++i) {
         Value *srcValue = nullptr;
         srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
@@ -171,7 +168,6 @@ static bool ir_def_func(struct ast_node *node)
     }
     blockInsts->addInst(func_block->blockInsts);
     printf("指令长度：%d\n", blockInsts->getCodeSize());
-
     // 如果if里有return语句则在exit这里加个label
     if (ExitLabel) {
         blockInsts->addInst(
@@ -182,23 +178,19 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     ExitLabel = false;
-    // return语句
-
-    Value *returnValue = findValue("return", FuncName, true);
-    Value *srcValue = nullptr;
-    printf("return 语句\n");
-    // srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[func_name->val->tempVarsName.size() - 1]];
-    srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
-    printf("return 语句\n");
+    // 退出语句 exit 
     if (strcmp(func_type->attr.id, "int") == 0) {
+        Value *returnValue = findValue("return", FuncName, true);
+        Value *srcValue = nullptr;
+        srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
         blockInsts->addInst(
             new AssignIRInst(srcValue, returnValue)
         );
-
         blockInsts->addInst(
             new UnaryIRInst(IRINST_OP_RETURN, srcValue, srcValue)
         );
     } else {
+        printf("%s 无返回值\n", func_name->attr.id);
         blockInsts->addInst(
             new UnaryIRInst(IRINST_OP_RETURN)
         );
@@ -225,32 +217,37 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst("    entry")
     );
-
-
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // node->blockInsts.addInst(*blockInsts);
     InterCode *BlockInsts = Basic_block_division(blockInsts);
     node->blockInsts.addInst(*BlockInsts);
-
-    // 语句块结束之后应该加一个 '}'
     node->blockInsts.addInst(
         new UselessIRInst("}")
     );
+    printf("函数结束\n");
     return true;
 }
 // return IR
 static bool ir_return(struct ast_node *node)
 {
+    // 没有返回值
+    if (node->sons.size() == 0) {
+        if (IFflag) {
+            node->blockInsts.addInst(
+                new JumpIRInst(IRINST_JUMP_BR, ".L2")
+            );
+            ExitLabel = true;
+        }
+        return true;
+    }
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *result = ir_visit_ast_node(src1_node);
     if (!result) {
         // 解析错误
         return false;
     }
-
     node->blockInsts.addInst(result->blockInsts);
     Value *returnValue = findValue("return", FuncName, true);
-
     node->blockInsts.addInst(
             new AssignIRInst(returnValue, result->val)
     );
@@ -263,7 +260,6 @@ static bool ir_return(struct ast_node *node)
     // return语句不应该放在return里面，应该放在函数定义的结尾
     return true;
 }
-
 static bool ir_func_call(struct ast_node *node, bool isLeft)
 {
     // 第一个节点是函数名
@@ -525,15 +521,21 @@ static bool ir_index(struct ast_node *node, bool isLeft)
         new BinaryIRInst(IRINST_OP_ADD, Resultval2, ArrVal, Resultval3)
     );
     node->val = Resultval2;
-    newTempValue(ValueType::ValueType_Int, FuncName);
+    // newTempValue(ValueType::ValueType_Int, FuncName);
     if (!isLeft) {
-        // 数组索引做右值，要先赋值给临时变量
-        // a = b[0] + 1;
-        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-        node->blockInsts.addInst(
-        new AssignIRInst(val, Resultval2)
-        );
-        node->val = val;
+        if (node->sons.size() - 1 < ArrVal->dim) {
+            // b[2][100];
+            // a = b[2];
+        } else {
+            // 数组索引做右值，要先赋值给临时变量
+            // a = b[0] + 1;
+            Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+            node->blockInsts.addInst(
+            new AssignIRInst(val, Resultval2)
+            );
+            node->val = val;
+        }
+
     } else {
         // newTempValue(ValueType::ValueType_Int, FuncName);
     }
@@ -547,7 +549,8 @@ static bool ir_assign(struct ast_node *node)
     struct ast_node *son1_node = node->sons[0];
     struct ast_node *son2_node = node->sons[1];
 
-    // 赋值节点，自右往左运算
+
+    // 赋值运算符的右侧操作数
 
     // 赋值运算符的左侧操作数
     struct ast_node *left = ir_visit_ast_node(son1_node, true);
@@ -556,19 +559,17 @@ static bool ir_assign(struct ast_node *node)
         // 这里缺省设置变量不存在则创建，因此这里不会错误
         return false;
     }
-
-    // 赋值运算符的右侧操作数
-    struct ast_node *right = ir_visit_ast_node(son2_node);
+    struct ast_node *right = ir_visit_ast_node(son2_node, false);
     if (!right) {
         // 某个变量没有定值
         return false;
     }
-
     // 这里只处理整型的数据，如需支持实数，则需要针对类型进行处理
-
     // 创建临时变量保存IR的值，以及线性IR指令
-    node->blockInsts.addInst(left->blockInsts);
+    // 赋值节点，自右往左运算
     node->blockInsts.addInst(right->blockInsts);
+    node->blockInsts.addInst(left->blockInsts);
+
     Value *leftValue = left->val, *rightValue = right->val;
     node->blockInsts.addInst(
         new AssignIRInst(leftValue, rightValue)
@@ -665,23 +666,26 @@ static bool ir_if(struct ast_node *node)
         if (src1_node->val->type == ValueType::ValueType_Bool) {
 
         } else {
+            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+
             Value *constVal = newConstValue(0);
             node->blockInsts.addInst(
-            new BinaryIRInst(IRINST_OP_CMP, "ne", node->val, cond->val, constVal)
+            new BinaryIRInst(IRINST_OP_CMP, "ne", val, cond->val, constVal)
             );
             // printf("cmp指令0\n");
             node->blockInsts.addInst(
-                    new JumpIRInst(IRINST_JUMP_BC, node->val, Bc1Labels.top(), Bc2Labels.top())
+                    new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
             );
+            node->val = val;
         }
 
     }
 
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
-        struct ast_node *true_node = ir_visit_ast_node(src2_node);
-        struct ast_node *false_node = ir_visit_ast_node(src3_node);
-        printf("if 语句结束\n");
+        struct ast_node *true_node = ir_visit_ast_node(src2_node, true);
+        struct ast_node *false_node = ir_visit_ast_node(src3_node, true);
+        // printf("if 语句结束\n");
         if (true_node->type != AST_EMPTY and false_node->type != AST_EMPTY) {
             if (true_node->newLabel) {
                 node->blockInsts.addInst(
@@ -695,7 +699,7 @@ static bool ir_if(struct ast_node *node)
                         new JumpIRInst(IRINST_JUMP_BR, label3)
                 );
             }
-            printf("if 语句结束1\n");
+            // printf("if 语句结束1\n");
             if (false_node->newLabel) {
                 node->blockInsts.addInst(
                 new UselessIRInst(label2 + ":")
@@ -707,12 +711,12 @@ static bool ir_if(struct ast_node *node)
                         new JumpIRInst(IRINST_JUMP_BR, label3)
                 );
             }
-            printf("if 语句结束2\n");
+            // printf("if 语句结束2\n");
         } else if (true_node->type != AST_EMPTY and false_node->type == AST_EMPTY) {
 
         }
     } else {
-        struct ast_node *true_node = ir_visit_ast_node(src2_node);
+        struct ast_node *true_node = ir_visit_ast_node(src2_node, true);
         node->blockInsts.addInst(
                 new UselessIRInst(label1 + ":")
         );
@@ -750,12 +754,12 @@ static bool ir_while(struct ast_node *node)
     if (!left) {
         return false;
     }
-    printf("while ir 0.5\n");
+    // printf("while ir 0.5\n");
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
         return false;
     }
-    printf("while ir 1\n");
+    // printf("while ir 1\n");
     node->blockInsts.addInst(
         new JumpIRInst(IRINST_JUMP_BR, label1)
     );
@@ -794,7 +798,6 @@ static bool ir_continue(struct ast_node *node)
     );
     return true;
 }
-
 static bool ir_or(struct ast_node *node)
 {
     printf("or运算符0\n");

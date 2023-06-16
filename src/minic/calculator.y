@@ -343,6 +343,7 @@ statement   : blockstat                                         {$$ = $1;}      
             | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}   //continue语句
             | ';'                                               {$$ = new_ast_node(AST_EMPTY);}         //空语句
             | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}     // return 语句
+            | T_RETURN ';'                                      {$$ = new_ast_node(AST_RETURN);}     // return 语句
 
 
 /* 表达式语句 */
