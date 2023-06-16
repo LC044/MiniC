@@ -36,6 +36,7 @@ enum ast_operator_type {
     AST_OP_CMP,       // 比较运算
     AST_OP_IF,        // IF语句
     AST_OP_WHILE,     // While 语句
+    AST_OP_FOR,       // FOR 语句
     AST_OP_BREAK,     // break 语句
     AST_OP_CONTINUE,  // continue 语句
     AST_ARRAY,        // 数组定义

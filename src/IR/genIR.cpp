@@ -802,8 +802,8 @@ static bool ir_while(struct ast_node *node)
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     WhileBlock = true;
-    std::string label1 = newLabel(FuncName);  // true语句
-    std::string label2 = newLabel(FuncName);  // false语句
+    std::string label1 = newLabel(FuncName);  // 条件语句
+    std::string label2 = newLabel(FuncName);  // true语句
     std::string label3 = newLabel(FuncName);  // 下一条语句
     Bc1Labels.push(label2);
     Bc2Labels.push(label3);
@@ -831,6 +831,60 @@ static bool ir_while(struct ast_node *node)
         new UselessIRInst(label2 + ":")
     );
     node->blockInsts.addInst(right->blockInsts);
+    node->blockInsts.addInst(
+        new JumpIRInst(IRINST_JUMP_BR, label1)
+    );
+    node->blockInsts.addInst(
+        new UselessIRInst(label3 + ":")
+    );
+    Bc1Labels.pop();
+    Bc2Labels.pop();
+    Breaklabels.pop();
+    ContinueLabels.pop();
+    WhileBlock = false;
+    return true;
+}
+static bool ir_for(struct ast_node *node)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[1];
+    struct ast_node *src3_node = node->sons[2];
+    struct ast_node *src4_node = node->sons[3];
+    WhileBlock = true;
+    std::string label1 = newLabel(FuncName);  // 条件语句
+    std::string label2 = newLabel(FuncName);  // true语句
+    std::string label3 = newLabel(FuncName);  // 下一条语句
+    Bc1Labels.push(label2);
+    Bc2Labels.push(label3);
+    Breaklabels.push(label3);
+    ContinueLabels.push(label1);
+    struct ast_node *init_node = ir_visit_ast_node(src1_node);
+    if (!init_node) {
+        return false;
+    }
+    node->blockInsts.addInst(init_node->blockInsts);
+
+    struct ast_node *cond = ir_visit_ast_node(src2_node);
+    if (!cond) {
+        return false;
+    }
+    struct ast_node *expr3 = ir_visit_ast_node(src3_node);
+    struct ast_node *block_node = ir_visit_ast_node(src4_node);
+    if (!block_node) {
+        return false;
+    }
+    node->blockInsts.addInst(
+        new JumpIRInst(IRINST_JUMP_BR, label1)
+    );
+    node->blockInsts.addInst(
+        new UselessIRInst(label1 + ":")
+    );
+    node->blockInsts.addInst(cond->blockInsts);
+    node->blockInsts.addInst(
+        new UselessIRInst(label2 + ":")
+    );
+    node->blockInsts.addInst(block_node->blockInsts);
+    node->blockInsts.addInst(expr3->blockInsts);
     node->blockInsts.addInst(
         new JumpIRInst(IRINST_JUMP_BR, label1)
     );
@@ -1114,6 +1168,9 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         break;
     case AST_OP_WHILE:
         result = ir_while(node);
+        break;
+    case AST_OP_FOR:
+        result = ir_for(node);
         break;
     case AST_OP_CMP:
         result = ir_cmp(node);

@@ -42,20 +42,6 @@ void yyerror(char * msg);
 %token <var_id> T_CONTINUE     // INT 类型关键字
 %token <var_id> T_WHILE     // INT 类型关键字
 %token <var_id> T_RETURN    // return
-
-%token T_MUL        // 乘法运算符'*'
-%token T_ADD        // 加法运算符'+'
-%token T_DIV        // 除法运算符'/''
-%token T_SUB        // 减法运算符'-'
-%token T_MOD        // 取模运算符'%'
-%token T_LPAREN     // 左小括号'('
-%token T_RPAREN     // 右小括号')'
-%token T_ASSIGN     // 赋值运算符=
-%token T_SEMICOLON  // 分号;
-%token T_LC         // {
-%token T_RC         // }
-%token T_LB         // [
-%token T_RB         // ]
 %token T_AND T_OR T_INC T_DEC
 %token <var_id> T_CMP
 /* 新增MiniC的终结符 */
@@ -334,16 +320,17 @@ localdef    : type defdata deflist
             }
 
 /* 单条语句 */
-statement   : blockstat                                         {$$ = $1;}                              //另一个语句块
-            | expr ';'                                          {$$ = $1;}                              //表达式语句
-            | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}   //if语句
-            | T_IF '(' expr ')' statement T_ELSE statement      {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}//if,else语句
-            | T_WHILE '(' expr ')' statement                    {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}//while语句
-            | T_BREAK ';'                                       {$$ = new_ast_node(AST_OP_BREAK);}      //break语句
-            | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}   //continue语句
-            | ';'                                               {$$ = new_ast_node(AST_EMPTY);}         //空语句
-            | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}     // return 语句
-            | T_RETURN ';'                                      {$$ = new_ast_node(AST_RETURN);}     // return 语句
+statement   : blockstat                                         {$$ = $1;}                                  // 另一个语句块
+            | expr ';'                                          {$$ = $1;}                                  // 表达式语句
+            | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE {$$ = new_ast_node(AST_OP_IF,$3,$5);}       // if语句
+            | T_IF '(' expr ')' statement T_ELSE statement      {$$ = new_ast_node(AST_OP_IF,$3,$5,$7);}    // if,else语句
+            | T_WHILE '(' expr ')' statement                    {$$ = new_ast_node(AST_OP_WHILE,$3,$5);}    // while语句
+            | T_FOR '(' expr ';' expr ';'expr ')' statement     {$$ = new_ast_node(AST_OP_FOR,$3,$5,$7,$9);}// for语句
+            | T_BREAK ';'                                       {$$ = new_ast_node(AST_OP_BREAK);}          // break语句
+            | T_CONTINUE ';'                                    {$$ = new_ast_node(AST_OP_CONTINUE);}       // continue语句
+            | ';'                                               {$$ = new_ast_node(AST_EMPTY);}             // 空语句
+            | T_RETURN expr ';'                                 {$$ = new_ast_node(AST_RETURN,$2);}         // return 语句
+            | T_RETURN ';'                                      {$$ = new_ast_node(AST_RETURN);}            // return 语句
 
 
 /* 表达式语句 */
