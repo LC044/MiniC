@@ -228,9 +228,9 @@ static bool ir_def_func(struct ast_node *node)
 
 
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
-    node->blockInsts.addInst(*blockInsts);
-    // InterCode *BlockInsts = Basic_block_division(blockInsts);
-    // node->blockInsts.addInst(*BlockInsts);
+    // node->blockInsts.addInst(*blockInsts);
+    InterCode *BlockInsts = Basic_block_division(blockInsts);
+    node->blockInsts.addInst(*BlockInsts);
 
     // 语句块结束之后应该加一个 '}'
     node->blockInsts.addInst(
@@ -249,11 +249,6 @@ static bool ir_return(struct ast_node *node)
     }
 
     node->blockInsts.addInst(result->blockInsts);
-    if (result->type == AST_OP_INDEX) {
-        node->blockInsts.addInst(
-            new AssignIRInst(result->val, result->sons[0]->val)
-        );
-    }
     Value *returnValue = findValue("return", FuncName, true);
 
     node->blockInsts.addInst(
@@ -284,16 +279,6 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
         // 第一步首先将变量实参复制给临时变量
         for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
             struct ast_node *temp = ir_visit_ast_node(*pIter);
-            if (temp->val->isId) {
-                Value *val = findValue(temp->attr.id, FuncName, true);
-                Value *dstVal = temp->val;
-                // ValueType type = dstVal->type;
-                // dstVal->type = ValueType::ValueType_Int;
-                node->blockInsts.addInst(
-                        new AssignIRInst(dstVal, val, true)
-                );
-                // dstVal->type = type;
-            }
             node->blockInsts.addInst(temp->blockInsts);
         }
         std::vector<Value *> _srcVal;
@@ -307,9 +292,11 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             new FuncCallIRInst(left->attr.id, _srcVal, true)
             );
         } else {
+            Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
             node->blockInsts.addInst(
-            new FuncCallIRInst(left->attr.id, _srcVal, true, node->val)
+            new FuncCallIRInst(left->attr.id, _srcVal, true, val)
             );
+            node->val = val;
         }
     } else {
         // printf("无参函数调用指令0\n");
@@ -318,14 +305,15 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             new FuncCallIRInst(left->attr.id)
             );
         } else {
+            Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
             node->blockInsts.addInst(
-            new FuncCallIRInst(left->attr.id, node->val)
+            new FuncCallIRInst(left->attr.id, val)
             );
+            node->val = val;
         }
         printf("左值名字 %s\n", node->parent->sons[0]->val->getName().c_str());
-        // printf("无参函数调用指令1\n");
     }
-    // printf("函数调用指令\n");
+
     return true;
 }
 static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
@@ -481,14 +469,14 @@ static bool ir_index(struct ast_node *node, bool isLeft)
     // 数组索引第一个孩子节点是变量名
     // printf("数组索引\n");
     struct ast_node *src1_node = node->sons[0];
-    struct ast_node *src2_node = node->sons[1];
+    // struct ast_node *src2_node = node->sons[1];
     struct ast_node *array_name = src1_node;
     ArrName = array_name->attr.id;
     Value *ArrVal = findValue(ArrName, FuncName, true);
     std::vector<struct ast_node *>::iterator pIter;
     for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
         struct ast_node *temp;
-        temp = ir_visit_ast_node(*pIter, true);
+        temp = ir_visit_ast_node(*pIter, false);
         if (!temp) {
             continue;
         }
@@ -497,13 +485,13 @@ static bool ir_index(struct ast_node *node, bool isLeft)
     Value *Resultval1 = node->sons[1]->val;
     if (node->sons.size() > 2) {
         int i = 0;
-        for (pIter = node->sons.begin() + 2; pIter != node->sons.end(); ++pIter, ++i) {
-            struct ast_node *temp1 = (*(pIter - 1));
-            struct ast_node *temp2 = (*pIter);
-            int dim = ArrVal->dims[ArrVal->dim - i - 1];
+        for (pIter = node->sons.begin() + 1; pIter != node->sons.end() - 1; ++pIter, ++i) {
+            struct ast_node *temp1 = *(pIter);
+            struct ast_node *temp2 = *(pIter + 1);
+            int dim = ArrVal->dims[i + 1];
             // printf("数组维度: %d\n", dim);
             if (temp1->val->isConst and temp2->val->isConst) {
-                temp2->val->intVal = (temp1->val->intVal + temp2->val->intVal) * dim;
+                temp2->val->intVal = (temp1->val->intVal * dim + temp2->val->intVal);
                 Resultval1 = temp2->val;
             } else {
                 Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
@@ -517,10 +505,11 @@ static bool ir_index(struct ast_node *node, bool isLeft)
                 );
             }
         }
+    } else {
     }
+
     Value *Resultval3;
-    int dim = ArrVal->dims[ArrVal->dim - 1];
-    if (ArrVal->dim == 1) { dim = 4; }
+    int dim = 4;
     if (Resultval1->isConst) {
         Resultval3 = newConstValue(Resultval1->intVal * dim);
     } else {
@@ -548,20 +537,6 @@ static bool ir_index(struct ast_node *node, bool isLeft)
     } else {
         // newTempValue(ValueType::ValueType_Int, FuncName);
     }
-    return true;
-    // struct ast_node *right;
-    // ir_visit_ast_node(src2_node);
-    dimFlag = 0;
-
-    // ir_visit_ast_node(src2_node, true);
-
-    node->blockInsts.addInst(src2_node->blockInsts);
-    Value *val = findValue(array_name->attr.id, FuncName);
-    node->blockInsts.addInst(
-        new BinaryIRInst(IRINST_OP_ADD, node->sons[0]->val, val, src2_node->val)
-    );
-
-
     return true;
 }
 // 赋值操作
@@ -611,8 +586,13 @@ static bool ir_neg(struct ast_node *node)
     }
     node->blockInsts.addInst(left->blockInsts);
     if (!(left->val->isConst or left->val->type == ValueType::ValueType_Bool)) {
+        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
         node->blockInsts.addInst(
-        new UnaryIRInst(IRINST_OP_NEG, node->val, left->val));
+        new UnaryIRInst(IRINST_OP_NEG, val, left->val));
+        node->val = val;
+    } else {
+        node->val = left->val;
+        node->val->intVal = -node->val->intVal;
     }
     return true;
 }
@@ -632,34 +612,8 @@ static bool ir_cmp(struct ast_node *node)
     node->blockInsts.addInst(left->blockInsts);
     node->blockInsts.addInst(right->blockInsts);
 
-    if (left->val->isId) {
-        Value *val = findValue(left->attr.id, FuncName, true);
-        Value *dstVal = left->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (right->val->isId) {
-        Value *val = findValue(right->attr.id, FuncName, true);
-        Value *dstVal = right->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (left->type == AST_OP_INDEX) {
-        Value *dstVal = left->val;
-        Value *val = left->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
-    if (right->type == AST_OP_INDEX) {
-        Value *dstVal = right->val;
-        Value *val = right->sons[0]->val;
-        node->blockInsts.addInst(
-                new AssignIRInst(dstVal, val)
-        );
-    }
+    Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+    node->val = val;
     // 比较运算符
     struct ast_node *cmp_node = node->sons[1];
     node->blockInsts.addInst(
@@ -852,6 +806,7 @@ static bool ir_or(struct ast_node *node)
     if (!left) {
         return false;
     }
+    node->val = left->val;
     Bc2Labels.pop();
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
@@ -901,7 +856,7 @@ static bool ir_and(struct ast_node *node)
     if (!left) {
         return false;
     }
-
+    node->val = left->val;
     Bc1Labels.pop();
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
@@ -960,16 +915,11 @@ static bool ir_not(struct ast_node *node, bool isLeft)
     } else {
         if (left->val->isConst) {
         } else {
-            if (left->val->isId) {
-                Value *val = findValue(left->attr.id, FuncName, true);
-                Value *dstVal = left->val;
-                node->blockInsts.addInst(
-                        new AssignIRInst(dstVal, val)
-                );
-            }
             if (left->val->type == ValueType::ValueType_Bool) {
                 node->val = left->val;
             } else {
+                Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+                node->val = val;
                 Value *constVal = newConstValue(0);
                 node->blockInsts.addInst(
                     new BinaryIRInst(IRINST_OP_CMP, "ne", node->val, left->val, constVal)
@@ -994,9 +944,7 @@ static bool ir_not(struct ast_node *node, bool isLeft)
 // 递归遍历抽象语法树进行计算
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
-
     Value *val = nullptr;
-
     if (node->attr.kind == DIGIT_KIND_ID) {
         // 变量，则需要在符号表中查找对应的值
         val = findValue(node->attr.id, FuncName, true);
@@ -1008,12 +956,25 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
         }
         node->val = val;
         if (!isLeft) {
-            // 变量做右值需要先复制给临时变量
-            Value *dstVal = newTempValue(ValueType::ValueType_Int, FuncName);
-            node->blockInsts.addInst(
-                    new AssignIRInst(dstVal, val)
-            );
-            node->val = dstVal;
+            if (val->dim > 0 or val->dims[0] != 0) {
+                // 数组符号做右值
+                // a[5];
+                // b = sort(a);
+                // 变量做右值需要先复制给临时变量
+                Value *dstVal = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
+                node->blockInsts.addInst(
+                        new AssignIRInst(dstVal, val, true)
+                );
+                node->val = dstVal;
+            } else {
+                // 变量做右值需要先复制给临时变量
+                Value *dstVal = newTempValue(ValueType::ValueType_Int, FuncName);
+                node->blockInsts.addInst(
+                        new AssignIRInst(dstVal, val)
+                );
+                node->val = dstVal;
+            }
+
         }
     } else if (node->attr.kind == DIGIT_KIND_INT) {
         // 新建一个整数常量Value

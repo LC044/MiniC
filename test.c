@@ -1,17 +1,57 @@
+int buf[2][100];
+
+int getarray(int a[]);
+void putarray(int n, int d[]);
+
+// sort [l, r)
+void merge_sort(int l, int r)
+{
+	if (l + 1 >= r)
+		return;
+
+	int mid;
+	mid = (l + r) / 2;
+	merge_sort(l, mid);
+	merge_sort(mid, r);
+
+	int i, j, k;
+	i = l;
+	j = mid;
+	k = l;
+	while (i < mid && j < r) {
+		if (buf[0][i] < buf[0][j]) {
+			buf[1][k] = buf[0][i];
+			i = i + 1;
+		} else {
+			buf[1][k] = buf[0][j];
+			j = j + 1;
+		}
+		k = k + 1;
+	}
+	while (i < mid) {
+		buf[1][k] = buf[0][i];
+		i = i + 1;
+		k = k + 1;
+	}
+	while (j < r) {
+		buf[1][k] = buf[0][j];
+		j = j + 1;
+		k = k + 1;
+	}
+
+	while (l < r) {
+		buf[0][l] = buf[1][l];
+		l = l + 1;
+	}
+}
+
 int main()
 {
-	int a[4][2];
-	int b[4][2];
-	int c[4][2];
-	int d[4][2];
-	int e[4][2][1];
+	int n;
 
-	// a[3][0] = 7;
-	d[3][0] = a[3][0];
-	// d[2][1] = 1;
-	// e[0][0][0] = d[2][1];
-	// e[0][1][0] = 0;
-	// e[3][1][0] = 5;
+	n = getarray(buf[0]);
 
-	return e[3][1][0] + e[0][0][0] + e[0][1][0] + d[3][0];
+	merge_sort(0, n);
+	putarray(n, buf[0]);
+	return 0;
 }
