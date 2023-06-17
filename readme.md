@@ -18,10 +18,68 @@
 
     dot test.dot -Tpng -o Blockgraph.png
 
+## 功能示例
+
+1. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 抽象语法树
+
+    <div align="center", >
+    <img src="./doc/image/028_if_test1_ast.jpg">
+    <p >抽象语法树</p>
+    </div>
+
+2. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 线性ir
+
+    ``` bash
+    define i32 @ifElse() {
+        declare i32 %l0 ; variable: return
+        declare i32 %l1 ; variable: a
+        declare i32 %t2
+        declare i1 %t3
+        declare i32 %t4
+        declare i32 %t5
+        declare i32 %t6
+        declare i32 %t7
+        entry
+        %l1 = 5
+        %t2 = %l1
+        %t3 = cmp eq %t2, 5
+        bc %t3, label .L3, label .L4
+        .L3:
+            %l1 = 25
+            br label .L5
+        .L4:
+            %t4 = %l1
+            %t5 = mul %t4, 2
+            %l1 = %t5
+            br label .L5
+        .L5:
+            %t6 = %l1
+            %l0 = %t6
+            %t7 = %l0
+            exit %t7
+    }
+    define i32 @main() {
+        declare i32 %l0 ; variable: return
+        declare i32 %t1
+        declare i32 %t2
+        entry
+        %t1 = call i32 @ifElse()
+        %l0 = %t1
+        %t2 = %l0
+        exit %t2
+    }
+    ```
+
+3. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 控制流图
+
+    <div align="center">
+    <img src="./doc/image/028_if_test1_cfg.png">
+    <p>控制流图</p>
+    </div>
 
 git config --global --unset http.proxy
 
-git config --golbal http.proxy http://127.0.0.1:7890
+git config --golbal http.proxy <http://127.0.0.1:7890>
 
 git commit -m
 
