@@ -1,8 +1,9 @@
-//
-// Created by zenglj on 2023/1/29.
-//
+/**
+* @brief 各种符号(全局变量、函数、局部变量、临时变量、常量)的声明
+* Created by zenglj on 2023/1/29.
+* @LastEditors shuaikangzhou
+*/
 #pragma once
-
 #include <cstdint>
 #include <string>
 #include <unordered_map>
@@ -69,8 +70,10 @@ public:
     double realVal = 0;
     // 参数列表
     std::vector<Value *> fargs;
+    // 局部变量表
     std::unordered_map<std::string, Value *> localVarsMap;
     std::vector<std::string > localVarsName;
+    // 临时变量表
     std::unordered_map<std::string, Value *> tempVarsMap;
     std::vector<std::string > tempVarsName;
 protected:

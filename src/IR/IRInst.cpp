@@ -253,7 +253,7 @@ FuncDefIRInst::FuncDefIRInst(Value *_func_name, ValueType _ret_type) :
     // 形参拷贝
     // srcValues = _paras;
     srcValues = _func_name->fargs;
-    printf("srcValues size %d\n", srcValues.size());
+    // printf("srcValues size %d\n", srcValues.size());
 }
 /// @brief 析构函数
 FuncDefIRInst::~FuncDefIRInst()
@@ -273,7 +273,6 @@ void FuncDefIRInst::toString(std::string &str)
     }
     str = "define " + type + " @" + func_name->getName() + "(";
     for (size_t k = 0; k < srcValues.size(); ++k) {
-
         str += "i32 " + srcValues[k]->getName();
         if (srcValues[k]->dims[0] == 999) {
             str += "[0]";

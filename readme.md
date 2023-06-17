@@ -20,14 +20,14 @@
 
 ## 功能示例
 
-1. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 抽象语法树
+1. [028_if_test1.c](/doc/image/028_if_test1_ast.jpg) 抽象语法树
 
     <div align="center", >
-    <img src="./doc/image/028_if_test1_ast.jpg">
+    <img src="/doc/image/028_if_test1_ast.jpg">
     <p >抽象语法树</p>
     </div>
 
-2. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 线性ir
+2. [028_if_test1.c](/doc/image/028_if_test1_ast.jpg) 线性ir
 
     ``` bash
     define i32 @ifElse() {
@@ -70,10 +70,10 @@
     }
     ```
 
-3. [028_if_test1.c](./doc/image/028_if_test1_ast.jpg) 控制流图
+3. [028_if_test1.c](/doc/image/028_if_test1_ast.jpg) 控制流图
 
     <div align="center">
-    <img src="./doc/image/028_if_test1_cfg.png">
+    <img src="/doc/image/028_if_test1_cfg.png">
     <p>控制流图</p>
     </div>
 

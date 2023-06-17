@@ -3,8 +3,6 @@
 #include <string.h>
 #include "symbol.h"
 #include <stack>
-// std::string FuncName;
-// static int ReturnFlag = 0;
 static bool WhileBlock = false;
 extern bool ExitLabel;
 static bool IFflag = false;
@@ -539,6 +537,10 @@ static bool ir_index(struct ast_node *node, bool isLeft)
         node->blockInsts.addInst(temp->blockInsts);
     }
     Value *Resultval1 = node->sons[1]->val;
+    // 变量名起的有点乱
+    // int a[3][5][7];
+    // a[i][j][k] = 3;
+    // 拿演草纸自己推导一下就知道了
     if (node->sons.size() > 2) {
         int i = 0;
         for (pIter = node->sons.begin() + 1; pIter != node->sons.end() - 1; ++pIter, ++i) {
@@ -559,6 +561,7 @@ static bool ir_index(struct ast_node *node, bool isLeft)
                 node->blockInsts.addInst(
                     new BinaryIRInst(IRINST_OP_ADD, Resultval1, val, temp2->val)
                 );
+                temp2->val = Resultval1;
             }
         }
     } else {

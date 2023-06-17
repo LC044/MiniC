@@ -1,23 +1,48 @@
-void putint(int k);
-int main()
+// void putint(int k);
+// int main()
+// {
+// 	int b[10], a[10][10];
+// 	int i, j;
+// 	if (i > 1) {
+// 		return -1;
+// 	} else {
+// 		return 1;
+// 	}
+// 	i = 5;
+// 	j = 6;
+// 	return 0;
+// 	int t;
+// 	t = 5;
+// }
+// test if-else
+// int ifElse()
+// {
+// 	int a[3][5][7];
+// 	int i, j, k;
+// 	a[i][j][k] = -1;
+// 	return (a);
+// }
+
+
+// int main()
+// {
+// 	return (ifElse());
+// }
+// test if-else
+int ifElse()
 {
 	int a;
-	int b[5];
-	a = 3;
-	int i;
-	int j;
-	for (i = 0;i < 5;i++) {
-		if (i % 2 == 0) {
-			i++;
-			continue;
-		}
-		for (j = 4;j > -1;j--) {
-			if (j < 3) {
-				break;
-			}
-			b[j] = --a;
-		}
-		b[i] = a++;
+	a = 5;
+	if (a == 5) {
+		a = 25;
+	} else {
+		a = a * 2;
 	}
-	return --a;
+	return (a);
+}
+
+
+int main()
+{
+	return (ifElse());
 }

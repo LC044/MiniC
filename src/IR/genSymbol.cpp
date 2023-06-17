@@ -1,3 +1,10 @@
+/**
+* @file
+* @brief		生成全局变量符号表和函数符号表.
+* @author		shuaikangzhou
+* @date		    2023/06/03
+* @details      该文件大多数函数都已经弃用
+*/
 #include "ast.h"
 #include "IRCode.h"
 #include <string.h>
@@ -93,6 +100,9 @@ static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
     node->val = localVarValue;
     return true;
 }
+/// @brief 
+/// @param node 
+/// @return 
 static bool sym_def_func(struct ast_node *node)
 {
     // if (node->sons[3]->type == AST_EMPTY) {
