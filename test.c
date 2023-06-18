@@ -1,48 +1,54 @@
-// void putint(int k);
+// int a;
 // int main()
 // {
-// 	int b[10], a[10][10];
-// 	int i, j;
-// 	if (i > 1) {
-// 		return -1;
-// 	} else {
-// 		return 1;
+// 	int a, b, c;
+// 	a = -1;
+// 	b = a + 5;
+// 	{
+// 		int a;
+// 		a = 1;
+// 		{
+// 			a = 3;
+// 			int a;
+// 			a = 2;
+// 		}
 // 	}
-// 	i = 5;
-// 	j = 6;
-// 	return 0;
 // 	int t;
 // 	t = 5;
+// 	return t;
 // }
-// test if-else
-// int ifElse()
-// {
-// 	int a[3][5][7];
-// 	int i, j, k;
-// 	a[i][j][k] = -1;
-// 	return (a);
-// }
-
-
-// int main()
-// {
-// 	return (ifElse());
-// }
-// test if-else
-int ifElse()
+int ifWhileTest()
 {
-	int a;
-	a = 5;
-	if (a == 5) {
-		a = 25;
-	} else {
-		a = a * 2;
+	int a, b, c;
+	int i, j;
+	if (a > 0) {
+		while (b < 10) {
+			if (b % 2 == 1) {
+				continue;
+				j = 111111; //该行代码可以优化掉
+			}
+			b++;
+		}
+	} else if (a > 5 && a < 10) {
+		for (i = 0;i < b;i++) {
+			if (i > c) {
+				break;
+				j = 0x99999; //该行代码可以优化掉
+			}
+			c = b++;
+		}
 	}
-	return (a);
+	return b;
+	b = b + 15; //该行代码可以优化掉
 }
-
-
 int main()
 {
-	return (ifElse());
+	int i;
+	int a;
+	a = 0;
+	for (i = 0;i < 10;i++) {
+		if (i % 2 == 0) { continue; }
+		a = a + i;
+	}
+	return a;
 }

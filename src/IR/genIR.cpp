@@ -88,6 +88,9 @@ static bool ir_block(struct ast_node *node)
             continue;
         }
         node->blockInsts.addInst(temp->blockInsts);
+        if (temp->type == AST_RETURN) {
+            break;
+        }
     }
     return true;
 }
@@ -165,7 +168,7 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     blockInsts->addInst(func_block->blockInsts);
-    printf("指令长度：%d\n", blockInsts->getCodeSize());
+    // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // 如果if里有return语句则在exit这里加个label
     if (ExitLabel) {
         blockInsts->addInst(
@@ -188,13 +191,13 @@ static bool ir_def_func(struct ast_node *node)
             new UnaryIRInst(IRINST_OP_RETURN, srcValue, srcValue)
         );
     } else {
-        printf("%s 无返回值\n", func_name->attr.id);
+        // printf("%s 无返回值\n", func_name->attr.id);
         blockInsts->addInst(
             new UnaryIRInst(IRINST_OP_RETURN)
         );
     }
     // 添加局部变量定义IR指令
-    printf("函数局部变量个数:%d\n", func_name->val->localVarsName.size());
+    // printf("函数局部变量个数:%d\n", func_name->val->localVarsName.size());
     for (int i = 0; i < func_name->val->localVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
         localVarValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
@@ -203,7 +206,7 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     // 添加临时变量定义IR指令
-    printf("函数临时变量个数:%d\n", func_name->val->tempVarsName.size());
+    // printf("函数临时变量个数:%d\n", func_name->val->tempVarsName.size());
     for (int i = func_name->val->fargs.size(); i < func_name->val->tempVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
         localVarValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
@@ -222,7 +225,7 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst("}")
     );
-    printf("函数结束\n");
+    // printf("函数结束\n");
     return true;
 }
 // return IR
@@ -307,7 +310,6 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
         }
         printf("左值名字 %s\n", node->parent->sons[0]->val->getName().c_str());
     }
-
     return true;
 }
 static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
@@ -709,7 +711,7 @@ static bool ir_if(struct ast_node *node)
         Bc1Labels.push(label1);
         Bc2Labels.push(label3);
     }
-    printf("%s,%s,%s\n", label1.c_str(), label2.c_str(), label3.c_str());
+    // printf("%s,%s,%s\n", label1.c_str(), label2.c_str(), label3.c_str());
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     struct ast_node *cond = ir_visit_ast_node(src1_node);
@@ -1219,8 +1221,6 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
 
     return node;
 }
-
-
 /// @brief 遍历抽象语法树产生线性IR，保存到IRCode中
 /// @param root 抽象语法树
 /// @param IRCode 线性IR

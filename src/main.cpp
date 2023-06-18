@@ -13,6 +13,7 @@
 #include "graph.h"
 #include "IRCode.h"
 #include <time.h>
+#include "cfg.h"
 bool gShowHelp = false;
 
 // 显示抽象语法树
@@ -26,14 +27,16 @@ int gDirectRun = 0;
 
 // 产生控制流图
 extern int gDot;
+extern bool gshowCfg;
 std::string gInputFile;
 std::string gOutputFile;
 extern std::string gDotFile;
+extern std::string gCfgFuncName;
 void showHelp(const std::string &exeName)
 {
     std::cout << exeName + " [-o output] -a source" << std::endl;
     std::cout << exeName + " [-o output] -i source" << std::endl;
-    std::cout << exeName + " [-o output] -d source" << std::endl;
+    std::cout << exeName + " [-o output] -c [function name] source" << std::endl;
 }
 
 // 删除字符串的前后空格
@@ -55,7 +58,7 @@ std::string trim(const std::string &str)
 int ArgsAnalysis(int argc, char *argv[])
 {
     int ch;
-    const char options[] = "ho:aiRd";
+    const char options[] = "ho:aiRc:";
 
     opterr = 1;
 
@@ -65,8 +68,13 @@ lb_check:
         case 'o':
             gOutputFile = optarg;
             break;
-        case 'd':
+        case 'c':
             gDot = 1;
+            gCfgFuncName = optarg;
+            if (optarg[0] == '-') {
+                gShowHelp = true;
+                return -1;
+            }
             break;
         case 'a':
             gShowAST = 1;
@@ -123,7 +131,7 @@ lb_check:
         } else if (gGenIr) {
             gOutputFile = "ir.txt";
         } else if (gDot) {
-            gDotFile = "ssa_cfg.dot";
+            gDotFile = "ssa_cfg.png";
         }
     } else {
 
@@ -212,6 +220,10 @@ int main(int argc, char *argv[])
         result = genIR(ast_root, IRCode);
         if (!result) {
             printf("genIR failed\n");
+            return -1;
+        }
+        if (!gshowCfg) {
+            printf("%s not found \nshowCfg failed\n", gCfgFuncName.c_str());
             return -1;
         }
     }

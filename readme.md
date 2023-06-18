@@ -10,20 +10,16 @@
 
     cmake-build-debug\minic.exe -i -o test.ir  test.c
 
-3. 选项-d可产生控制流图
+3. 选项-c可产生控制流图
 
-    cmake-build-debug\minic.exe -d -o test.dot  test.c
-
-    dot test.dot -Tpdf -o test.pdf
-
-    dot test.dot -Tpng -o Blockgraph.png
+    cmake-build-debug\minic.exe -c main -o test_main_cfg.png  test.c
 
 ## 功能示例
 
 1. [028_if_test1.c](/doc/image/028_if_test1_ast.jpg) 抽象语法树
 
     <div align="center", >
-    <img src="/doc/image/028_if_test1_ast.jpg">
+    <img src="./doc/image/028_if_test1_ast.jpg">
     <p >抽象语法树</p>
     </div>
 
@@ -73,7 +69,7 @@
 3. [028_if_test1.c](/doc/image/028_if_test1_ast.jpg) 控制流图
 
     <div align="center">
-    <img src="/doc/image/028_if_test1_cfg.png">
+    <img src="./doc/image/028_if_test1_cfg.png">
     <p>控制流图</p>
     </div>
 

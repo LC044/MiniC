@@ -1,40 +1,47 @@
 #include<stdio.h>
 #include <string>
 #include <unordered_map>
-// #include<string.h>
-int a;
-int a;
-int add(int a, int b)
-{
-    return a + b;
-}
-struct test {
-    std::string name;
-    std::unordered_map<std::string, int *> localVarsMap;
+#include <iostream>
+#include <sstream>
 
-    /* data */
-};
-static std::unordered_map<std::string, test *> VarsMap;
-int main(int argc, char **argv)
+using namespace std;
+// 整数变字符串
+string int2str(int num)
 {
-    test *t = new test();
-    t->name = "test";
-    VarsMap.emplace(t->name, t);
-    test *t1 = new test();
-    t1->name = "test0";
-    VarsMap.emplace(t1->name, t1);
-    // auto pt = VarsMap.find("test");
-    for (auto pt : VarsMap) {
-        printf("%s\n", pt.second->name.c_str());
+    stringstream ss;
+    ss << num;
+    return ss.str();
+}
+class Value {
+public:
+    static int LocalCount;
+    static int TempCount;
+    static std::string createTempVarName(bool isLocal = false)
+    {
+        // static uint64_t tempVarCount = 0; // 临时变量计数，默认从0开始
+        // 对每个函数单独编号
+        if (isLocal)return "%l" + int2str(LocalCount++);
+        return "%t" + int2str(LocalCount + TempCount++);
     }
 
-    printf("--------------------------------");
-    int q[5] = { 0, 1, 2, 3, 4 };
-    int *i = q;
-    printf("%d\n", i[3]);
-    printf("%d\n", ">=" == ">=");
-    int a = 2, b;
-    b = --a + a-- - b++;
+};
+int Value::LocalCount = 0;
+int Value::TempCount = 0;
+int main(int argc, char **argv)
+{
 
+    Value *val = new Value();
+    std::string n1 = val->createTempVarName(true);
+    std::string n2 = val->createTempVarName();
+    std::string n3 = val->createTempVarName();
+    std::string n4 = val->createTempVarName(true);
+    std::string n5 = val->createTempVarName();
+    std::string n6 = val->createTempVarName(true);
+    cout << n1 << endl;
+    cout << n2 << endl;
+    cout << n3 << endl;
+    cout << n4 << endl;
+    cout << n5 << endl;
+    cout << n6 << endl;
     return 0;
 }
