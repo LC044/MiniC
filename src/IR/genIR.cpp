@@ -5,11 +5,10 @@
 #include <stack>
 static bool WhileBlock = false;
 extern bool ExitLabel;
-static bool IFflag = false;
+// static bool IFflag = false;
+static int IFflag = 0;
 int dimFlag = 0;
 std::string ArrName;
-std::stack<std::string> IfLabels;
-std::stack<std::string> ElseLabels;
 std::stack<std::string> Bc1Labels;
 std::stack<std::string> Bc2Labels;
 std::stack<std::string> Breaklabels;
@@ -23,6 +22,7 @@ extern std::unordered_map<std::string, FuncSymbol * > funcsMap;
 extern std::vector<std::string > varsName;
 // 保存函数名，以便顺序遍历
 extern std::vector<std::string > funcsName;
+extern SymbolTable *symbolTable;
 extern InterCode *Basic_block_division(InterCode *blockInsts);
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
@@ -44,21 +44,15 @@ static bool ir_cu(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
     // 第一步遍历全局变量符号表
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-
-        // 遍历Block的每个语句，进行显示或者运算
-
-        if ((*pIter)->type == AST_DEF_LIST) {
-            struct ast_node *temp = ir_visit_ast_node(*pIter);
-            node->blockInsts.addInst(
-                temp->blockInsts
-            );
-        }
+    for (int i = 0; i < symbolTable->varsName.size(); ++i) {
+        Value *val;
+        val = symbolTable->varsMap[symbolTable->varsName[i]];
+        node->blockInsts.addInst(
+            new DeclearIRInst(val, true, true)
+        );
     }
     // 第二步遍历函数表
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-
-        // 遍历Block的每个语句，进行显示或者运算
         if ((*pIter)->type == AST_FUNC_DEF) {
             struct ast_node *temp = ir_visit_ast_node(*pIter);
             node->blockInsts.addInst(
@@ -74,14 +68,15 @@ static bool ir_cu(struct ast_node *node)
 static bool ir_block(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
+    LocalVarTable *localVarTable = new LocalVarTable();
+    FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
+    funcSymbol->tempStack.push(localVarTable);
+    funcSymbol->currentScope++;
+    printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
-        if ((*pIter)->type == AST_DEF_LIST) {
-            continue;
-        }
-
         struct ast_node *temp;
         temp = ir_visit_ast_node(*pIter, true);
         if (!temp) {
@@ -92,41 +87,43 @@ static bool ir_block(struct ast_node *node)
             break;
         }
     }
+    funcSymbol->tempStack.pop();
+    funcSymbol->currentScope--;
     return true;
 }
 static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
-
     Value *val = nullptr;
     // 第一个孩子是标识符
     struct ast_node *temp_id = node->sons[0];
     if (isLocal) {
-        val = funcsMap[FuncName]->localVarsMap[temp_id->attr.id];
-    } else {
-        val = varsMap[temp_id->attr.id];
+        // 局部变量
+        val = symbolTable->findValue(temp_id->attr.id, FuncName, false);
+        symbolTable->addValue(temp_id->attr.id, val, FuncName, true);
     }
-    node->val = val;
     return true;
 }
-static bool ir_def_list(struct ast_node *node)
+static bool ir_def_list(struct ast_node *node, bool isLocal)
 {
     std::vector<struct ast_node *>::iterator pIter;
     // 第一个孩子节点是变量类型
-    // struct ast_node *temp_type = node->sons[0];
+    struct ast_node *temp_type = node->sons[0];
+    ValueType type;
+    // todo 暂时只考虑int型变量
+    if (strcmp(temp_type->attr.id, "int") == 0) {
+        type = ValueType::ValueType_Int;
+    }
+
     for (pIter = node->sons.begin() + 1; pIter != node->sons.end(); ++pIter) {
         Value *val = nullptr;
         struct ast_node *temp = *pIter;
         if (temp->type == AST_ARRAY) {
-            // bool result = ir_def_array(temp, type);
-            // if (!result)return false;
+            bool result = ir_def_array(temp, type, isLocal);
+            if (!result)return false;
         } else {
-            val = varsMap[temp->attr.id];
-            temp->val = val;
+            val = symbolTable->findValue(temp->attr.id, FuncName, false);
+            symbolTable->addValue(temp->attr.id, val, FuncName, true);
         }
-        // printf("global variable %s\n", temp->val->getName().c_str());
-        node->blockInsts.addInst(
-            new DeclearIRInst(temp->val, true, true)
-        );
     }
     return true;
 }
@@ -134,39 +131,66 @@ static bool ir_def_list(struct ast_node *node)
 static bool ir_def_func(struct ast_node *node)
 {
     struct ast_node *func_type = node->sons[0];
+
+    // 第二个孩子是函数名
+    struct ast_node *func_name = node->sons[1];
+    FuncName = func_name->attr.id;
+    FuncSymbol *FuncVal = funcsMap[FuncName];
+    func_name->val = FuncVal;
+    LocalVarTable *localVarTable = new LocalVarTable();
+    FuncVal->tempStack.push(localVarTable);
+    FuncVal->currentScope = 0;
     // 第一个孩子是函数返回类型
     ValueType type;
     if (strcmp(func_type->attr.id, "int") == 0) {
         type = ValueType::ValueType_Int;
+        Value *returnValue = FuncVal->stack.search("return", 0);
+        FuncVal->addValue(returnValue, "return", true);
     } else if (strcmp(func_type->attr.id, "void") == 0) {
         type = ValueType::ValueType_Void;
     }
     if (node->sons[3]->type == AST_EMPTY) {
         return true;
     }
-    // 第二个孩子是函数名
-    struct ast_node *func_name = node->sons[1];
-    Value *val = nullptr;
-    FuncName = func_name->attr.id;
-    val = funcsMap[FuncName];
-    func_name->val = val;
-    printf("Function: %s\n", val->getName().c_str());
+
+    printf("Function: %s\n", FuncVal->getName().c_str());
     node->blockInsts.addInst(
-        new FuncDefIRInst(func_name->val, type)
+        new FuncDefIRInst(FuncVal, type)
     );
+    // 形参定义
+    // 第三个孩子是参数列表
+    struct ast_node *func_paras = node->sons[2];
+    std::vector<struct ast_node *>::iterator pIter;
+    int i = 0;
+
+    for (pIter = func_paras->sons.end() - 1; pIter != func_paras->sons.begin() - 1; --pIter, i++) {
+        struct ast_node *arg_name = (*pIter)->sons[1];
+        // Value *resultValue = nullptr;
+        if (arg_name->type == AST_ARRAY) {
+            // resultValue = symbolTable->findValue(arg_name->sons[0]->attr.id, FuncName, false);
+            symbolTable->addValue(arg_name->sons[0]->attr.id, arg_name->val, FuncName, true);
+        } else {
+            // resultValue = symbolTable->findValue(arg_name->attr.id, FuncName, false);
+            printf("参数名%s:%s\n", arg_name->attr.id, arg_name->val->getName().c_str());
+            symbolTable->addValue(arg_name->attr.id, arg_name->val, FuncName, true);
+        }
+    }
+    printf("进入语句块\n");
     // 第四个孩子是语句块
+    FuncVal->currentScope = -1;
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
     InterCode *blockInsts = new InterCode();
     // 形参赋值给局部变量
-    for (int i = 0; i < func_name->val->fargs.size(); ++i) {
+    for (int i = 0; i < FuncVal->fargs.size(); ++i) {
         Value *srcValue = nullptr;
-        srcValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
+        srcValue = FuncVal->tempVarsMap[FuncVal->tempVarsName[i]];
         Value *resultValue = nullptr;
-        resultValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
+        resultValue = FuncVal->localVarsMap[FuncVal->localVarsName[i]];
         blockInsts->addInst(
             new AssignIRInst(resultValue, srcValue)
         );
     }
+    printf("形参复制给临时变量结束\n");
     blockInsts->addInst(func_block->blockInsts);
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // 如果if里有return语句则在exit这里加个label
@@ -180,8 +204,9 @@ static bool ir_def_func(struct ast_node *node)
     }
     ExitLabel = false;
     // 退出语句 exit 
+    FuncVal->currentScope = 0;
     if (strcmp(func_type->attr.id, "int") == 0) {
-        Value *returnValue = findValue("return", FuncName, true);
+        Value *returnValue = symbolTable->findValue("return", FuncName, false);
         Value *srcValue = nullptr;
         srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
         blockInsts->addInst(
@@ -197,19 +222,19 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     // 添加局部变量定义IR指令
-    // printf("函数局部变量个数:%d\n", func_name->val->localVarsName.size());
-    for (int i = 0; i < func_name->val->localVarsName.size(); ++i) {
+    printf("函数局部变量个数:%d\n", FuncVal->localVarsName.size());
+    for (int i = 0; i < FuncVal->localVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
-        localVarValue = func_name->val->localVarsMap[func_name->val->localVarsName[i]];
+        localVarValue = FuncVal->localVarsMap[FuncVal->localVarsName[i]];
         node->blockInsts.addInst(
             new DeclearIRInst(localVarValue, false, true)
         );
     }
     // 添加临时变量定义IR指令
-    // printf("函数临时变量个数:%d\n", func_name->val->tempVarsName.size());
-    for (int i = func_name->val->fargs.size(); i < func_name->val->tempVarsName.size(); ++i) {
+    printf("函数临时变量个数:%d\n", FuncVal->tempVarsName.size());
+    for (int i = FuncVal->fargs.size(); i < FuncVal->tempVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
-        localVarValue = func_name->val->tempVarsMap[func_name->val->tempVarsName[i]];
+        localVarValue = FuncVal->tempVarsMap[FuncVal->tempVarsName[i]];
         node->blockInsts.addInst(
             new DeclearIRInst(localVarValue, false, true, true)
         );
@@ -218,20 +243,21 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst("    entry")
     );
-    // printf("指令长度：%d\n", blockInsts->getCodeSize());
+    printf("指令长度：%d\n", blockInsts->getCodeSize());
     // node->blockInsts.addInst(*blockInsts);
     InterCode *BlockInsts = Basic_block_division(blockInsts);
     node->blockInsts.addInst(*BlockInsts);
     node->blockInsts.addInst(
         new UselessIRInst("}")
     );
-    // printf("函数结束\n");
+    printf("函数%s结束\n", FuncName.c_str());
     return true;
 }
 // return IR
 static bool ir_return(struct ast_node *node)
 {
     // 没有返回值
+
     if (node->sons.size() == 0) {
         if (IFflag) {
             node->blockInsts.addInst(
@@ -248,7 +274,8 @@ static bool ir_return(struct ast_node *node)
         return false;
     }
     node->blockInsts.addInst(result->blockInsts);
-    Value *returnValue = findValue("return", FuncName, true);
+    Value *returnValue = symbolTable->findValue("return", FuncName, true);
+    printf("return 语句 %s \n", returnValue->getName().c_str());
     node->blockInsts.addInst(
             new AssignIRInst(returnValue, result->val)
     );
@@ -279,16 +306,18 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             node->blockInsts.addInst(temp->blockInsts);
         }
         std::vector<Value *> _srcVal;
-        // 
+        // 第二步将实参加入参数列表
         for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
             // struct ast_node *temp = ir_visit_ast_node(*pIter);
             _srcVal.push_back((*pIter)->val);
         }
         if (isLeft) {
+            // 无返回值函数调用
             node->blockInsts.addInst(
             new FuncCallIRInst(left->attr.id, _srcVal, true)
             );
         } else {
+            // 有返回值函数调用
             Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
             node->blockInsts.addInst(
             new FuncCallIRInst(left->attr.id, _srcVal, true, val)
@@ -296,7 +325,7 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             node->val = val;
         }
     } else {
-        // printf("无参函数调用指令0\n");
+        // 无参函数调用
         if (isLeft) {
             node->blockInsts.addInst(
             new FuncCallIRInst(left->attr.id)
@@ -308,7 +337,6 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
             );
             node->val = val;
         }
-        printf("左值名字 %s\n", node->parent->sons[0]->val->getName().c_str());
     }
     return true;
 }
@@ -695,15 +723,10 @@ static bool ir_cmp(struct ast_node *node)
 static bool ir_if(struct ast_node *node)
 {
     // if 有三个孩子节点，比较运算、true代码块、false代码块(false可能不存在)
-    // node->labels存储三个跳转节点的label，供bc指令跳转用
-    // true_node->next->label存储true代码块的下一个跳转节点
-    // false_node->next->label存储false代码块的下一个跳转节点
-    IFflag = true;
+    IFflag++;
     std::string label1 = newLabel(FuncName);  // true语句
     std::string label2 = newLabel(FuncName);  // false语句
     std::string label3 = newLabel(FuncName);  // 下一条语句
-    IfLabels.push(label1);
-    ElseLabels.push(label2);
     if (node->sons.size() == 3) {
         Bc1Labels.push(label1);
         Bc2Labels.push(label2);
@@ -795,11 +818,9 @@ static bool ir_if(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst(label3 + ":")
     );
-    IfLabels.pop();
-    ElseLabels.pop();
     Bc1Labels.pop();
     Bc2Labels.pop();
-    IFflag = false;
+    IFflag--;
     return true;
 }
 static bool ir_while(struct ast_node *node)
@@ -807,6 +828,7 @@ static bool ir_while(struct ast_node *node)
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     WhileBlock = true;
+    IFflag++;
     std::string label1 = newLabel(FuncName);  // 条件语句
     std::string label2 = newLabel(FuncName);  // true语句
     std::string label3 = newLabel(FuncName);  // 下一条语句
@@ -847,6 +869,7 @@ static bool ir_while(struct ast_node *node)
     Breaklabels.pop();
     ContinueLabels.pop();
     WhileBlock = false;
+    IFflag--;
     return true;
 }
 static bool ir_for(struct ast_node *node)
@@ -1202,7 +1225,7 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
         result = ir_cu(node);
         break;
     case AST_DEF_LIST:
-        result = ir_def_list(node);
+        result = ir_def_list(node, true);
         break;
     case AST_FUNC_DEF:
         result = ir_def_func(node);

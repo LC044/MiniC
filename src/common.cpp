@@ -56,5 +56,5 @@ bool isLetterUnderLine(char ch)
 
 void printError(int lineno, std::string msg)
 {
-    printf("%d : %s\n", lineno, msg.c_str());
+    printf("line: %d : %s\n", lineno, msg.c_str());
 }

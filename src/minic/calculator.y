@@ -180,6 +180,17 @@ def    :  ident idtail
                     $2->sons.clear();
                     free_ast_node($2);
                 }
+                else if ($2->type == AST_VAR_INIT){
+                    // 第一个变量是数组,int a[5],b,c;
+                    // 第$2第一个孩子节点是[5],第二个孩子节点为AST_DEF_LIST
+                    struct ast_node * temp_node;
+                    temp_node = new_ast_node(AST_OP_ASSIGN,$1, $2->sons[0]);
+                    // $$ = temp_node;
+                    $$ = new_ast_node(AST_DEF_LIST, temp_node,$2->sons[1]);
+                    // 删除该节点
+                    $2->sons.clear();
+                    free_ast_node($2);
+                }
                 else if ($2->type == AST_FUNC_DEF){
                     // 函数定义
                     struct ast_node * temp_node;
@@ -194,19 +205,9 @@ def    :  ident idtail
                 }
             };
 
-idtail : varrdef deflist 
-            { 
-                if($1==NULL) {
-                    // int a,b;
-                    // a不是数组
-                    $$ = $2;
-                }
-                else {
-                    // int a[5],b,c[4];
-                    // 第一个变量是数组
-                    $$=new_ast_node(AST_ARRAY_LIST,$1,$2);
-                }
-            }
+idtail : deflist            {$$ = $1;}
+        | varrdef deflist   {$$=new_ast_node(AST_ARRAY_LIST,$1,$2);}
+        | '=' expr deflist  {$$=new_ast_node(AST_VAR_INIT,$2,$3);}
         | '(' para ')' functail 
             {  
                 // 函数定义
@@ -234,13 +235,12 @@ deflist : ';' { $$ = new_ast_node(AST_DEF_LIST);}
         }
 
 /* 单个变量或数组:a,b[3] */
-defdata : ident varrdef{
-    if($2!=NULL) $$ = new_ast_node(AST_ARRAY,$1,$2);
-    else $$ = $1;
-    }
+defdata : ident varrdef     {$$ = new_ast_node(AST_ARRAY,$1,$2);}
+        | ident '=' expr    {$$ = new_ast_node(AST_OP_ASSIGN,$1,$3);}
+        | ident             {$$ = $1;}
 
 /* 多维数组a[5][9][2] */
-varrdef : {$$ = NULL; }
+varrdef : '[' num ']' {$$ = new_ast_node(AST_DIMS,$2);}
         | '[' num ']' varrdef 
         {
             $$ = new_ast_node(AST_DIMS,$2,$4);
@@ -334,7 +334,7 @@ statement   : blockstat                                         {$$ = $1;}      
 
 
 /* 表达式语句 */
-expr        : expr '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
+expr        : lval '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
             | expr T_AND expr   {$$ = new_ast_node(AST_OP_AND, $1, $3);}     // 逻辑与语句
             | expr T_OR expr    {$$ = new_ast_node(AST_OP_OR, $1, $3);}      // 逻辑或
             | expr '+' expr     {$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法

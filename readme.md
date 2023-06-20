@@ -2,15 +2,15 @@
 
 ## 功能
 
-1. 选项-a可产生抽象语法树AST
+1. ✅选项-a可产生抽象语法树AST
 
     cmake-build-debug\minic.exe -a -o test.jpg  test.c
 
-2. 选项-r可产生线性IR
+2. ✅选项-r可产生线性IR
 
     cmake-build-debug\minic.exe -i -o test.ir  test.c
 
-3. 选项-c可产生控制流图
+3. ✅选项-c可产生控制流图
 
     cmake-build-debug\minic.exe -c main -o test_main_cfg.png  test.c
 
@@ -40,19 +40,19 @@
         %t2 = %l1
         %t3 = cmp eq %t2, 5
         bc %t3, label .L3, label .L4
-        .L3:
-            %l1 = 25
-            br label .L5
-        .L4:
-            %t4 = %l1
-            %t5 = mul %t4, 2
-            %l1 = %t5
-            br label .L5
-        .L5:
-            %t6 = %l1
-            %l0 = %t6
-            %t7 = %l0
-            exit %t7
+    .L3:
+        %l1 = 25
+        br label .L5
+    .L4:
+        %t4 = %l1
+        %t5 = mul %t4, 2
+        %l1 = %t5
+        br label .L5
+    .L5:
+        %t6 = %l1
+        %l0 = %t6
+        %t7 = %l0
+        exit %t7
     }
     define i32 @main() {
         declare i32 %l0 ; variable: return

@@ -30,6 +30,8 @@ IRInstOperator IRInst::getOp()
 {
     return op;
 }
+/// @brief 获取跳转指令的跳转标签
+/// @return 跳转的标签
 std::string IRInst::getLabel()
 {
     return ".L1";
@@ -183,20 +185,7 @@ void DeclearIRInst::toString(std::string &str)
 {
     // todo 暂时只考虑int型，以后可以继续添加
     Value *result = dstValue;
-    std::string type;
-    switch (result->type) {
-    case ValueType::ValueType_Int:
-        type = "i32";
-        break;
-    case ValueType::ValueType_Bool:
-        type = "i1";
-        break;
-    case ValueType::ValueType_Int_ptr:
-        type = "i32*";
-        break;
-    default:
-        break;
-    }
+    std::string type = result->getType();
     // type = "i32";
     if (IsGlobal) {
         // 全局变量用@符号
@@ -247,14 +236,14 @@ FuncDefIRInst::FuncDefIRInst(FuncSymbol *_func_name, ValueType _ret_type) :
     srcValues = _func_name->fargs;
     printf("srcValues size %d\n", srcValues.size());
 }
-FuncDefIRInst::FuncDefIRInst(Value *_func_name, ValueType _ret_type) :
-    IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
-{
-    // 形参拷贝
-    // srcValues = _paras;
-    srcValues = _func_name->fargs;
-    // printf("srcValues size %d\n", srcValues.size());
-}
+// FuncDefIRInst::FuncDefIRInst(FuncSymbol *_func_name, ValueType _ret_type) :
+//     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)
+// {
+//     // 形参拷贝
+//     // srcValues = _paras;
+//     srcValues = _func_name->fargs;
+//     // printf("srcValues size %d\n", srcValues.size());
+// }
 /// @brief 析构函数
 FuncDefIRInst::~FuncDefIRInst()
 {
@@ -305,18 +294,22 @@ FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_result) :
     IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
 {}
 
-/// @brief 含有参数的函数调用
-/// @param _srcVal1 函数的实参Value
-/// @param result 保存返回值的Value
+/// @brief 含参函数调用
+/// @param _name 函数名
+/// @param _srcVal1 参数
+/// @param _paras 含参
+/// @param _result 返回值
 FuncCallIRInst::FuncCallIRInst(std::string _name, Value *_srcVal1, bool _paras, Value *_result) :
     IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
 {
     srcValues.push_back(_srcVal1);
 }
 
-/// @brief 含有参数的函数调用
-/// @param srcVal 函数的实参Value
-/// @param result 保存返回值的Value
+/// @brief 含参函数调用
+/// @param _name 函数名
+/// @param _srcVal 参数列表
+/// @param _paras 含参
+/// @param _result 返回值
 FuncCallIRInst::FuncCallIRInst(std::string _name, std::vector<Value *> &_srcVal, bool _paras, Value *_result) :
     IRInst(IRINST_OP_FUNC_CALL, _result), name(_name)
 {
@@ -410,14 +403,17 @@ void AssignIRInst::toString(std::string &str)
     str += resultName + " = " + srcName;
 }
 
-/// @brief 一元运算IR指令
-/// @param _result 
-/// @param _srcVal1 
+/// @brief 一元运算，包括函数退出指令 exit %t8 和取负运算 a = neg %t8
+/// @param op 指令码
+/// @param result 目的操作数
+/// @param src 源操作数
 UnaryIRInst::UnaryIRInst(IRInstOperator _op, Value *_result, Value *_srcVal1) :
     IRInst(_op, _result)
 {
     srcValues.push_back(_srcVal1);
 }
+/// @brief void函数的退出语句 exit
+/// @param op 
 UnaryIRInst::UnaryIRInst(IRInstOperator _op) :
     IRInst(_op)
 {}
@@ -453,9 +449,11 @@ void UnaryIRInst::toString(std::string &str)
 
 }
 
-/// @brief 一元运算IR指令
-/// @param _result 
-/// @param _srcVal1 
+/// @brief 有条件跳转指令
+/// @param op 操作码
+/// @param src1 源操作数
+/// @param label1 跳转label1
+/// @param label2 跳转label2
 JumpIRInst::JumpIRInst(IRInstOperator _op, Value *_src1, std::string _label1, std::string _label2) :
     IRInst(_op, _src1)
 {
@@ -463,6 +461,9 @@ JumpIRInst::JumpIRInst(IRInstOperator _op, Value *_src1, std::string _label1, st
     label1 = _label1;
     label2 = _label2;
 }
+/// @brief 无条件跳转指令
+/// @param op 操作码
+/// @param label 跳转label
 JumpIRInst::JumpIRInst(IRInstOperator _op, std::string _label) :
     IRInst(_op)
 {
@@ -489,7 +490,6 @@ void JumpIRInst::toString(std::string &str)
         str += "bc " + src1->getName() + ", label " + label1 + ", label " + label2;
         break;
     }
-
     default:
         break;
     }

@@ -40,7 +40,8 @@ enum ast_operator_type {
     AST_OP_BREAK,     // break 语句
     AST_OP_CONTINUE,  // continue 语句
     AST_ARRAY,        // 数组定义
-    AST_ARRAY_LIST,
+    AST_VAR_INIT,     // 变量初始化,优化后会删除
+    AST_ARRAY_LIST,   // 数组声明的中间节点，优化后会删掉
     AST_DEF_LIST,
     AST_DIMS,         // 数组维度
     AST_EMPTY,        // 空语句
@@ -88,7 +89,7 @@ typedef struct ast_node_attr {
 struct ast_node {
     struct ast_node *parent;    // 父节点
     std::vector<struct ast_node *> sons; // 孩子节点
-    struct ast_node *next;    // 同级的下一个节点
+    struct ast_node *next;       // 同级的下一个节点
     struct ast_node *false_next;
     struct ast_node *true_next;
     enum ast_operator_type type; // 节点类型

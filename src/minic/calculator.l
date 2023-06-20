@@ -122,7 +122,9 @@ white_line  [\r\n]
                 yylval.float_num.val = (double)strtod(yytext, (char **)NULL);
                 yylval.float_num.lineno = yylineno;
                 // printf("识别的数:%lf\n",yylval.float_num.val);
-                return T_FLOAT;
+                printf("Line %d: Invalid num %s, Only supports integers \n", yylineno, yytext);
+                return YYUNDEF;
+                // return T_FLOAT;
             }
  
 

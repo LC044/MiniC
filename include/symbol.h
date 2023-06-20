@@ -68,14 +68,8 @@ public:
     int dim = 0;
     /// @brief 实数常量的值
     double realVal = 0;
-    // 参数列表
-    std::vector<Value *> fargs;
-    // 局部变量表
-    std::unordered_map<std::string, Value *> localVarsMap;
-    std::vector<std::string > localVarsName;
-    // 临时变量表
-    std::unordered_map<std::string, Value *> tempVarsMap;
-    std::vector<std::string > tempVarsName;
+    int scope;
+
 protected:
 
     /// @brief 默认实数类型的构造函数，初始值为0
@@ -114,29 +108,32 @@ public:
 
         return name;
     }
+    /// @brief 获取类型
+    /// @return 
+    virtual std::string getType() const
+    {
+        std::string typeName;
+        switch (type) {
+        case ValueType::ValueType_Int:
+            typeName = "i32";
+            break;
+        case ValueType::ValueType_Int_ptr:
+            typeName = "i32*";
+            break;
+        case ValueType::ValueType_Bool:
+            typeName = "i1";
+            break;
+        case ValueType::ValueType_Void:
+            typeName = "void";
+            break;
+        default:
+            typeName = "i32";
+            break;
+        }
+        return typeName;
+    }
 };
 
-
-class FuncSymbol : public Value {
-public:
-    /// @brief 函数名
-    // 用来保存所有的局部变量信息
-
-
-    FuncSymbol() : Value(ValueType::ValueType_Int)
-    {
-
-    }
-    FuncSymbol(std::string _name, ValueType _type) : Value(_name, _type)
-    {
-
-    }
-    /// @brief 析构函数
-    virtual ~FuncSymbol()
-    {
-        // 如有资源清理，请这里追加代码
-    }
-};
 class TempValue : public Value {
 
 public:
@@ -254,13 +251,196 @@ public:
         // 如有资源清理，请这里追加代码
     }
 };
+
+class LocalVarTable {
+public:
+    std::unordered_map<std::string, Value *> localVarsMap;
+    int scope;
+    Value *find(std::string var_name)
+    {
+        auto pItr = localVarsMap.find(var_name);
+        if (pItr != localVarsMap.end()) {
+            return pItr->second;
+        }
+        return nullptr;
+    }
+};
+class VarStack {
+public:
+    int scope = -1;
+    std::vector<LocalVarTable *> Stack;
+
+    /// @brief 新增一个作用域
+    /// @param varTable 符号表
+    void push(LocalVarTable *varTable)
+    {
+        scope++;
+        Stack.push_back(varTable);
+        // printf("当前作用域 scope=%d\n", scope);
+    }
+    // 离开作用域之后,将符号表出栈
+    void pop()
+    {
+        scope--;
+        Stack.pop_back();
+        // printf("删除后当前作用域 scope=%d\n", scope);
+    }
+
+    /// @brief 在整个栈里查找某个变量
+    /// @param var_nam 变量名
+    /// @return 变量Value
+    Value *search(std::string var_nam, int currentScope)
+    {
+        for (int i = currentScope;i > -1;i--) {
+            LocalVarTable *varTable = Stack[i];
+            Value *var = varTable->find(var_nam);
+            if (var != nullptr) {
+                return var;
+            }
+        }
+        return nullptr;
+    }
+
+    /// @brief 在当前作用域查找变量
+    /// @param var_name 变量名
+    /// @return 变量Value
+    Value *find(std::string var_name, int currentScope)
+    {
+        return Stack[currentScope]->find(var_name);
+    }
+
+    /// @brief 在当前作用域增加变量
+    /// @param val 变量Value
+    /// @param var_name 变量名
+    void addValue(Value *val, std::string var_name, int currentScope)
+    {
+        Stack[currentScope]->localVarsMap[var_name] = val;
+    }
+};
+class FuncSymbol : public Value {
+public:
+    /// @brief 函数名
+    // 用来保存所有的局部变量信息
+    // 参数列表
+    std::vector<Value *> fargs;
+    // 局部变量表
+    std::unordered_map<std::string, Value *> localVarsMap;
+    std::vector<std::string > localVarsName;
+    // 临时变量表
+    std::unordered_map<std::string, Value *> tempVarsMap;
+    std::vector<std::string > tempVarsName;
+    // 局部变量符号栈
+    VarStack stack;
+    // 产生IR时用的临时符号栈
+    VarStack tempStack;
+    int currentScope = 0;
+    Value *findValue(std::string val_name, bool Temp)
+    {
+        if (Temp) {
+            return tempStack.search(val_name, currentScope);
+        } else {
+            return stack.find(val_name, currentScope);
+        }
+    }
+    void addValue(Value *value, std::string val_name, bool Temp = false)
+    {
+
+        // printf("新建局部变量%s:%s\n", val_name.c_str(), value->getName().c_str());
+        if (Temp) {
+            printf("作用域%d 局部变量 %s\n", currentScope, val_name.c_str());
+            tempStack.addValue(value, val_name, currentScope);
+            printf("作用域%d 局部变量 %s\n", currentScope, val_name.c_str());
+        } else {
+            localVarsMap[value->getName()] = value;
+            localVarsName.push_back(value->getName());
+            stack.addValue(value, val_name, currentScope);
+        }
+    }
+    FuncSymbol() : Value(ValueType::ValueType_Int) {}
+    FuncSymbol(std::string _name, ValueType _type) : Value(_name, _type) {}
+    /// @brief 析构函数
+    virtual ~FuncSymbol()
+    {
+        // 如有资源清理，请这里追加代码
+    }
+};
+class SymbolTable {
+public:
+    std::vector<std::string > varsName;
+    // 保存函数名，以便顺序遍历
+    std::vector<std::string > funcsName;
+    // 用来保存所有的全局变量
+    std::unordered_map<std::string, Value *> varsMap;
+    // 用来保存所有的函数信息
+    std::unordered_map<std::string, FuncSymbol *> funcsMap;
+    Value *findValue(std::string varName)
+    {
+        Value *val = nullptr;
+        auto pItr = varsMap.find(varName);
+        if (pItr != varsMap.end()) {
+            val = pItr->second;
+            return val;
+        }
+        return val;
+    }
+    Value *findValue(std::string var_name, std::string func_name, bool tempStack = false)
+    {
+        // FuncSymbol *symbol = FSymTable->findFuncSymbol(func_name);
+        Value *val = nullptr;
+        auto pItr = funcsMap.find(func_name);
+        if (pItr != funcsMap.end()) {
+            FuncSymbol *symbol = pItr->second;
+            val = symbol->findValue(var_name, tempStack);
+            if (val == nullptr) {
+                val = varsMap.find(var_name)->second;
+            }
+            // val = symbol.
+        }
+        return val;
+    }
+    FuncSymbol *findFuncValue(std::string func_name)
+    {
+        FuncSymbol *val = nullptr;
+        auto pItr = funcsMap.find(func_name);
+        if (pItr != funcsMap.end()) {
+            val = pItr->second;
+            return val;
+        }
+        return val;
+    }
+    bool addValue(std::string var_name, Value *value)
+    {
+        // 如果变量已经存在，则返回false
+        if (findValue(var_name)) {
+            return false;
+        }
+        varsMap[var_name] = value;
+        varsName.push_back(var_name);
+        return true;
+    }
+    void addValue(std::string var_name, Value *value, std::string func_name, bool Temp = false)
+    {
+        auto pItr = funcsMap.find(func_name);
+        if (pItr != funcsMap.end()) {
+            FuncSymbol *symbol = pItr->second;
+            symbol->addValue(value, var_name, Temp);
+        } else {
+            printf("error: FuncSymbol not found %s\n", func_name.c_str());
+        }
+    }
+    void addFunction(std::string func_name, FuncSymbol *symbol)
+    {
+        funcsMap[func_name] = symbol;
+        funcsName.push_back(func_name);
+    }
+};
+
 /// @brief 根据变量名取得当前符号的值。若变量不存在，则说明变量之前没有定值，则创建一个未知类型的值，初值为0
 /// \param name 变量名
 /// \param checkExist 检查变量存在不？若true则检查，不存在则返回nullptr，否则创建新变量
 /// \return 变量对应的值
-
 Value *findValue(std::string name, std::string func_name, bool checkExist = false);
-Value *findFuncValue(std::string name);
+FuncSymbol *findFuncValue(std::string name);
 bool IsExist(std::string name);
 bool LocalIsExist(std::string func_name, std::string var_name);
 bool GlobalIsExist(std::string name);
@@ -297,7 +477,7 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs = false
 /// @brief 新建一个函数Value，并加入到函数表，用于后续释放空间
 /// \param name 函数名
 /// \return 函数Value
-Value *newFuncValue(std::string name);
+FuncSymbol *newFuncValue(std::string name);
 /// @brief 清理注册的所有Value资源
 void freeValues();
 // 用来保存所有的变量信息

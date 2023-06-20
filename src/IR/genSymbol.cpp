@@ -19,6 +19,7 @@ bool Ifcmp = false;
 int BreakFlag = 0;
 int ContinueFlag = 0;
 int IFflag = 0;
+extern SymbolTable *symbolTable;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
 static bool sym_block(struct ast_node *node);
@@ -43,39 +44,30 @@ void BFS(struct ast_node *node)
     }
 
 }
-static struct ast_node *last_node(struct ast_node *node)
-{
-
-    struct ast_node *temp = node;
-    while (temp->type != AST_OP_NULL) {
-        temp = temp->sons[temp->sons.size() - 1];
-    }
-    return temp;
-}
 static bool sym_block(struct ast_node *node)
 {
+    // FuncSymbol *funcVal = symbolTable->findFuncValue(FuncName);
+    LocalVarTable *localVarTable = new LocalVarTable();
+    FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
+    funcSymbol->stack.push(localVarTable);
+    funcSymbol->currentScope++;
+    printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     std::vector<struct ast_node *>::iterator pIter;
     // 第二步是遍历其他表达式语句
-
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
         if ((*pIter)->type == AST_DEF_LIST) {
+            sym_def_list(*pIter, true);
             continue;
         }
         // 遍历Block的每个语句，进行显示或者运算
         struct ast_node *temp;
-        if (pIter == node->sons.end() - 1) {
-            temp = sym_visit_ast_node(*pIter, true, true);
-        } else {
-            // 遍历Block的每个语句，进行显示或者运算
-            temp = sym_visit_ast_node(*pIter, true, false);
-        }
+        temp = sym_visit_ast_node(*pIter, true, true);
         if (!temp) {
             return false;
         }
-        temp->parent = node;
     }
-    node->label = node->sons[0]->label;
+    funcSymbol->currentScope--;
     return true;
 }
 static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
@@ -108,12 +100,13 @@ static bool sym_def_func(struct ast_node *node)
     // if (node->sons[3]->type == AST_EMPTY) {
     //     return true;
     // }
+
     struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
 
     struct ast_node *func_name = node->sons[1];
     FuncName = func_name->attr.id;
-    Value *val = nullptr;
+    FuncSymbol *val = nullptr;
     // 第二个孩子是函数名
     if (!GlobalIsExist(func_name->attr.id)) {
         // 变量名没有找到
@@ -125,6 +118,9 @@ static bool sym_def_func(struct ast_node *node)
         return false;
     }
     func_name->val = val;
+    LocalVarTable *localVarTable = new LocalVarTable();
+    val->stack.push(localVarTable);
+    val->currentScope = 0;
     // 第三个孩子是参数列表
     struct ast_node *func_paras = node->sons[2];
     std::vector<struct ast_node *>::iterator pIter;
@@ -161,18 +157,19 @@ static bool sym_def_func(struct ast_node *node)
     } else if (strcmp(func_type->attr.id, "void") == 0) {
         func_name->val->type = ValueType::ValueType_Void;
     }
-
+    val->currentScope = -1;
+    // return true;
     // 第四个孩子是语句块
     // todo 这里有个bug，AST的parent节点有问题
     node->sons[3]->parent = node;
     // printf("返回值复制给临时变量0\n");
-    BFS(node->sons[3]);
-    // struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
+    // BFS(node->sons[3]);
+    struct ast_node *func_block = sym_visit_ast_node(node->sons[3]);
     // 返回值复制给临时变量
     // newTempValue(ValueType::ValueType_Int, FuncName);
     // // printf("返回值复制给临时变量\n");
     // ReturnFlag = 0;
-    // if (func_block == NULL) return true;
+    if (func_block == NULL) return true;
     return true;
 }
 static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
@@ -243,6 +240,8 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
         } else {
             if (isLocal) {
                 // 局部变量
+                // val = newLocalVarValue(temp->attr.id, type, FuncName);
+                printf("new local variable %s\n", temp->attr.id);
                 if (!LocalIsExist(FuncName, temp->attr.id)) {
                     val = newLocalVarValue(temp->attr.id, type, FuncName);
                 } else {
@@ -253,6 +252,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
                 }
             } else {
                 // 全局变量
+                printf("new global var %s\n", temp->attr.id);
                 if (!GlobalIsExist(temp->attr.id)) {
                     val = newVarValue(temp->attr.id);
                 } else {
@@ -265,6 +265,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
 
             temp->attr.kind = kind0;
             temp->val = val;
+            printf("new global var %s\n", temp->val->getName().c_str());
         }
         // 确定符号类型
         temp->val->type = type;
@@ -274,20 +275,16 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
 static bool sym_cu(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
-    // 第一步首先确定所有全局变量
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        if ((*pIter)->type == AST_DEF_LIST) {
-            struct ast_node *temp = sym_visit_ast_node(*pIter);
-            if (temp == NULL) return true;
-        }
-    }
+    // // 第一步首先确定所有全局变量
+    // for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+    //     if ((*pIter)->type == AST_DEF_LIST) {
+    //         struct ast_node *temp = sym_visit_ast_node(*pIter);
+    //         if (temp == NULL) return true;
+    //     }
+    // }
     // 第二步确定函数表
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        if ((*pIter)->type == AST_FUNC_DEF) {
-            // struct ast_node *temp = sym_visit_ast_node(*pIter);
-            // if (temp == NULL) return true;
-            sym_visit_ast_node(*pIter);
-        }
+        sym_visit_ast_node(*pIter);
     }
     return true;
 }
@@ -312,39 +309,6 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
         // 某个变量没有定值
         return false;
     }
-    Value *leftValue = left->val;
-    Value *rightValue = right->val;
-    // 左右值都是常量就直接计算出来，代码优化 
-    Value *resultValue = nullptr;
-    if ((leftValue->isConst) and (rightValue->isConst)) {
-        int result = 0;
-        switch (type) {
-        case AST_OP_ADD:
-            result = rightValue->intVal + leftValue->intVal;
-            break;
-        case AST_OP_SUB:
-            result = rightValue->intVal - leftValue->intVal;
-            break;
-        case AST_OP_MUL:
-            result = rightValue->intVal * leftValue->intVal;
-            break;
-        case AST_OP_DIV:
-            result = rightValue->intVal / leftValue->intVal;
-            break;
-        case AST_OP_MOD:
-            result = rightValue->intVal % leftValue->intVal;
-            break;
-        default:
-            break;
-        }
-        resultValue = newConstValue(result);
-    } else {
-        // todo 暂时只考虑int类型
-        resultValue = newTempValue(ValueType::ValueType_Int, FuncName);
-    }
-
-    node->val = resultValue;
-    // printf("新建op临时变量: %s\n", node->val->getName().c_str());
     return true;
 }
 static bool sym_dimensions(struct ast_node *node, bool isSecond)
@@ -408,23 +372,12 @@ static bool sym_index(struct ast_node *node, bool isLeft)
     if (!array_name) {
         return false;
     }
-    Value *val;
-
     struct ast_node *temp_dims = node->sons[1];
     // 第二个孩子是数组维度节点
     struct ast_node *right = sym_visit_ast_node(temp_dims);
     if (!right) {
         // return false;
     }
-    sym_visit_ast_node(temp_dims, true);
-
-    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-    // printf("新建指针变量 %s\n", val->getName().c_str());
-    val->type = ValueType::ValueType_Int_ptr;
-    node->val = val;
-    node->sons[0]->val = val;
-    newTempValue(ValueType::ValueType_Int, FuncName);
-    // val->type = ValueType::ValueType_Int_ptr;
     return true;
 }
 static bool sym_assign(struct ast_node *node)
@@ -450,38 +403,21 @@ static bool sym_assign(struct ast_node *node)
         // 某个变量没有定值
         return false;
     }
-    if (left->type == AST_OP_INDEX or right->type == AST_OP_INDEX) {
-        // if (left->type == AST_OP_INDEX) {
-        //     // leftValue = left->sons[0]->val;
-        //     Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-        //     node->val = val;
-        // }
-        if (right->type == AST_OP_INDEX and left->type == AST_OP_INDEX) {
-            // leftValue = left->sons[0]->val;
-            Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-            node->val = val;
-        }
-    } else {
-        node->val = left->val;
-    }
     return true;
 }
 static bool sym_return(struct ast_node *node)
 {
     ReturnFlag += 1;
-    struct ast_node *son1_node = node->sons[0];
-    struct ast_node *left = sym_visit_ast_node(son1_node, false);
-    if (!left) {
-        // 某个变量没有定值
-        // 这里缺省设置变量不存在则创建，因此这里不会错误
-        return false;
+    if (node->sons.size() > 0) {
+        struct ast_node *son1_node = node->sons[0];
+        struct ast_node *left = sym_visit_ast_node(son1_node, false);
+        if (!left) {
+            // 某个变量没有定值
+            // 这里缺省设置变量不存在则创建，因此这里不会错误
+            return false;
+        }
     }
-    Value *val = nullptr;
-    if (left->type == AST_OP_INDEX) {
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        left->val = val;
-    }
-    node->val = left->val;
+
     return true;
 }
 static bool sym_func_call(struct ast_node *node, bool isLeft)
@@ -497,29 +433,10 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
         std::vector<struct ast_node *>::iterator pIter;
         // 第一步首先确定所有全局变量
         for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
-            struct ast_node *temp = sym_visit_ast_node(*pIter);
+            // struct ast_node *temp = sym_visit_ast_node(*pIter);
             // 变量当右值要先复制给临时变量再进行计算
-            if (temp->val->isId) {
-                Value *val;
-                if (temp->val->dims[0] != 0) {
-                    val = newTempValue(ValueType::ValueType_Int_ptr, FuncName);
-                } else {
-                    val = newTempValue(ValueType::ValueType_Int, FuncName);
-                }
-
-                val->isId = true;
-                temp->val = val;
-            }
         }
     }
-
-    if (!isLeft) {
-        // 函数调用当左值，不需要赋值给临时变量
-        Value *val;
-        val = newTempValue(ValueType::ValueType_Int, FuncName);
-        node->val = val;
-    }
-
     return true;
 }
 static bool sym_if(struct ast_node *node, bool isLast)
@@ -534,26 +451,9 @@ static bool sym_if(struct ast_node *node, bool isLast)
     if (!cond) {
         return false;
     }
-    if (src1_node->type == AST_OP_AND || src1_node->type == AST_OP_OR || src1_node->type == AST_OP_CMP || src1_node->type == AST_OP_NOT) {
-    } else {
-        Value *val;
-        if (src1_node->val->isId) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            val->isId = true;
-            src1_node->val = val;
-        }
-        if (src1_node->val->type == ValueType::ValueType_Bool) {
-            node->val = src1_node->val;
-        } else {
-            val = newTempValue(ValueType::ValueType_Bool, FuncName);
-            // val->isId = true;
-            node->val = val;
-        }
-    }
     struct ast_node *true_node = sym_visit_ast_node(src2_node, true);
     if (!true_node) {
         // if后面没有语句
-    } else {
     }
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
@@ -561,49 +461,21 @@ static bool sym_if(struct ast_node *node, bool isLast)
         if (!false_node) {
         } else {
         }
-    } else {
     }
     return true;
 }
 static bool sym_cmp(struct ast_node *node, bool isSecond)
 {
-
-    if (true) {
-        // 仅第一次访问有效
-        struct ast_node *src1_node = node->sons[0];
-        struct ast_node *src2_node = node->sons[2];
-        struct ast_node *left = sym_visit_ast_node(src1_node);
-        if (!left) {
-            return false;
-        }
-        struct ast_node *right = sym_visit_ast_node(src2_node);
-        if (!right) {
-            return false;
-        }
-        Value *val = nullptr;
-        // 变量当右值要先复制给临时变量再进行计算
-        if (left->val->isId) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            val->isId = true;
-            left->val = val;
-        }
-        if (right->val->isId) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            val->isId = true;
-            right->val = val;
-        }
-        if (left->type == AST_OP_INDEX) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            left->val = val;
-        }
-        if (right->type == AST_OP_INDEX) {
-            val = newTempValue(ValueType::ValueType_Int, FuncName);
-            right->val = val;
-        }
-        val = newTempValue(ValueType::ValueType_Bool, FuncName);
-        node->val = val;
-    } else {
-
+    // 仅第一次访问有效
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *src2_node = node->sons[2];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    struct ast_node *right = sym_visit_ast_node(src2_node);
+    if (!right) {
+        return false;
     }
     return true;
 }
@@ -614,15 +486,6 @@ static bool sym_neg(struct ast_node *node)
     if (!left) {
         return false;
     }
-    if (left->val->isConst or left->val->type == ValueType::ValueType_Bool) {
-        left->val->intVal = -left->val->intVal;
-        node->val = left->val;
-
-    } else {
-        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-        node->val = val;
-    }
-
     return true;
 }
 static bool sym_while(struct ast_node *node)
@@ -641,21 +504,6 @@ static bool sym_while(struct ast_node *node)
     WhileBlock = false;
     return true;
 }
-static struct ast_node *or_and_next_node(struct ast_node *node, enum ast_operator_type type)
-{
-    if (node->type == AST_OP_CMP) {
-        return node;
-    }
-    struct ast_node *temp_node = node->sons[1];
-    while (temp_node) {
-        if (temp_node->type == AST_OP_CMP) {
-            return temp_node;
-        } else {
-            temp_node = temp_node->sons[0];
-        }
-    }
-    return node;
-}
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
 {
 
@@ -666,88 +514,34 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
         if (!left) {
             return false;
         }
-        if (left->val->isConst) {
-            node->val = left->val;
-            node->val->intVal = left->val->intVal != 0 ? 0 : 1;
-        } else {
-
-            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
-            node->val = val;
-        }
     } else {
-        if (!isSecond) {
-            struct ast_node *src1_node = node->sons[0];
-            struct ast_node *src2_node = node->sons[1];
-            struct ast_node *left = sym_visit_ast_node(src1_node);
-            if (!left) {
-                return false;
-            }
-            struct ast_node *right = sym_visit_ast_node(src2_node);
-            if (!right) {
-                return false;
-            }
-            node->val = left->val;
-        } else {
-            struct ast_node *src1_node = node->sons[0];
-            struct ast_node *src2_node = node->sons[1];
-            struct ast_node *left = sym_visit_ast_node(src1_node, true);
-            if (!left) {
-                return false;
-            }
-            struct ast_node *right = sym_visit_ast_node(src2_node, true);
-            if (!right) {
-                return false;
-            }
-            node->val = left->val;
+        struct ast_node *src1_node = node->sons[0];
+        struct ast_node *src2_node = node->sons[1];
+        struct ast_node *left = sym_visit_ast_node(src1_node, true);
+        if (!left) {
+            return false;
         }
-
+        struct ast_node *right = sym_visit_ast_node(src2_node, true);
+        if (!right) {
+            return false;
+        }
     }
     return true;
 }
 static bool sym_not(struct ast_node *node, bool isLeft)
 {
-    if (Ifcmp) {
-        if (isLeft) {
-            return true;
-        } else {
-            // return true;
-            struct ast_node *src1_node = node->sons[0];
-            struct ast_node *left = sym_visit_ast_node(src1_node);
-            if (!left) {
-                return false;
-            }
-            Value *val;
-            // 变量当右值要先复制给临时变量再进行计算
-            if (left->val->isId) {
-                val = newTempValue(ValueType::ValueType_Int, FuncName);
-                val->isId = true;
-                left->val = val;
-            }
-            if (left->val->type == ValueType::ValueType_Bool) {
-                node->val = left->val;
-            } else {
-                val = newTempValue(ValueType::ValueType_Bool, FuncName);
-                node->val = val;
-            }
-        }
-    } else {
-        struct ast_node *src1_node = node->sons[0];
-        struct ast_node *left = sym_visit_ast_node(src1_node);
-        if (!left) {
-            return false;
-        }
-        if (left->val->isConst) {
-            node->val = left->val;
-            node->val->intVal = left->val->intVal != 0 ? 0 : 1;
-        } else {
-        }
+    // return true;
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
     }
     return true;
 }
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
     return true;
-    Value *val = nullptr;
+    // Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
         // 新建一个ID型Value
@@ -756,23 +550,17 @@ static bool sym_leaf_node(struct ast_node *node, bool isLeft)
         // 变量，则需要在符号表中查找对应的值
         // 若变量之前没有有定值，则采用默认的值为0
 
-        val = findValue(node->attr.id, FuncName, true);
-        if (!isLeft) {
-        }
-        if (!val) {
-            printf("Line(%d) Variable(%s) not defined\n",
-                   node->attr.lineno,
-                   node->attr.id);
-            return false;
-        }
-    } else if (node->attr.kind == DIGIT_KIND_INT) {
-        // 新建一个整数常量Value
-        val = newConstValue(node->attr.integer_val);
-    } else {
-        // 新建一个实数型常量Value
-        val = newConstValue(node->attr.real_val);
+        // val = findValue(node->attr.id, FuncName, true);
+        // if (!isLeft) {
+        // }
+        // if (!val) {
+        //     printf("Line(%d) Variable(%s) not defined\n",
+        //            node->attr.lineno,
+        //            node->attr.id);
+        //     return false;
+        // }
     }
-    node->val = val;
+    // node->val = val;
     return true;
 }
 static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, bool isLast)
