@@ -54,6 +54,7 @@ public:
 
     /// @brief 是否是用户定义的变量或标识符
     bool isId = false;
+
     /// @brief 变量名或内部标识的名字
     std::string name;
     /// @brief 变量名

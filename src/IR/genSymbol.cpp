@@ -92,9 +92,6 @@ static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
     node->val = localVarValue;
     return true;
 }
-/// @brief 
-/// @param node 
-/// @return 
 static bool sym_def_func(struct ast_node *node)
 {
     // if (node->sons[3]->type == AST_EMPTY) {

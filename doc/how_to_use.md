@@ -114,89 +114,100 @@ yyparse failed
 
 高层定义，包括全局变量的定义int a,b;和函数的定义 int main();
 
-```yacc
+```yacas
 Input     : program
 program   : segment |  program segment
-segment   : type def
+segment   : type def  						// 全局变量或者函数名定义或声明
 type      :  T_INT | T_VOID
-def       :  ident idtail
-idtail    : varrdef deflist
-          | '(' para ')' functail
-          | '('  ')' functail
-deflist   : ';' | ',' defdata deflist
-defdata   : ident varrdef
-varrdef   : '[' num ']' varrdef | ε 
-para      : paras
-paras     : onepara | onepara ',' paras
-onepara   : type paradata
-paradata  : ident | ident paradatatail
-paradatatail : '[' ']' | '[' num ']' | '[' num ']' paradatatail
+def       :  ident idtail  					// 全局变量或者函数名定义
+idtail    : deflist							// 变量定义,第一个不是数组 int a,b[2],c;
+		  | varrdef deflist					// 变量定义,第一个是数组   int a[2],b;
+		  | '=' expr deflist                // 变量初始化,int a=1,b;
+          | '(' paras ')' functail          // 有参函数定义
+          | '('  ')' functail               // 无参函数定义
+/* 多个变量定义 */
+deflist   : ';' | ',' defdata deflist       // 多个变量定义 int a,b,c;
+defdata   : ident							// 单个变量
+		  | ident varrdef                   // 数组
+		  | ident '=' expr                  // 变量初始化,a=1;
+varrdef   : '[' num ']'                     // 数组维度
+		  | '[' num ']' varrdef  
+/* 参数列表 */
+paras     : onepara | onepara ',' paras     // 参数列表
+onepara   : type paradata                   // 形参
+paradata  : ident | ident paradatatail      // 形参为变量或数组
+paradatatail : '[' ']' 
+			 | '[' num ']' 
+			 | paradatatail '[' num ']' 
 ```
 
 函数内部语句块
 
-```
-functail : blockstat | ';'
-blockstat : '{' subprogram '}'
-subprogram : onestatement| subprogram onestatement | ε 
-onestatement : statement | localdef
-localdef    : type defdata deflist
+```yacas
+functail : blockstat | ';'                         // 语句块
+blockstat : '{' subprogram '}' | '{'  '}'          // 子程序或空块
+subprogram : onestatement| subprogram onestatement // 多个语句
+onestatement : statement | localdef                // 局部变量定义或者语句
+localdef    : type defdata deflist                 // 局部变量定义
 ```
 
 一条语句，包括语句块、表达式语句，if、while、for、break、continue、return和空语句
 
-```
-statement   : blockstat      
-             | expr ';' 
-             | T_IF '(' expr ')' statement %prec LOWER_THEN_ELSE
-             | T_IF '(' expr ')' statement T_ELSE statement
-             | T_WHILE '(' expr ')' statement 
-             | T_FOR '(' expr ';' expr ';'expr ')' statement
-             | T_BREAK ';' 
-             | T_CONTINUE ';' 
-             | T_RETURN expr ';'
-             | T_RETURN ';'  
-             | ';' 
+```yacas
+statement   : blockstat      						           // 另一个语句块				
+             | expr ';'  									   // 表达式语句
+             | T_IF '(' expr ')' statement                     // if语句，没有else
+             | T_IF '(' expr ')' statement T_ELSE statement    // if语句，有else
+             | T_WHILE '(' expr ')' statement                  // while循环
+             | T_FOR '(' expr ';' expr ';'expr ')' statement   // for循环
+             | T_BREAK ';'                                     // break语句
+             | T_CONTINUE ';' 								   // continue语句
+             | T_RETURN expr ';'							   // return语句
+             | T_RETURN ';'  								   // void return语句
+             | ';' 											   // 空语句
 ```
 
 表达式语句，需要自己定义优先级
 
-```
-expr    : lval '=' expr
-        | expr T_AND expr
-        | expr T_OR expr
-        | expr '+' expr
-        | expr '-' expr
-        | expr '*' expr
-        | expr '/' expr
-        | expr '%' expr 
-        | expr cmp expr
-        | factor
+```yacas
+expr    : lval '=' expr      // 赋值语句
+        | expr T_AND expr    // 逻辑与运算
+        | expr T_OR expr     // 逻辑或运算
+        | expr '+' expr      // 算数加运算
+        | expr '-' expr      // 算数减运算
+        | expr '*' expr      // 算数乘运算
+        | expr '/' expr      // 算数除运算
+        | expr '%' expr      // 取余运算 
+        | expr cmp expr		 // 关系比较运算
+        | factor             // 一元运算
 cmp     : T_CMP
 ```
 
 一元运算
 
-```
-factor  : '-' factor
-        | '!' factor
-        | lval T_DEC
-        | lval T_INC
-        | T_DEC lval
-        | T_INC lval
-        | rval
-rval    : lval
-        | '(' expr ')'
-        | ident '(' realarg ')'
-        | ident '(' ')'
-        | num
-lval    : ident
-        | ident lvaltail
-lvaltail    :'[' expr ']'
+```yacas
+factor  : '-' factor              // 取负运算
+        | '!' factor			  // 逻辑非运算
+        | lval T_DEC              // 右自减
+        | lval T_INC			  // 右自增
+        | T_DEC lval              // 左自减
+        | T_INC lval			  // 左自增
+        | rval                    // 右值
+/* 右值 */
+rval    : lval					  // 左值
+        | '(' expr ')'            // 表达式
+        | ident '(' realargs ')'   // 有参函数调用
+        | ident '(' ')'           // 无参函数调用
+        | num                     // 数字
+/* 左值 */
+lval    : ident                   // 变量
+        | ident lvaltail          // 数组引用
+lvaltail    :'[' expr ']'          
             |  lvaltail '[' expr ']'
+
 ident   : T_ID
 num     : T_DIGIT
-realarg     :  realargs
+/* 实参 */
 realargs    : expr
             | realargs ',' expr 
 ```
@@ -212,6 +223,8 @@ realargs    : expr
 ### 💡处理优先级和结合性
 
 语法分析器需要考虑不同运算符的优先级和结合性，从而正确地构建AST。
+
+
 
 ### 💡处理语法糖
 
@@ -263,6 +276,100 @@ int main() {
 
 语义分析器需要构建符号表，用于记录程序中的变量、函数等符号的信息。符号表可以用于检查变量的重复声明、判断变量的作用域、检查函数的参数匹配等。
 
+符号表里面包含全局变量表和函数表两个重要属性，为了提高查找效率使用哈希表存储
+
+```c++
+class SymbolTable {
+public:
+    // 用来保存所有的全局变量
+    std::unordered_map<std::string, Value *> varsMap;
+    std::vector<std::string > varsName;
+    // 保存函数名，以便顺序遍历
+    std::vector<std::string > funcsName;
+    // 用来保存所有的函数信息
+    std::unordered_map<std::string, FuncSymbol *> funcsMap;
+};
+```
+
+函数符号本身就是一个符号变量，除了有其他符号的属性外，还有局部变量表、临时变量表、参数列表等函数的属性
+
+还使用了符号栈来管理局部变量的作用域
+
+```c++
+class FuncSymbol : public Value {
+public:
+    // 参数列表
+    std::vector<Value *> fargs;
+    // 局部变量表
+    std::unordered_map<std::string, Value *> localVarsMap;
+    std::vector<std::string > localVarsName;
+    // 临时变量表
+    std::unordered_map<std::string, Value *> tempVarsMap;
+    std::vector<std::string > tempVarsName;
+    // 局部变量符号栈
+    VarStack stack;
+    // 产生IR时用的临时符号栈
+    VarStack tempStack;
+    // 当前作用域
+    int currentScope = 0;
+};
+```
+
+符号栈
+
+```c++
+class VarStack {
+public:
+    int scope = -1;
+    std::vector<LocalVarTable *> Stack;
+    /// @brief 新增一个作用域
+    /// @param varTable 符号表
+    void push(LocalVarTable *varTable)
+    {
+        scope++;
+        Stack.push_back(varTable);
+    }
+    // 离开作用域之后,将符号表出栈
+    void pop()
+    {
+        scope--;
+        Stack.pop_back();
+    }
+    /// @brief 在整个栈里查找某个变量
+    /// @param var_nam 变量名
+    /// @return 变量Value
+    Value *search(std::string var_nam, int currentScope)
+    {
+        for (int i = currentScope;i > -1;i--) {
+            LocalVarTable *varTable = Stack[i];
+            Value *var = varTable->find(var_nam);
+            if (var != nullptr) {
+                return var;
+            }
+        }
+        return nullptr;
+    }
+
+    /// @brief 在当前作用域查找变量
+    /// @param var_name 变量名
+    /// @return 变量Value
+    Value *find(std::string var_name, int currentScope)
+    {
+        return Stack[currentScope]->find(var_name);
+    }
+
+    /// @brief 在当前作用域增加变量
+    /// @param val 变量Value
+    /// @param var_name 变量名
+    void addValue(Value *val, std::string var_name, int currentScope)
+    {
+        Stack[currentScope]->localVarsMap[var_name] = val;
+    }
+};
+```
+
+
+
 ### 🎓函数调用检查
 
 语义分析器需要检查函数调用的合法性，包括检查函数名、参数个数、参数类型等是否正确。
@@ -281,7 +388,7 @@ int main() {
 
 ### 🎓错误处理
 
-语义分析器需要检测并报告源代码中的语义错误，如未声明的变量、类型不匹配、函数调用错误等。
+语义分析器需要检测并报告源代码中的语义错误， 如未声明的变量、类型不匹配、函数调用错误等。
 
 ## 中间代码生成
 

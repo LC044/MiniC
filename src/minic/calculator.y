@@ -240,11 +240,8 @@ defdata : ident varrdef     {$$ = new_ast_node(AST_ARRAY,$1,$2);}
         | ident             {$$ = $1;}
 
 /* 多维数组a[5][9][2] */
-varrdef : '[' num ']' {$$ = new_ast_node(AST_DIMS,$2);}
-        | '[' num ']' varrdef 
-        {
-            $$ = new_ast_node(AST_DIMS,$2,$4);
-        }
+varrdef : '[' num ']'           {$$ = new_ast_node(AST_DIMS,$2);}
+        | '[' num ']' varrdef   {$$ = new_ast_node(AST_DIMS,$2,$4);}
 
 
 /* ********该部分为函数定义******* */
@@ -267,33 +264,21 @@ paras   : onepara
                 $$ = $3;
             };
 
-/* 一个参数 int a */
-onepara : type paradata
-            {   
-                $$ = new_ast_node(AST_VAR_DECL, $1,$2);
-            };
-paradata : ident {$$ = $1;}
-         | ident paradatatail{$$ = new_ast_node(AST_ARRAY, $1,$2);}
-paradatatail : '[' ']'
-                {
-                    $$ = new_ast_node(AST_DIMS);
-                }
-             | '[' num ']'
-                {
-                    $$ = new_ast_node(AST_DIMS,$2);
-                }
-            | '[' num ']' paradatatail
-                {
-                    $$ = new_ast_node(AST_DIMS,$2,$4);
-                }
+/* 一个参数 int a ,int a[5]*/
+onepara      : type paradata            {$$ = new_ast_node(AST_VAR_DECL, $1,$2);};
+paradata     : ident                    {$$ = $1;}
+             | ident paradatatail       {$$ = new_ast_node(AST_ARRAY, $1,$2);}
+paradatatail : '[' ']'                  {$$ = new_ast_node(AST_DIMS);}
+             | '[' num ']'              {$$ = new_ast_node(AST_DIMS,$2);}
+             | paradatatail '[' num ']' {$$ = new_ast_node(AST_DIMS,$3,$1);}
 
 /* ********该部分为函数里的语句块******* */
 
 /* 语句块：一对花括号和里面的语句 */
 blockstat : '{' subprogram '}'{$$ = $2;};
+          | '{'  '}'          {$$ = new_ast_node(AST_EMPTY);}
 
-subprogram : {$$ = new_ast_node(AST_EMPTY);}
-            | onestatement{$$ = new_ast_node(AST_OP_BLOCK, $1);}
+subprogram : onestatement{$$ = new_ast_node(AST_OP_BLOCK, $1);}
             | subprogram onestatement
             {
                 $2->parent = $1;
@@ -303,7 +288,7 @@ subprogram : {$$ = new_ast_node(AST_EMPTY);}
 
 /* 一条语句 */
 onestatement : statement{$$ = $1;} // 表达式语句
-            | localdef{$$ = $1;}   // 局部变量定义
+             | localdef{$$ = $1;}   // 局部变量定义
 
 /* 局部变量定义 */
 localdef    : type defdata deflist
@@ -347,7 +332,6 @@ expr        : lval '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 
             
             
 /* 关系运算 */
-
 cmp     : T_CMP{
             struct ast_node_attr temp_val;
             temp_val.kind = CMP_KIND;

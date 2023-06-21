@@ -854,6 +854,32 @@ static bool ir_while(struct ast_node *node)
         new UselessIRInst(label1 + ":")
     );
     node->blockInsts.addInst(left->blockInsts);
+    if (src1_node->type == AST_OP_AND || src1_node->type == AST_OP_OR || src1_node->type == AST_OP_CMP || src1_node->type == AST_OP_NOT) {
+    } else {
+        if (src1_node->val->isId) {
+            Value *val = findValue(src1_node->attr.id, FuncName, true);
+            Value *dstVal = src1_node->val;
+            node->blockInsts.addInst(
+                new AssignIRInst(dstVal, val)
+            );
+        }
+        if (src1_node->val->type == ValueType::ValueType_Bool) {
+
+        } else {
+            Value *val = newTempValue(ValueType::ValueType_Bool, FuncName);
+
+            Value *constVal = newConstValue(0);
+            node->blockInsts.addInst(
+            new BinaryIRInst(IRINST_OP_CMP, "ne", val, left->val, constVal)
+            );
+            // printf("cmp指令0\n");
+            node->blockInsts.addInst(
+                    new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+            );
+            node->val = val;
+        }
+
+    }
     node->blockInsts.addInst(
         new UselessIRInst(label2 + ":")
     );
@@ -942,7 +968,6 @@ static bool ir_continue(struct ast_node *node)
 }
 static bool ir_or(struct ast_node *node)
 {
-    printf("or运算符0\n");
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
     std::string label1 = newLabel(FuncName);  // true语句
@@ -986,8 +1011,6 @@ static bool ir_or(struct ast_node *node)
         );
         node->val = val;
     }
-    printf("or运算符1\n");
-
     return true;
 }
 static bool ir_and(struct ast_node *node)
