@@ -273,50 +273,24 @@ public:
 
     /// @brief 新增一个作用域
     /// @param varTable 符号表
-    void push(LocalVarTable *varTable)
-    {
-        scope++;
-        Stack.push_back(varTable);
-        // printf("当前作用域 scope=%d\n", scope);
-    }
+    void push(LocalVarTable *varTable);
     // 离开作用域之后,将符号表出栈
-    void pop()
-    {
-        scope--;
-        Stack.pop_back();
-        // printf("删除后当前作用域 scope=%d\n", scope);
-    }
+    void pop();
 
     /// @brief 在整个栈里查找某个变量
     /// @param var_nam 变量名
     /// @return 变量Value
-    Value *search(std::string var_nam, int currentScope)
-    {
-        for (int i = currentScope;i > -1;i--) {
-            LocalVarTable *varTable = Stack[i];
-            Value *var = varTable->find(var_nam);
-            if (var != nullptr) {
-                return var;
-            }
-        }
-        return nullptr;
-    }
+    Value *search(std::string var_nam, int currentScope);
 
     /// @brief 在当前作用域查找变量
     /// @param var_name 变量名
     /// @return 变量Value
-    Value *find(std::string var_name, int currentScope)
-    {
-        return Stack[currentScope]->find(var_name);
-    }
+    Value *find(std::string var_name, int currentScope);
 
     /// @brief 在当前作用域增加变量
     /// @param val 变量Value
     /// @param var_name 变量名
-    void addValue(Value *val, std::string var_name, int currentScope)
-    {
-        Stack[currentScope]->localVarsMap[var_name] = val;
-    }
+    void addValue(Value *val, std::string var_name, int currentScope);
 };
 class FuncSymbol : public Value {
 public:
@@ -335,34 +309,23 @@ public:
     // 产生IR时用的临时符号栈
     VarStack tempStack;
     int currentScope = 0;
-    Value *findValue(std::string val_name, bool Temp)
-    {
-        if (Temp) {
-            return tempStack.search(val_name, currentScope);
-        } else {
-            return stack.find(val_name, currentScope);
-        }
-    }
-    void addValue(Value *value, std::string val_name, bool Temp = false)
-    {
-
-        // printf("新建局部变量%s:%s\n", val_name.c_str(), value->getName().c_str());
-        if (Temp) {
-            printf("作用域%d 局部变量 %s\n", currentScope, val_name.c_str());
-            tempStack.addValue(value, val_name, currentScope);
-            printf("作用域%d 局部变量 %s\n", currentScope, val_name.c_str());
-        } else {
-            localVarsMap[value->getName()] = value;
-            localVarsName.push_back(value->getName());
-            stack.addValue(value, val_name, currentScope);
-        }
-    }
+    /// @brief 从符号栈中查找某个变量
+    /// @param val_name 变量名
+    /// @param Temp 临时栈还是符号栈
+    /// @return 变量
+    Value *findValue(std::string val_name, bool Temp);
+    /// @brief 添加符号到符号栈里
+    /// @param value 变量
+    /// @param val_name 变量名
+    /// @param Temp 添加到临时栈还是符号栈
+    void addValue(Value *value, std::string val_name, bool Temp = false);
     FuncSymbol() : Value(ValueType::ValueType_Int) {}
     FuncSymbol(std::string _name, ValueType _type) : Value(_name, _type) {}
     /// @brief 析构函数
     virtual ~FuncSymbol()
     {
         // 如有资源清理，请这里追加代码
+
     }
 };
 class SymbolTable {
@@ -374,66 +337,35 @@ public:
     std::unordered_map<std::string, Value *> varsMap;
     // 用来保存所有的函数信息
     std::unordered_map<std::string, FuncSymbol *> funcsMap;
-    Value *findValue(std::string varName)
-    {
-        Value *val = nullptr;
-        auto pItr = varsMap.find(varName);
-        if (pItr != varsMap.end()) {
-            val = pItr->second;
-            return val;
-        }
-        return val;
-    }
-    Value *findValue(std::string var_name, std::string func_name, bool tempStack = false)
-    {
-        // FuncSymbol *symbol = FSymTable->findFuncSymbol(func_name);
-        Value *val = nullptr;
-        auto pItr = funcsMap.find(func_name);
-        if (pItr != funcsMap.end()) {
-            FuncSymbol *symbol = pItr->second;
-            val = symbol->findValue(var_name, tempStack);
-            if (val == nullptr) {
-                val = varsMap.find(var_name)->second;
-            }
-            // val = symbol.
-        }
-        return val;
-    }
-    FuncSymbol *findFuncValue(std::string func_name)
-    {
-        FuncSymbol *val = nullptr;
-        auto pItr = funcsMap.find(func_name);
-        if (pItr != funcsMap.end()) {
-            val = pItr->second;
-            return val;
-        }
-        return val;
-    }
-    bool addValue(std::string var_name, Value *value)
-    {
-        // 如果变量已经存在，则返回false
-        if (findValue(var_name)) {
-            return false;
-        }
-        varsMap[var_name] = value;
-        varsName.push_back(var_name);
-        return true;
-    }
-    void addValue(std::string var_name, Value *value, std::string func_name, bool Temp = false)
-    {
-        auto pItr = funcsMap.find(func_name);
-        if (pItr != funcsMap.end()) {
-            FuncSymbol *symbol = pItr->second;
-            symbol->addValue(value, var_name, Temp);
-        } else {
-            printf("error: FuncSymbol not found %s\n", func_name.c_str());
-        }
-    }
-    void addFunction(std::string func_name, FuncSymbol *symbol)
-    {
-        funcsMap[func_name] = symbol;
-        funcsName.push_back(func_name);
-    }
+    /// @brief 查找全局变量
+    /// @param varName 变量名
+    /// @return 变量
+    Value *findValue(std::string varName);
+    /// @brief 查找局部变量
+    /// @param var_name 变量名
+    /// @param func_name 函数名
+    /// @param tempStack 是否在临时栈里查找
+    /// @return 变量
+    Value *findValue(std::string var_name, std::string func_name, bool tempStack = false);
+    /// @brief 查找函数
+    /// @param func_name 函数名
+    /// @return 函数符号
+    FuncSymbol *findFuncValue(std::string func_name);
+    /// @brief 添加全局变量
+    /// @param var_name 变量名
+    /// @param value 变量符号
+    /// @return true:添加成功；false:变量已存在
+    bool addValue(std::string var_name, Value *value);
+    /// @brief 添加局部变量
+    /// @param var_name 变量名
+    /// @param value 变量value
+    /// @param func_name 函数名
+    /// @param Temp 是否添加到临时栈里
+    void addValue(std::string var_name, Value *value, std::string func_name, bool Temp = false);
+    /// @brief 添加函数
+    /// @param func_name 函数名
+    /// @param symbol 函数符号
+    void addFunction(std::string func_name, FuncSymbol *symbol);
 };
 
 /// @brief 根据变量名取得当前符号的值。若变量不存在，则说明变量之前没有定值，则创建一个未知类型的值，初值为0

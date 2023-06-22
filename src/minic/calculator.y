@@ -55,16 +55,14 @@ void yyerror(char * msg);
 %type <node> factor realarg realargs
 %type <node> ident num
 %type <node> cmp
-%left '='
+%right '='
 %left T_OR
 %left T_AND
 %left CMP_PREC  // 比较运算符优先级大于逻辑运算符
 %left T_CMP
-%left "++" "--"
 %left '+' '-'
 %left '*' '/' '%'
-%right UMINUS '!' 
-
+%right UMINUS '!' "++" "--"
 %nonassoc LOWER_THEN_ELSE
 %nonassoc T_ELSE
 %nonassoc '(' ')'
@@ -288,7 +286,7 @@ subprogram : onestatement{$$ = new_ast_node(AST_OP_BLOCK, $1);}
 
 /* 一条语句 */
 onestatement : statement{$$ = $1;} // 表达式语句
-             | localdef{$$ = $1;}   // 局部变量定义
+             | localdef{$$ = $1;}  // 局部变量定义
 
 /* 局部变量定义 */
 localdef    : type defdata deflist

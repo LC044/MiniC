@@ -72,7 +72,7 @@ extern int yydebug;
     T_DEC = 273,                   /* T_DEC  */
     T_CMP = 274,                   /* T_CMP  */
     CMP_PREC = 275,                /* CMP_PREC  */
-    UMINUS = 278,                  /* UMINUS  */
+    UMINUS = 276,                  /* UMINUS  */
     LOWER_THEN_ELSE = 279          /* LOWER_THEN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
