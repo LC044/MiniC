@@ -8,3 +8,4 @@ cmake-build-debug/
 # src/minic/calculator_yacc.h
 *.ir
 *.ir0
+*.pptx

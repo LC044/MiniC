@@ -11,8 +11,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/cmake-build-debug/minic",
             "args": [
-                "-r",
-                "test.txt"
+                "-i",
+                "test.c"
             ],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",

@@ -84,19 +84,19 @@ white_line  [\r\n]
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
             }
-"&&"        {return T_AND;}
-"||"        {return T_OR;}
-"++"         {return T_INC;}
-"--"         {return T_DEC;}
+"&&"         {yylval.var_id.lineno = yylineno; return T_AND;}
+"||"         {yylval.var_id.lineno = yylineno;return T_OR;}
+"++"         {yylval.var_id.lineno = yylineno;return T_INC;}
+"--"         {yylval.var_id.lineno = yylineno;return T_DEC;}
 "int"        {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_INT;}
 "void"       {strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));return T_VOID;}
-"return"     {return T_RETURN;}
-"if"         {return T_IF;}
-"else"       {return T_ELSE;}
-"while"      {return T_WHILE;}
-"for"        {return T_FOR;}
-"break"      {return T_BREAK;}
-"continue"   {return T_CONTINUE;}
+"return"     {yylval.var_id.lineno = yylineno;return T_RETURN;}
+"if"         {yylval.var_id.lineno = yylineno;return T_IF;}
+"else"       {yylval.var_id.lineno = yylineno;return T_ELSE;}
+"while"      {yylval.var_id.lineno = yylineno;return T_WHILE;}
+"for"        {yylval.var_id.lineno = yylineno;return T_FOR;}
+"break"      {yylval.var_id.lineno = yylineno;return T_BREAK;}
+"continue"   {yylval.var_id.lineno = yylineno;return T_CONTINUE;}
 "("			|
 ")"			|
 "*"			|
@@ -126,9 +126,6 @@ white_line  [\r\n]
                 return YYUNDEF;
                 // return T_FLOAT;
             }
- 
-
-
 
 ">"         {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));

@@ -448,13 +448,25 @@ int main() {
 ```c++
 class SymbolTable {
 public:
-    // 用来保存所有的全局变量
-    std::unordered_map<std::string, Value *> varsMap;
     std::vector<std::string > varsName;
     // 保存函数名，以便顺序遍历
     std::vector<std::string > funcsName;
+    // 用来保存所有的全局变量
+    std::unordered_map<std::string, Value *> varsMap;
     // 用来保存所有的函数信息
     std::unordered_map<std::string, FuncSymbol *> funcsMap;
+    /// @brief 查找全局变量
+    Value *findValue(std::string varName);
+    /// @brief 查找局部变量
+    Value *findValue(std::string var_name, std::string func_name, bool tempStack = false);
+    /// @brief 查找函数
+    FuncSymbol *findFuncValue(std::string func_name);
+    /// @brief 添加全局变量
+    bool addValue(std::string var_name, Value *value);
+    /// @brief 添加局部变量
+    void addValue(std::string var_name, Value *value, std::string func_name, bool Temp = false);
+    /// @brief 添加函数
+    void addFunction(std::string func_name, FuncSymbol *symbol);
 };
 ```
 
@@ -479,61 +491,41 @@ public:
     VarStack tempStack;
     // 当前作用域
     int currentScope = 0;
+    /// @brief 从符号栈中查找某个变量
+    Value *findValue(std::string val_name, bool Temp);
+    /// @brief 添加符号到符号栈里
+    void addValue(Value *value, std::string val_name, bool Temp = false);
 };
 ```
 
 符号栈
 
 ```c++
+class LocalVarTable {
+public:
+    std::unordered_map<std::string, Value *> localVarsMap;
+    int scope;
+    /// @brief 查找变量
+    Value *find(std::string var_name)
+};
 class VarStack {
 public:
     int scope = -1;
     std::vector<LocalVarTable *> Stack;
     /// @brief 新增一个作用域
-    /// @param varTable 符号表
-    void push(LocalVarTable *varTable)
-    {
-        scope++;
-        Stack.push_back(varTable);
-    }
+    void push(LocalVarTable *varTable);
     // 离开作用域之后,将符号表出栈
-    void pop()
-    {
-        scope--;
-        Stack.pop_back();
-    }
+    void pop();
     /// @brief 在整个栈里查找某个变量
-    /// @param var_nam 变量名
-    /// @return 变量Value
-    Value *search(std::string var_nam, int currentScope)
-    {
-        for (int i = currentScope;i > -1;i--) {
-            LocalVarTable *varTable = Stack[i];
-            Value *var = varTable->find(var_nam);
-            if (var != nullptr) {
-                return var;
-            }
-        }
-        return nullptr;
-    }
-
+    Value *search(std::string var_nam, int currentScope);
     /// @brief 在当前作用域查找变量
-    /// @param var_name 变量名
-    /// @return 变量Value
-    Value *find(std::string var_name, int currentScope)
-    {
-        return Stack[currentScope]->find(var_name);
-    }
-
+    Value *find(std::string var_name, int currentScope);
     /// @brief 在当前作用域增加变量
-    /// @param val 变量Value
-    /// @param var_name 变量名
-    void addValue(Value *val, std::string var_name, int currentScope)
-    {
-        Stack[currentScope]->localVarsMap[var_name] = val;
-    }
+    void addValue(Value *val, std::string var_name, int currentScope);
 };
 ```
+
+
 
 
 
@@ -567,9 +559,33 @@ public:
 
 中间代码生成器需要将源代码中的各种表达式转换为中间表示形式。这包括算术表达式、逻辑表达式、赋值表达式等。
 
-### ⌛控制流转换
+### ⌛控制流转换和短路求值
 
-中间代码生成器需要处理分支语句（如if语句、switch语句）和循环语句（如for循环、while循环），将它们转换为中间表示形式。
+中间代码生成器需要处理分支语句（如if语句）和循环语句（如for循环、while循环），将它们转换为中间表示形式。
+
+if语句,for循环,while循环都需要跳转语句来实现控制流转换，这三种语句的跳转都是很固定的，条件表达式为真跳转到对应的语句块内，表达式为假时跳转到另一语句块内
+
+但是逻辑运算与或非的出现会打破这种跳转结构，
+
+用栈实现短路求值的原理是利用栈的后进先出（LIFO）特性。具体来说，在编译布尔表达式时，可以将短路求值的操作（例如and和or操作）转化为条件跳转指令，同时将跳转指令的目标地址入栈。当短路求值的条件满足后，栈顶的目标地址出栈，跳转到对应的语句块内继续执行。
+简单来说，栈中存储了跳转指令的目标地址。在布尔表达式被计算时，如果当前条件已经满足（例如and操作中左边的条件为false），那么就需要跳过与当前条件相关的代码并继续计算后面的条件。这时，可以将跳转指令的目标地址入栈，以便在后面的计算中回到该位置。当后面的条件满足时，可以从栈中取出对应的目标地址并跳转到对应的语句块内。
+因为栈的特性是后进先出，所以可以保证最后入栈的目标地址最先出栈，并且跳转到最后的语句块内。这样，就可以实现短路求值的效果。
+
+<div style="background-color: #DFEEFD">
+    算法流程:
+    <p>&emsp;&emsp;1. 遇到if节点,新建三个label, 将前两个label分别入栈BC1,BC2,访问表达式语句</p>
+    <p>&emsp;&emsp;2. 遇到OR节点新建一个label，将label压入BC2栈，访问左孩子节点，弹出BC2的栈顶元素，访问右孩子节点</p>
+    <p>&emsp;&emsp;3. 遇到AND节点新建一个label，将label压入BC1栈，访问左孩子节点，弹出BC1的栈顶元素，访问右孩子节点</p>
+    <p>&emsp;&emsp;4. 遇到NOT节点互换两个栈顶元素，访问左孩子节点，互换两个栈顶元素</li>
+    <p>&emsp;&emsp;5. 遇到CMP节点，新建bool类型临时变量，表达式为真跳转到BC1的栈顶元素，否则跳转到BC2的栈顶元素</p>
+</div>
+
+
+
+
+
+
+
 
 ### ⌛符号表处理
 

@@ -974,22 +974,22 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 87 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_AND;}
+{yylval.var_id.lineno = yylineno; return T_AND;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 88 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_OR;}
+{yylval.var_id.lineno = yylineno;return T_OR;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 89 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_INC;}
+{yylval.var_id.lineno = yylineno;return T_INC;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 90 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_DEC;}
+{yylval.var_id.lineno = yylineno;return T_DEC;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
@@ -1004,37 +1004,37 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 93 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_RETURN;}
+{yylval.var_id.lineno = yylineno;return T_RETURN;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 94 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_IF;}
+{yylval.var_id.lineno = yylineno;return T_IF;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 95 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_ELSE;}
+{yylval.var_id.lineno = yylineno;return T_ELSE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 96 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_WHILE;}
+{yylval.var_id.lineno = yylineno;return T_WHILE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 97 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_FOR;}
+{yylval.var_id.lineno = yylineno;return T_FOR;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 98 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_BREAK;}
+{yylval.var_id.lineno = yylineno;return T_BREAK;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 99 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
-{return T_CONTINUE;}
+{yylval.var_id.lineno = yylineno;return T_CONTINUE;}
 	YY_BREAK
 case 21:
 #line 101 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
@@ -1092,7 +1092,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 133 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 130 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "gt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1102,7 +1102,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 139 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 136 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "lt", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1112,7 +1112,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 145 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 142 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "le", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1122,7 +1122,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 151 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 148 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "ge", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1132,7 +1132,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 157 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 154 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "eq", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1142,7 +1142,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 163 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 160 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
     strncpy(yylval.cmp_attr.id, "ne", sizeof(yylval.cmp_attr.id));
     yylval.cmp_attr.lineno = yylineno;
@@ -1152,18 +1152,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 170 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 167 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 ;
 	YY_BREAK
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 172 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 169 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 ;
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 174 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 171 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 {
                 printf("Line %d: Invalid char %s\n", yylineno, yytext);
                 return YYUNDEF;
@@ -1171,7 +1171,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 178 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 175 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 YY_FATAL_ERROR( "flex scanner jammed" );
 	YY_BREAK
 #line 1177 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator_lex.cpp"
@@ -2191,7 +2191,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 178 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
+#line 175 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.l"
 
 /* "int"       {
                 strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));

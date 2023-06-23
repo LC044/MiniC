@@ -79,7 +79,7 @@ Value *FuncSymbol::findValue(std::string val_name, bool Temp)
 /// @param value 变量
 /// @param val_name 变量名
 /// @param Temp 添加到临时栈还是符号栈
-void FuncSymbol::addValue(Value *value, std::string val_name, bool Temp = false)
+void FuncSymbol::addValue(Value *value, std::string val_name, bool Temp)
 {
 
     // printf("新建局部变量%s:%s\n", val_name.c_str(), value->getName().c_str());
@@ -112,7 +112,7 @@ Value *SymbolTable::findValue(std::string varName)
 /// @param func_name 函数名
 /// @param tempStack 是否在临时栈里查找
 /// @return 变量
-Value *SymbolTable::findValue(std::string var_name, std::string func_name, bool tempStack = false)
+Value *SymbolTable::findValue(std::string var_name, std::string func_name, bool tempStack)
 {
     // FuncSymbol *symbol = FSymTable->findFuncSymbol(func_name);
     Value *val = nullptr;
@@ -159,7 +159,7 @@ bool SymbolTable::addValue(std::string var_name, Value *value)
 /// @param value 变量value
 /// @param func_name 函数名
 /// @param Temp 是否添加到临时栈里
-void SymbolTable::addValue(std::string var_name, Value *value, std::string func_name, bool Temp = false)
+void SymbolTable::addValue(std::string var_name, Value *value, std::string func_name, bool Temp)
 {
     auto pItr = funcsMap.find(func_name);
     if (pItr != funcsMap.end()) {
@@ -231,7 +231,7 @@ Value *newLocalVarValue(std::string name, ValueType type, std::string func_name)
     // pIter1->second->localVarsMap.emplace(name, temp);
     // pIter1->second->localVarsName.push_back(name);
     symbolTable->addValue(name, temp, func_name);
-    printf("new LocalVarValue %s : %s\n", name.c_str(), temp->getName().c_str());
+    // printf("new LocalVarValue %s : %s\n", name.c_str(), temp->getName().c_str());
     return temp;
 }
 /// 新建一个整型数值的Value，并加入到符号表，用于后续释放空间
@@ -267,7 +267,7 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
     pIter1->second->tempVarsMap.emplace(temp->name, temp);
     if (isFfargs) {
         // 
-        printf("形参 %s\n", temp->name.c_str());
+        // printf("形参 %s\n", temp->name.c_str());
         pIter1->second->fargs.push_back(temp);
     } else {
 
@@ -278,7 +278,7 @@ Value *newTempValue(ValueType type, std::string func_name, bool isFfargs)
 /// 根据变量名取得当前符号的值。若变量不存在，则说明变量之前没有定值，则创建一个未知类型的值，初值为0
 /// \param name 变量名
 /// \return 变量对应的值
-Value *findValue(std::string name, std::string func_name, bool checkExist)
+Value *findValue(std::string name, std::string func_name, bool Temp)
 {
     FuncSymbol *temp = nullptr;
     Value *result = nullptr;
@@ -286,23 +286,24 @@ Value *findValue(std::string name, std::string func_name, bool checkExist)
     temp = symbolTable->findFuncValue(func_name);
     // 先在函数表的局部变量里找
     if (temp) {
-        // printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
-        result = temp->tempStack.search(name, temp->currentScope);
+        if (Temp) {
+            printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
+            result = temp->tempStack.search(name, temp->currentScope);
+        } else {
+            printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
+            result = temp->stack.search(name, temp->currentScope);
+        }
         if (result) { return result; }
-
     }
     // 局部变量找不到在全局变量里找
     auto pIter = varsMap.find(name);
-    // printf("找全局变量 %s\n", name.c_str());
+    printf("找全局变量 %s\n", name.c_str());
     if (pIter == varsMap.end()) {
         // 变量名没有找到
-        if (!checkExist) {
-            result = newVarValue(name);
-        }
+        return nullptr;
     } else {
-
         result = pIter->second;
-        // printf("找到全局变量 %s\n", result->getName().c_str());
+        printf("找到全局变量 %s\n", result->getName().c_str());
     }
 
     return result;
@@ -320,14 +321,24 @@ FuncSymbol *findFuncValue(std::string name)
     return temp;
 }
 // 查看变量名是否存在
-bool IsExist(std::string name)
+bool IsExist(std::string name, std::string func_name)
 {
-    auto pIter = varsMap.find(name);
-    if (pIter == varsMap.end()) {
-        return false;
+    auto pIter = symbolTable->funcsMap.find(func_name);
+    if (pIter == symbolTable->funcsMap.end()) {
+        auto pIter = symbolTable->varsMap.find(name);
+        if (pIter == symbolTable->varsMap.end()) {
+            return false;
+        }
     } else {
-        return true;
+        FuncSymbol *sym = pIter->second;
+        auto pIter = sym->stack.search(name, sym->currentScope);
+        if (pIter) {
+            return true;
+        } else {
+            return false;
+        }
     }
+    return true;
 }
 // 判断全局符号是否存在(全局变量,函数名)
 bool GlobalIsExist(std::string name)
@@ -343,7 +354,7 @@ bool GlobalIsExist(std::string name)
     } else {
         return true;
     }
-
+    return true;
 }
 bool LocalIsExist(std::string func_name, std::string var_name)
 {

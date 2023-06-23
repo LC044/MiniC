@@ -18,7 +18,7 @@ bool WhileBlock = false;
 bool Ifcmp = false;
 int BreakFlag = 0;
 int ContinueFlag = 0;
-int IFflag = 0;
+int LoopCount = 0;
 extern SymbolTable *symbolTable;
 static bool sym_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
 static bool sym_cu(struct ast_node *node);
@@ -51,7 +51,7 @@ static bool sym_block(struct ast_node *node)
     FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
     funcSymbol->stack.push(localVarTable);
     funcSymbol->currentScope++;
-    printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
+    // printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     std::vector<struct ast_node *>::iterator pIter;
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
@@ -94,13 +94,8 @@ static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
 }
 static bool sym_def_func(struct ast_node *node)
 {
-    // if (node->sons[3]->type == AST_EMPTY) {
-    //     return true;
-    // }
-
     struct ast_node *func_type = node->sons[0];
     // 第一个孩子是函数返回类型
-
     struct ast_node *func_name = node->sons[1];
     FuncName = func_name->attr.id;
     FuncSymbol *val = nullptr;
@@ -166,7 +161,7 @@ static bool sym_def_func(struct ast_node *node)
     // newTempValue(ValueType::ValueType_Int, FuncName);
     // // printf("返回值复制给临时变量\n");
     // ReturnFlag = 0;
-    if (func_block == NULL) return true;
+    if (!func_block) return false;
     return true;
 }
 static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
@@ -238,7 +233,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
             if (isLocal) {
                 // 局部变量
                 // val = newLocalVarValue(temp->attr.id, type, FuncName);
-                printf("new local variable %s\n", temp->attr.id);
+                // printf("new local variable %s\n", temp->attr.id);
                 if (!LocalIsExist(FuncName, temp->attr.id)) {
                     val = newLocalVarValue(temp->attr.id, type, FuncName);
                 } else {
@@ -249,7 +244,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
                 }
             } else {
                 // 全局变量
-                printf("new global var %s\n", temp->attr.id);
+                // printf("new global var %s\n", temp->attr.id);
                 if (!GlobalIsExist(temp->attr.id)) {
                     val = newVarValue(temp->attr.id);
                 } else {
@@ -262,7 +257,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
 
             temp->attr.kind = kind0;
             temp->val = val;
-            printf("new global var %s\n", temp->val->getName().c_str());
+            // printf("new global var %s\n", temp->val->getName().c_str());
         }
         // 确定符号类型
         temp->val->type = type;
@@ -281,7 +276,8 @@ static bool sym_cu(struct ast_node *node)
     // }
     // 第二步确定函数表
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        sym_visit_ast_node(*pIter);
+        struct ast_node *temp = sym_visit_ast_node(*pIter);
+        if (!temp) return false;
     }
     return true;
 }
@@ -373,7 +369,7 @@ static bool sym_index(struct ast_node *node, bool isLeft)
     // 第二个孩子是数组维度节点
     struct ast_node *right = sym_visit_ast_node(temp_dims);
     if (!right) {
-        // return false;
+        return false;
     }
     return true;
 }
@@ -409,12 +405,16 @@ static bool sym_return(struct ast_node *node)
         struct ast_node *son1_node = node->sons[0];
         struct ast_node *left = sym_visit_ast_node(son1_node, false);
         if (!left) {
-            // 某个变量没有定值
-            // 这里缺省设置变量不存在则创建，因此这里不会错误
+            return false;
+        }
+    } else {
+        FuncSymbol *sym = symbolTable->findFuncValue(FuncName);
+        if (sym->type != ValueType::ValueType_Void) {
+            std::string error = "<语义错误> int型函数必须有返回值";
+            printError(node->attr.lineno, error);
             return false;
         }
     }
-
     return true;
 }
 static bool sym_func_call(struct ast_node *node, bool isLeft)
@@ -426,6 +426,7 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
         return false;
     }
     // 这里应该先判断一下参数个数是否匹配
+    // todo 参数检查
     if (node->sons.size() == 2) {
         std::vector<struct ast_node *>::iterator pIter;
         // 第一步首先确定所有全局变量
@@ -439,8 +440,6 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
 static bool sym_if(struct ast_node *node, bool isLast)
 {
     Ifcmp = true;
-    IFflag++;
-
     // bool ifcmp = true;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
@@ -450,13 +449,13 @@ static bool sym_if(struct ast_node *node, bool isLast)
     }
     struct ast_node *true_node = sym_visit_ast_node(src2_node, true);
     if (!true_node) {
-        // if后面没有语句
+        return false;
     }
     if (node->sons.size() == 3) {
         struct ast_node *src3_node = node->sons[2];
         struct ast_node *false_node = sym_visit_ast_node(src3_node, true);
         if (!false_node) {
-        } else {
+            return false;
         }
     }
     return true;
@@ -487,6 +486,7 @@ static bool sym_neg(struct ast_node *node)
 }
 static bool sym_while(struct ast_node *node)
 {
+    LoopCount++;
     WhileBlock = true;
     struct ast_node *src1_node = node->sons[0];
     struct ast_node *src2_node = node->sons[1];
@@ -499,11 +499,45 @@ static bool sym_while(struct ast_node *node)
         return false;
     }
     WhileBlock = false;
+    LoopCount--;
     return true;
+}
+static bool sym_for(struct ast_node *node)
+{
+    LoopCount++;
+    std::vector<struct ast_node *>::iterator pIter;
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp;
+        temp = sym_visit_ast_node(*pIter, true, true);
+        if (!temp) {
+            return false;
+        }
+    }
+    LoopCount--;
+    return true;
+}
+static bool sym_break(struct ast_node *node)
+{
+    if (LoopCount) {
+        return true;
+    } else {
+        std::string error = "<语义错误> break语句必须在循环中";
+        printError(node->attr.lineno, error);
+        return false;
+    }
+}
+static bool sym_continue(struct ast_node *node)
+{
+    if (LoopCount) {
+        return true;
+    } else {
+        std::string error = "<语义错误> continue语句必须在循环中";
+        printError(node->attr.lineno, error);
+        return false;
+    }
 }
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
 {
-
     if (type == AST_OP_NOT) {
         // node->labels = node->parent->labels;
         struct ast_node *src1_node = node->sons[0];
@@ -537,25 +571,21 @@ static bool sym_not(struct ast_node *node, bool isLeft)
 }
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
-    return true;
-    // Value *val = nullptr;
+    // return true;
+    Value *val = nullptr;
 
     if (node->attr.kind == DIGIT_KIND_ID) {
         // 新建一个ID型Value
         // TODO 类型没有指定，有问题，需要修改
-
         // 变量，则需要在符号表中查找对应的值
         // 若变量之前没有有定值，则采用默认的值为0
-
-        // val = findValue(node->attr.id, FuncName, true);
-        // if (!isLeft) {
-        // }
-        // if (!val) {
-        //     printf("Line(%d) Variable(%s) not defined\n",
-        //            node->attr.lineno,
-        //            node->attr.id);
-        //     return false;
-        // }
+        val = findValue(node->attr.id, FuncName, false);
+        if (!val) {
+            printf("Line(%d) Variable(%s) not defined\n",
+                   node->attr.lineno,
+                   node->attr.id);
+            return false;
+        }
     }
     // node->val = val;
     return true;
@@ -577,12 +607,10 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         result = false;
         break;
     case AST_OP_BREAK:
-        result = true;
-        BreakFlag++;
+        result = sym_break(node);
         break;
     case AST_OP_CONTINUE:
-        result = true;
-        ContinueFlag++;
+        result = sym_continue(node);
         break;
     case AST_OP_INDEX:
         result = sym_index(node, isLeft);
@@ -608,6 +636,9 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         break;
     case AST_OP_WHILE:
         result = sym_while(node);
+        break;
+    case AST_OP_FOR:
+        result = sym_for(node);
         break;
     case AST_OP_OR:
         result = sym_logical_operation(node, AST_OP_OR, isLeft);
@@ -665,6 +696,7 @@ bool genSymbol(struct ast_node *root)
     // 先把几个内置函数加进来
     result = sym_cu(root);
     if (!result) {
+        printf("*** genSymbol failed *** \n");
         return false;
     }
     printf("*** end genSymbol *** \n");
