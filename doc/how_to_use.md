@@ -579,6 +579,37 @@ if语句,for循环,while循环都需要跳转语句来实现控制流转换，�
     <p>&emsp;&emsp;4. 遇到NOT节点互换两个栈顶元素，访问左孩子节点，互换两个栈顶元素</li>
     <p>&emsp;&emsp;5. 遇到CMP节点，新建bool类型临时变量，表达式为真跳转到BC1的栈顶元素，否则跳转到BC2的栈顶元素</p>
 </div>
+算法示意
+
+```c
+int main()
+{
+	int a, b, c;
+	if (a > 1 && !(c > 4) || b < 2 && c != 2) {
+		a = 1;
+	} else {
+		a = 2;
+	}
+	return a;
+}
+```
+
+<div align="center", >
+	<img src="./image/短路求值_01.png" height="480px">
+    <img src="./image/短路求值_02.png" height="480px">
+	<img src="./image/短路求值_03.png" height="480px">
+	<img src="./image/短路求值_04.png" height="480px">
+	<img src="./image/短路求值_05.png" height="480px">
+	<img src="./image/短路求值_06.png" height="480px">
+	<img src="./image/短路求值_07.png" height="480px">
+	<img src="./image/短路求值_08.png" height="480px">
+	<img src="./image/短路求值_09.png" height="480px">
+    <img src="./image/短路求值_10.png" height="480px">
+    <img src="./image/短路求值_11.png" height="480px">
+    <img src="./image/短路求值_12.png" height="480px">
+    <img src="./image/短路求值_13.png" height="480px">
+    <img src="./image/短路求值_14.png" height="480px">
+</div>
 
 
 

@@ -1,13 +1,10 @@
-//test sub
-int a;
-
-void putint(int k);
-
 int main()
 {
-	int b;
-	b = 2;
-	a = 10;
-	putint(b - a);
-	return 0;
+	int a, b, c;
+	if (a > 1 && !(c > 4) || b < 2 && c != 2) {
+		a = 1;
+	} else {
+		a = 2;
+	}
+	return a;
 }

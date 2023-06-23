@@ -210,10 +210,10 @@ Value *newVarValue(std::string name)
     symbolTable->addValue(name, temp);
     return temp;
 }
-FuncSymbol *newFuncValue(std::string name)
+FuncSymbol *newFuncValue(std::string name, ValueType type)
 {
     // 类型待定
-    FuncSymbol *tempSymbol = new FuncSymbol(name, ValueType::ValueType_Int);
+    FuncSymbol *tempSymbol = new FuncSymbol(name, type);
     funcsMap.emplace(name, tempSymbol);
     funcsName.push_back(name);
     varsMap.emplace(name, tempSymbol);

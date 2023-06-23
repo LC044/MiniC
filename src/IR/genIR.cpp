@@ -137,6 +137,9 @@ static bool ir_def_func(struct ast_node *node)
     FuncName = func_name->attr.id;
     FuncSymbol *FuncVal = funcsMap[FuncName];
     func_name->val = FuncVal;
+    if (is_buildIn_func(FuncName)) {
+        return true;
+    }
     LocalVarTable *localVarTable = new LocalVarTable();
     FuncVal->tempStack.push(localVarTable);
     FuncVal->currentScope = 0;

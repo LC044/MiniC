@@ -26,6 +26,7 @@ static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
 static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false, bool isLast = false);
+
 void BFS(struct ast_node *node)
 {
     // 广搜所有局部变量定义
@@ -98,6 +99,10 @@ static bool sym_def_func(struct ast_node *node)
     // 第一个孩子是函数返回类型
     struct ast_node *func_name = node->sons[1];
     FuncName = func_name->attr.id;
+    // 内置函数直接跳过
+    if (is_buildIn_func(FuncName)) {
+        return true;
+    }
     FuncSymbol *val = nullptr;
     // 第二个孩子是函数名
     if (!GlobalIsExist(func_name->attr.id)) {
@@ -300,6 +305,15 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     struct ast_node *right = sym_visit_ast_node(src2_node);
     if (!right) {
         // 某个变量没有定值
+        return false;
+    }
+    return true;
+}
+static bool sym_inc_dec(struct ast_node *node, enum ast_operator_type type, bool isLeft)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = sym_visit_ast_node(src1_node, true);
+    if (!left) {
         return false;
     }
     return true;
@@ -669,6 +683,12 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
     case AST_OP_MOD:
         result = sym_binary_op(node, node->type);
         break;
+    case AST_OP_LINC:
+    case AST_OP_LDEC:
+    case AST_OP_RDEC:
+    case AST_OP_RINC:
+        result = sym_inc_dec(node, node->type, isLeft);
+        break;
     case AST_OP_ASSIGN:
         result = sym_assign(node);
         break;
@@ -685,6 +705,15 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
 
     return node;
 }
+void add_buile_in_func()
+{
+    newFuncValue("putint", ValueType::ValueType_Void);
+    newFuncValue("getint", ValueType::ValueType_Int);
+    newFuncValue("putch", ValueType::ValueType_Void);
+    newFuncValue("getch", ValueType::ValueType_Int);
+    newFuncValue("putarray", ValueType::ValueType_Void);
+    newFuncValue("getarray", ValueType::ValueType_Void);
+}
 /// @brief 遍历抽象语法树产生线性IR，保存到IRCode中
 /// @param root 抽象语法树
 /// @param IRCode 线性IR
@@ -694,6 +723,7 @@ bool genSymbol(struct ast_node *root)
     bool result = true;
     printf("*** start genSymbol *** \n");
     // 先把几个内置函数加进来
+    add_buile_in_func();
     result = sym_cu(root);
     if (!result) {
         printf("*** genSymbol failed *** \n");

@@ -9,3 +9,4 @@ cmake-build-debug/
 *.ir
 *.ir0
 *.pptx
+*.pdf
