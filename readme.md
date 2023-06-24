@@ -1,15 +1,8 @@
 # minic
 
-<div>
-    <img src="https://img.shields.io/github/stars/LC044/MiniC.svg">
-    <a herf="./doc/readme.md">
-        <img src="https://img.shields.io/badge/文档-最新-brightgreen.svg" >
-    </a>
-    <img src="https://img.shields.io/github/stars/LC044/MiniC.svg">
-    <a herf="LICENSE">
-        <img src="https://img.shields.io/badge/license-GPL3.0-blue.svg" >
-    </a>
-</div>
+[![stars](https://img.shields.io/github/stars/LC044/MiniC.svg)](https://github.com/LC044/MiniC/stargazers)
+[![文档](https://img.shields.io/badge/文档-最新-brightgreen.svg)](./doc/readme.md)
+[![LICENSE](https://img.shields.io/badge/license-GPL3.0-blue.svg)](LICENSE)
 
 - [minic](#minic)
   - [功能](#功能)
@@ -20,8 +13,7 @@
     - [语义分析](#语义分析)
     - [代码优化](#代码优化)
   - [源代码构成](#源代码构成)
-    
-   
+
 ## 功能
 
 1. ✅选项-a可产生抽象语法树AST
