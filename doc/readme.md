@@ -1,5 +1,6 @@
 # 目录
-## &emsp;&emsp;[前言](./how_to_use.md#前言)
+
+## [前言](./how_to_use.md#前言)
 
 ## [词法分析](./how_to_use.md#词法分析)
 

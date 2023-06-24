@@ -123,6 +123,10 @@ void DFS(std::vector<CfgNode *> &nodeTable, std::vector<CfgEdge *> &edgeTable, i
     }
 }
 
+/// @brief 生成.dot文件，可以利用graphviz生成控制流图
+/// @param filePath 文件名
+/// @param nodeTable 节点表
+/// @param edgeTable 边表
 void outputDot(const std::string &filePath, std::vector<CfgNode *> &nodeTable, std::vector<CfgEdge *> &edgeTable)
 {
     // 这里使用C的文件操作，也可以使用C++的文件操作
