@@ -56,12 +56,6 @@ static bool sym_block(struct ast_node *node)
     std::vector<struct ast_node *>::iterator pIter;
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        // 判断是否有局部变量定义
-        if ((*pIter)->type == AST_DEF_LIST) {
-            sym_def_list(*pIter, true);
-            continue;
-        }
-        // 遍历Block的每个语句，进行显示或者运算
         struct ast_node *temp;
         temp = sym_visit_ast_node(*pIter, true, true);
         if (!temp) {
@@ -69,6 +63,7 @@ static bool sym_block(struct ast_node *node)
         }
     }
     funcSymbol->currentScope--;
+    // funcSymbol->stack.pop(funcSymbol->currentScope + 1);
     return true;
 }
 static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
@@ -442,11 +437,29 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
     // 这里应该先判断一下参数个数是否匹配
     // todo 参数检查
     if (node->sons.size() == 2) {
+        // 参数个数检查
+        // todo 参数类型检查
+        struct ast_node *fargs_node = node->sons[1];
         std::vector<struct ast_node *>::iterator pIter;
-        // 第一步首先确定所有全局变量
-        for (pIter = node->sons[1]->sons.begin(); pIter != node->sons[1]->sons.end(); ++pIter) {
-            // struct ast_node *temp = sym_visit_ast_node(*pIter);
-            // 变量当右值要先复制给临时变量再进行计算
+        for (pIter = fargs_node->sons.begin(); pIter != fargs_node->sons.end(); ++pIter) {
+            struct ast_node *temp;
+            temp = sym_visit_ast_node(*pIter, true, true);
+            if (!temp) {
+                return false;
+            }
+        }
+        FuncSymbol *sym = symbolTable->findFuncValue(left->attr.id);
+        if (fargs_node->sons.size() != sym->fargs.size()) {
+            std::string error = "<语义错误> " + std::string(left->attr.id) + " 形参实参不匹配";
+            printError(son1_node->attr.lineno, error);
+            return false;
+        }
+    } else {
+        FuncSymbol *sym = symbolTable->findFuncValue(left->attr.id);
+        if (sym->fargs.size() > 0) {
+            std::string error = "<语义错误> " + std::string(left->attr.id) + " 形参实参不匹配";
+            printError(son1_node->attr.lineno, error);
+            return false;
         }
     }
     return true;
@@ -664,7 +677,7 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
         result = sym_not(node, isLeft);
         break;
     case AST_DEF_LIST:
-        result = sym_def_list(node);
+        result = sym_def_list(node, isLeft);
         break;
     case AST_FUNC_DEF:
         result = sym_def_func(node);
@@ -707,12 +720,18 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
 }
 void add_buile_in_func()
 {
-    newFuncValue("putint", ValueType::ValueType_Void);
-    newFuncValue("getint", ValueType::ValueType_Int);
-    newFuncValue("putch", ValueType::ValueType_Void);
-    newFuncValue("getch", ValueType::ValueType_Int);
-    newFuncValue("putarray", ValueType::ValueType_Void);
-    newFuncValue("getarray", ValueType::ValueType_Void);
+    FuncSymbol *sym = newFuncValue("putint", ValueType::ValueType_Void);
+    Value *val = new  VarValue("k", ValueType::ValueType_Int);
+    sym->fargs.push_back(val);
+    sym = newFuncValue("getint", ValueType::ValueType_Int);
+    sym = newFuncValue("putch", ValueType::ValueType_Void);
+    sym->fargs.push_back(val);
+    sym = newFuncValue("getch", ValueType::ValueType_Int);
+    sym = newFuncValue("putarray", ValueType::ValueType_Void);
+    sym->fargs.push_back(val);
+    sym->fargs.push_back(val);
+    sym = newFuncValue("getarray", ValueType::ValueType_Void);
+    sym->fargs.push_back(val);
 }
 /// @brief 遍历抽象语法树产生线性IR，保存到IRCode中
 /// @param root 抽象语法树

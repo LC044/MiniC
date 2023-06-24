@@ -265,6 +265,10 @@ public:
         }
         return nullptr;
     }
+    void clear()
+    {
+        localVarsMap.clear();
+    }
 };
 class VarStack {
 public:
@@ -275,7 +279,7 @@ public:
     /// @param varTable 符号表
     void push(LocalVarTable *varTable);
     // 离开作用域之后,将符号表出栈
-    void pop();
+    void pop(int scope);
 
     /// @brief 在整个栈里查找某个变量
     /// @param var_nam 变量名

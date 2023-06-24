@@ -69,6 +69,7 @@ static bool ir_block(struct ast_node *node)
 {
     std::vector<struct ast_node *>::iterator pIter;
     LocalVarTable *localVarTable = new LocalVarTable();
+
     FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
     funcSymbol->tempStack.push(localVarTable);
     funcSymbol->currentScope++;
@@ -87,7 +88,7 @@ static bool ir_block(struct ast_node *node)
             break;
         }
     }
-    funcSymbol->tempStack.pop();
+    funcSymbol->tempStack.pop(funcSymbol->currentScope + 1);
     funcSymbol->currentScope--;
     return true;
 }
@@ -122,6 +123,7 @@ static bool ir_def_list(struct ast_node *node, bool isLocal)
             if (!result)return false;
         } else {
             val = symbolTable->findValue(temp->attr.id, FuncName, false);
+            // val = 
             symbolTable->addValue(temp->attr.id, val, FuncName, true);
         }
     }

@@ -27,9 +27,10 @@ void VarStack::push(LocalVarTable *varTable)
 /// @brief 在整个栈里查找某个变量
 /// @param var_nam 变量名
 /// @return 变量Value
-void VarStack::pop()
+void VarStack::pop(int scope)
 {
     scope--;
+    Stack[scope]->clear();
     Stack.pop_back();
 }
 /// @brief 在整个栈里查找某个变量
@@ -287,23 +288,23 @@ Value *findValue(std::string name, std::string func_name, bool Temp)
     // 先在函数表的局部变量里找
     if (temp) {
         if (Temp) {
-            printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
+            // printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
             result = temp->tempStack.search(name, temp->currentScope);
         } else {
-            printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
+            // printf("在函数%s里查找%s\n", func_name.c_str(), name.c_str());
             result = temp->stack.search(name, temp->currentScope);
         }
         if (result) { return result; }
     }
     // 局部变量找不到在全局变量里找
     auto pIter = varsMap.find(name);
-    printf("找全局变量 %s\n", name.c_str());
+    // printf("找全局变量 %s\n", name.c_str());
     if (pIter == varsMap.end()) {
         // 变量名没有找到
         return nullptr;
     } else {
         result = pIter->second;
-        printf("找到全局变量 %s\n", result->getName().c_str());
+        // printf("找到全局变量 %s\n", result->getName().c_str());
     }
 
     return result;
@@ -358,15 +359,19 @@ bool GlobalIsExist(std::string name)
 }
 bool LocalIsExist(std::string func_name, std::string var_name)
 {
-    auto pIter = funcsMap.find(func_name);
-    if (pIter == funcsMap.end()) {
+    auto pIter = symbolTable->funcsMap.find(func_name);
+    if (pIter == symbolTable->funcsMap.end()) {
         printf("function %s not found\n", func_name.c_str());
         return false;
     }
+    // printf("当前作用域 %d\n", pIter->second->currentScope);
+    // printf("符号栈深度 %d\n", pIter->second->stack.Stack.size());
     // auto pIter1 = pIter->second->localVarsMap.find(var_name);
     if (pIter->second->stack.find(var_name, pIter->second->currentScope) != nullptr) {
+        // printf("找到变量 %s\n", var_name.c_str());
         return true;
     } else {
+        // printf("没有找到变量 %s\n", var_name.c_str());
         return false;
     }
 }

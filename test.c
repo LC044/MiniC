@@ -1,10 +1,21 @@
+//test domain of global var define and local define
+int a;
+int b;
+
 int main()
 {
-	int a, b, c;
-	if (a > 1 && !(c > 4) || b < 2 && c != 2) {
-		a = 1;
-	} else {
-		a = 2;
+	int c;
+	a = 3;
+	b = 5;
+	{
+		int a;
+		a = 5;
+		c = a + b;
 	}
-	return a;
+	// {
+	// 	int a;
+	// 	a = 5;
+	// 	c = a + b;
+	// }
+	return c;
 }
