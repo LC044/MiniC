@@ -71,7 +71,11 @@ static bool ir_block(struct ast_node *node)
     LocalVarTable *localVarTable = new LocalVarTable();
 
     FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
-    funcSymbol->tempStack.push(localVarTable);
+    if (funcSymbol->currentScope == -1) {
+
+    } else {
+        funcSymbol->tempStack.push(localVarTable);
+    }
     funcSymbol->currentScope++;
     printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
@@ -88,7 +92,7 @@ static bool ir_block(struct ast_node *node)
             break;
         }
     }
-    funcSymbol->tempStack.pop(funcSymbol->currentScope + 1);
+    funcSymbol->tempStack.pop(funcSymbol->currentScope);
     funcSymbol->currentScope--;
     return true;
 }
@@ -99,7 +103,9 @@ static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
     struct ast_node *temp_id = node->sons[0];
     if (isLocal) {
         // 局部变量
-        val = symbolTable->findValue(temp_id->attr.id, FuncName, false);
+        // val = symbolTable->findValue(temp_id->attr.id, FuncName, false);
+        FuncSymbol *sym = symbolTable->findFuncValue(FuncName);
+        val = sym->localVarsMap[sym->localVarsName[sym->currentLocal++]];
         symbolTable->addValue(temp_id->attr.id, val, FuncName, true);
     }
     return true;
@@ -122,7 +128,9 @@ static bool ir_def_list(struct ast_node *node, bool isLocal)
             bool result = ir_def_array(temp, type, isLocal);
             if (!result)return false;
         } else {
-            val = symbolTable->findValue(temp->attr.id, FuncName, false);
+            // val = symbolTable->findValue(temp->attr.id, FuncName, false);
+            FuncSymbol *sym = symbolTable->findFuncValue(FuncName);
+            val = sym->localVarsMap[sym->localVarsName[sym->currentLocal++]];
             // val = 
             symbolTable->addValue(temp->attr.id, val, FuncName, true);
         }
@@ -136,6 +144,7 @@ static bool ir_def_func(struct ast_node *node)
 
     // 第二个孩子是函数名
     struct ast_node *func_name = node->sons[1];
+    struct ast_node *func_paras = node->sons[2];
     FuncName = func_name->attr.id;
     FuncSymbol *FuncVal = funcsMap[FuncName];
     func_name->val = FuncVal;
@@ -145,12 +154,17 @@ static bool ir_def_func(struct ast_node *node)
     LocalVarTable *localVarTable = new LocalVarTable();
     FuncVal->tempStack.push(localVarTable);
     FuncVal->currentScope = 0;
+    FuncVal->currentLocal = 0;
     // 第一个孩子是函数返回类型
     ValueType type;
+    Value *returnValue;
     if (strcmp(func_type->attr.id, "int") == 0) {
         type = ValueType::ValueType_Int;
-        Value *returnValue = FuncVal->stack.search("return", 0);
+        returnValue = FuncVal->stack.search("return", 0);
+        int return_index = func_paras->sons.size();
+        returnValue = FuncVal->localVarsMap[FuncVal->localVarsName[return_index]];
         FuncVal->addValue(returnValue, "return", true);
+        FuncVal->currentLocal++;
     } else if (strcmp(func_type->attr.id, "void") == 0) {
         type = ValueType::ValueType_Void;
     }
@@ -164,7 +178,7 @@ static bool ir_def_func(struct ast_node *node)
     );
     // 形参定义
     // 第三个孩子是参数列表
-    struct ast_node *func_paras = node->sons[2];
+
     std::vector<struct ast_node *>::iterator pIter;
     int i = 0;
 
@@ -179,6 +193,7 @@ static bool ir_def_func(struct ast_node *node)
             printf("参数名%s:%s\n", arg_name->attr.id, arg_name->val->getName().c_str());
             symbolTable->addValue(arg_name->attr.id, arg_name->val, FuncName, true);
         }
+        FuncVal->currentLocal++;
     }
     printf("进入语句块\n");
     // 第四个孩子是语句块
@@ -211,7 +226,6 @@ static bool ir_def_func(struct ast_node *node)
     // 退出语句 exit 
     FuncVal->currentScope = 0;
     if (strcmp(func_type->attr.id, "int") == 0) {
-        Value *returnValue = symbolTable->findValue("return", FuncName, false);
         Value *srcValue = nullptr;
         srcValue = newTempValue(ValueType::ValueType_Int, FuncName);
         blockInsts->addInst(

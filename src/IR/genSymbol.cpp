@@ -50,7 +50,12 @@ static bool sym_block(struct ast_node *node)
     // FuncSymbol *funcVal = symbolTable->findFuncValue(FuncName);
     LocalVarTable *localVarTable = new LocalVarTable();
     FuncSymbol *funcSymbol = symbolTable->findFuncValue(FuncName);
-    funcSymbol->stack.push(localVarTable);
+    if (funcSymbol->currentScope == -1) {
+
+    } else {
+        funcSymbol->stack.push(localVarTable);
+    }
+
     funcSymbol->currentScope++;
     // printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     std::vector<struct ast_node *>::iterator pIter;
@@ -62,8 +67,8 @@ static bool sym_block(struct ast_node *node)
             return false;
         }
     }
+    funcSymbol->stack.pop(funcSymbol->currentScope);
     funcSymbol->currentScope--;
-    // funcSymbol->stack.pop(funcSymbol->currentScope + 1);
     return true;
 }
 static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
@@ -143,7 +148,8 @@ static bool sym_def_func(struct ast_node *node)
         }
     }
     // 返回值定义
-        // todo 暂时只考虑int类型
+    // todo 暂时只考虑int类型
+
     if (strcmp(func_type->attr.id, "int") == 0) {
         newLocalVarValue("return", ValueType::ValueType_Int, FuncName);
     } else if (strcmp(func_type->attr.id, "void") == 0) {

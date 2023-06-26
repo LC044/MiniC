@@ -27,10 +27,11 @@ void VarStack::push(LocalVarTable *varTable)
 /// @brief 在整个栈里查找某个变量
 /// @param var_nam 变量名
 /// @return 变量Value
-void VarStack::pop(int scope)
+void VarStack::pop(int scope_)
 {
     scope--;
-    Stack[scope]->clear();
+    printf("当前作用域%d, 符号栈大小%d\n", scope_, Stack.size());
+    Stack[scope_]->clear();
     Stack.pop_back();
 }
 /// @brief 在整个栈里查找某个变量
@@ -117,12 +118,19 @@ Value *SymbolTable::findValue(std::string var_name, std::string func_name, bool 
 {
     // FuncSymbol *symbol = FSymTable->findFuncSymbol(func_name);
     Value *val = nullptr;
-    auto pItr = funcsMap.find(func_name);
-    if (pItr != funcsMap.end()) {
+    auto pItr = symbolTable->funcsMap.find(func_name);
+    if (pItr != symbolTable->funcsMap.end()) {
         FuncSymbol *symbol = pItr->second;
         val = symbol->findValue(var_name, tempStack);
         if (val == nullptr) {
-            val = varsMap.find(var_name)->second;
+            auto pItr1 = symbolTable->varsMap.find(var_name);
+            if (pItr1 != symbolTable->varsMap.end()) {
+                val = pItr1->second;
+            } else {
+                {
+                    printf("error:%s not found\n", var_name.c_str());
+                }
+            }
         }
         // val = symbol.
     }

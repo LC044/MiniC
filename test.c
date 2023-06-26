@@ -9,13 +9,15 @@ int main()
 	b = 5;
 	{
 		int a;
+		a = 1;
+		c = a + b;
+	}
+	{
+		a = -1;
+		int a;
 		a = 5;
 		c = a + b;
 	}
-	// {
-	// 	int a;
-	// 	a = 5;
-	// 	c = a + b;
-	// }
 	return c;
 }
+

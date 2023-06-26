@@ -313,6 +313,7 @@ public:
     // 产生IR时用的临时符号栈
     VarStack tempStack;
     int currentScope = 0;
+    int currentLocal = 0;
     /// @brief 从符号栈中查找某个变量
     /// @param val_name 变量名
     /// @param Temp 临时栈还是符号栈

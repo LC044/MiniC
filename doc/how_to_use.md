@@ -467,11 +467,6 @@ int main() {
 <img src="./image/028_if_test1_ast.jpg">
 <p >抽象语法树</p>
 </div>
-
-本项目是用的是Flex+Bison套装实现的词法分析和语法分析
-
-
-
 ## 语义分析
 
 ### 🎓类型检查
@@ -684,13 +679,6 @@ int main()
     <img src="./image/短路求值_13.png" height="480px">
     <img src="./image/短路求值_14.png" height="480px">
 </div>
-
-
-
-
-
-
-
 
 ### ⌛符号表处理
 
