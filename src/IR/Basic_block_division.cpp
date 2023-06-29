@@ -236,9 +236,7 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         // printf("%s -> %s, %d -> %d\n", e->fromNodeLabel.c_str(), e->toNodeLabel.c_str(), e->fromNodeID, e->toNodeID);
     }
     // printf("\n代码块个数:%d\n", nodeTable.size());
-    if (nodeTable.size() == 1) {
-        return blockInsts;
-    }
+
     bool visited[id];
     for (int i = 0; i < id; i++) { visited[i] = false; }
 
@@ -311,6 +309,9 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         OutputCFG(nodeTable, edgeTable, gDotFile);
         gshowCfg = true;
         // printf("\n\n生成控制流图\n");
+    }
+    if (nodeTable.size() == 1) {
+        return blockInsts;
     }
     return BlockInsts;
 }

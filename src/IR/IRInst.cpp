@@ -234,7 +234,7 @@ FuncDefIRInst::FuncDefIRInst(FuncSymbol *_func_name, ValueType _ret_type) :
 {
     // srcValues.push_back(_paras);
     srcValues = _func_name->fargs;
-    printf("srcValues size %d\n", srcValues.size());
+    // printf("srcValues size %d\n", srcValues.size());
 }
 // FuncDefIRInst::FuncDefIRInst(FuncSymbol *_func_name, ValueType _ret_type) :
 //     IRInst(IRINST_OP_VAR_DEF, _func_name), ret_type(_ret_type)

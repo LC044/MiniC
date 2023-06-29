@@ -30,7 +30,7 @@ void VarStack::push(LocalVarTable *varTable)
 void VarStack::pop(int scope_)
 {
     scope--;
-    printf("当前作用域%d, 符号栈大小%d\n", scope_, Stack.size());
+    // printf("当前作用域%d, 符号栈大小%d\n", scope_, Stack.size());
     Stack[scope_]->clear();
     Stack.pop_back();
 }

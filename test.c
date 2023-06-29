@@ -18,6 +18,11 @@ int main()
 		a = 5;
 		c = a + b;
 	}
+	int i;
+	while (i > 0) {
+		i++;
+		a = a + i;
+	}
 	return c;
 }
 

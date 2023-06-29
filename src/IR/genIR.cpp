@@ -77,7 +77,7 @@ static bool ir_block(struct ast_node *node)
         funcSymbol->tempStack.push(localVarTable);
     }
     funcSymbol->currentScope++;
-    printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
+    // printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
     // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
     // 第二步是遍历其他表达式语句
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
@@ -190,12 +190,12 @@ static bool ir_def_func(struct ast_node *node)
             symbolTable->addValue(arg_name->sons[0]->attr.id, arg_name->val, FuncName, true);
         } else {
             // resultValue = symbolTable->findValue(arg_name->attr.id, FuncName, false);
-            printf("参数名%s:%s\n", arg_name->attr.id, arg_name->val->getName().c_str());
+            // printf("参数名%s:%s\n", arg_name->attr.id, arg_name->val->getName().c_str());
             symbolTable->addValue(arg_name->attr.id, arg_name->val, FuncName, true);
         }
         FuncVal->currentLocal++;
     }
-    printf("进入语句块\n");
+    // printf("进入语句块\n");
     // 第四个孩子是语句块
     FuncVal->currentScope = -1;
     struct ast_node *func_block = ir_visit_ast_node(node->sons[3]);
@@ -210,7 +210,7 @@ static bool ir_def_func(struct ast_node *node)
             new AssignIRInst(resultValue, srcValue)
         );
     }
-    printf("形参复制给临时变量结束\n");
+    // printf("形参复制给临时变量结束\n");
     blockInsts->addInst(func_block->blockInsts);
     // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // 如果if里有return语句则在exit这里加个label
@@ -241,7 +241,7 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     // 添加局部变量定义IR指令
-    printf("函数局部变量个数:%d\n", FuncVal->localVarsName.size());
+    // printf("函数局部变量个数:%d\n", FuncVal->localVarsName.size());
     for (int i = 0; i < FuncVal->localVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
         localVarValue = FuncVal->localVarsMap[FuncVal->localVarsName[i]];
@@ -250,7 +250,7 @@ static bool ir_def_func(struct ast_node *node)
         );
     }
     // 添加临时变量定义IR指令
-    printf("函数临时变量个数:%d\n", FuncVal->tempVarsName.size());
+    // printf("函数临时变量个数:%d\n", FuncVal->tempVarsName.size());
     for (int i = FuncVal->fargs.size(); i < FuncVal->tempVarsName.size(); ++i) {
         Value *localVarValue = nullptr;
         localVarValue = FuncVal->tempVarsMap[FuncVal->tempVarsName[i]];
@@ -262,14 +262,14 @@ static bool ir_def_func(struct ast_node *node)
     node->blockInsts.addInst(
         new UselessIRInst("    entry")
     );
-    printf("指令长度：%d\n", blockInsts->getCodeSize());
+    // printf("指令长度：%d\n", blockInsts->getCodeSize());
     // node->blockInsts.addInst(*blockInsts);
     InterCode *BlockInsts = Basic_block_division(blockInsts);
     node->blockInsts.addInst(*BlockInsts);
     node->blockInsts.addInst(
         new UselessIRInst("}")
     );
-    printf("函数%s结束\n", FuncName.c_str());
+    // printf("函数%s结束\n", FuncName.c_str());
     return true;
 }
 // return IR
@@ -294,7 +294,7 @@ static bool ir_return(struct ast_node *node)
     }
     node->blockInsts.addInst(result->blockInsts);
     Value *returnValue = symbolTable->findValue("return", FuncName, true);
-    printf("return 语句 %s \n", returnValue->getName().c_str());
+    // printf("return 语句 %s \n", returnValue->getName().c_str());
     node->blockInsts.addInst(
             new AssignIRInst(returnValue, result->val)
     );
