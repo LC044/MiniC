@@ -7,22 +7,20 @@ int main()
 	int c;
 	a = 3;
 	b = 5;
+	c = a + b;
+	int b;
+	b = -2;
 	{
 		int a;
 		a = 1;
-		c = a + b;
+		// int a;
+		{
+			a = 2;
+			int a;
+			a = 9;
+		}
 	}
-	{
-		a = -1;
-		int a;
-		a = 5;
-		c = a + b;
-	}
-	int i;
-	while (i > 0) {
-		i++;
-		a = a + i;
-	}
+	c = a + b;
 	return c;
 }
 

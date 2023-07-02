@@ -77,9 +77,7 @@ static bool ir_block(struct ast_node *node)
         funcSymbol->tempStack.push(localVarTable);
     }
     funcSymbol->currentScope++;
-    // printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope);
-    // 第一步首先是深度优先遍历，定义所有局部变量和临时变量
-    // 第二步是遍历其他表达式语句
+    // printf("函数%s 作用域 %d\n", FuncName.c_str(), funcSymbol->currentScope)
     for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
         // 判断是否有局部变量定义
         struct ast_node *temp;

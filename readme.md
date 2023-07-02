@@ -13,6 +13,7 @@
     - [语义分析](#语义分析)
     - [代码优化](#代码优化)
   - [源代码构成](#源代码构成)
+  - [注意](#注意)
 
 ## 功能
 
@@ -133,6 +134,7 @@
    1. 常量折叠(a = 2+3等价于a=5)
    2. 没有了
 
+<!-- 
 git config --global --unset http.proxy
 
 git config --golbal http.proxy <http://127.0.0.1:7890>
@@ -145,7 +147,7 @@ git reset --hard
 
 老师写好的程序运行方式
 
-.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir0 test.c
+.\test\IRCompiler\MINGW-x86_64\IRCompiler.exe -S -I -o test.ir0 test.c -->
 
 ## 源代码构成
 
@@ -194,3 +196,15 @@ IRCode.h 线性IR管理类的头文件
 main.cpp MiniC程序的主函数
 
 test.c 测试用例代码
+
+## 注意
+
+注意：该项目受到GPL-3.0许可证的保护。
+
+Copyright © by ShuaikangZhou
+
+警告：本项目的代码和文档受到版权保护，违反GPL-3.0协议的使用将导致法律后果。本项目仅供交流学习和课程作业使用，严禁任何形式的抄袭和未经授权的使用。
+
+如果您是本课程的学生，请务必遵守学院、教师或课程要求，严禁抄袭代码和报告。任何抄袭行为都将视为学术不端，并且可能导致严重的学术和法律后果，本人对违反规定使用本项目的行为不负任何责任。
+
+如果您有任何疑问或需要进一步了解许可证的使用限制，请与我联系。
