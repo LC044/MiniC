@@ -37,7 +37,7 @@ int yyparse();
 #endif /* ! YYPARSE_PARAM */
 
 #ifdef BISON_USE
-#include "calculator_yacc.h"
+#include "minic_yacc.h"
 #else
 #include "mybison.h"
 #endif

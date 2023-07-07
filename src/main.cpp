@@ -9,7 +9,6 @@
 
 #include "lexer.h"
 #include "parser.h"
-#include "expr.h"
 #include "graph.h"
 #include "IRCode.h"
 #include <time.h>
@@ -224,11 +223,6 @@ int main(int argc, char *argv[])
             printf("%s not found \nshowCfg failed\n", gCfgFuncName.c_str());
             return -1;
         }
-    }
-    if (gDirectRun) {
-
-        // 遍历抽象语法树，进行表达式运算
-        expr_calculate_show(ast_root);
     }
 
     // 清理抽象语法树

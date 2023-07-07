@@ -44,6 +44,7 @@ void yyerror(char * msg);
 %token <var_id> T_RETURN    // return
 %token T_AND T_OR T_INC T_DEC
 %token <var_id> T_CMP
+%token <var_id> T_COM_ASSIGN
 /* 新增MiniC的终结符 */
 
 
@@ -56,6 +57,7 @@ void yyerror(char * msg);
 %type <node> ident num
 %type <node> cmp
 %right '='
+%right T_COM_ASSIGN
 %left T_OR
 %left T_AND
 %left CMP_PREC  // 比较运算符优先级大于逻辑运算符
@@ -317,7 +319,26 @@ statement   : blockstat                                         {$$ = $1;}      
 
 
 /* 表达式语句 */
-expr        : lval '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
+expr        :  lval T_COM_ASSIGN expr 
+                {
+                    struct ast_node *temp;
+                    if(strcmp($2.id,"+=")==0){
+                        temp = new_ast_node(AST_OP_ADD,$1,$3);
+                    } else if(strcmp($2.id,"-=")==0){
+                        temp = new_ast_node(AST_OP_SUB,$1,$3);
+                    }else if(strcmp($2.id,"*=")==0){
+                        temp = new_ast_node(AST_OP_MUL,$1,$3);
+                    }else if(strcmp($2.id,"/=")==0){
+                        temp = new_ast_node(AST_OP_DIV,$1,$3);
+                    }else if(strcmp($2.id,"%=")==0){
+                        temp = new_ast_node(AST_OP_MOD,$1,$3);
+                    }else {
+                        yyerror("错误");
+                        return false;
+                    }
+                    $$ = new_ast_node(AST_OP_ASSIGN, $1, temp);
+                }
+            | lval '=' expr     {$$ = new_ast_node(AST_OP_ASSIGN, $1, $3);}  // 赋值语句
             | expr T_AND expr   {$$ = new_ast_node(AST_OP_AND, $1, $3);}     // 逻辑与语句
             | expr T_OR expr    {$$ = new_ast_node(AST_OP_OR, $1, $3);}      // 逻辑或
             | expr '+' expr     {$$ = new_ast_node(AST_OP_ADD, $1, $3);}     // 加法

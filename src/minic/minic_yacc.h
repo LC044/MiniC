@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_CALCULATOR_YACC_H_INCLUDED
-# define YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_CALCULATOR_YACC_H_INCLUDED
+#ifndef YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_MINIC_YACC_H_INCLUDED
+# define YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_MINIC_YACC_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -71,9 +71,10 @@ extern int yydebug;
     T_INC = 272,                   /* T_INC  */
     T_DEC = 273,                   /* T_DEC  */
     T_CMP = 274,                   /* T_CMP  */
-    CMP_PREC = 275,                /* CMP_PREC  */
-    UMINUS = 276,                  /* UMINUS  */
-    LOWER_THEN_ELSE = 279          /* LOWER_THEN_ELSE  */
+    T_COM_ASSIGN = 275,            /* T_COM_ASSIGN  */
+    CMP_PREC = 276,                /* CMP_PREC  */
+    UMINUS = 277,                  /* UMINUS  */
+    LOWER_THEN_ELSE = 280          /* LOWER_THEN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -82,7 +83,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator.y"
+#line 20 "D:/Project/Compile/lab3/MiniC/src/minic/minic.y"
 
     struct ast_node * node;
     digit_int_attr integer_num; // 整型字面量
@@ -90,7 +91,7 @@ union YYSTYPE
     var_id_attr var_id;         // 标识符（变量名）
     cmp_attr   cmp_attr;
 
-#line 94 "D:/Project/CppProject/Compile/lab3/MiniC/src/minic/calculator_yacc.h"
+#line 95 "D:/Project/Compile/lab3/MiniC/src/minic/minic_yacc.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -105,4 +106,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_D_PROJECT_CPPPROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_CALCULATOR_YACC_H_INCLUDED  */
+#endif /* !YY_YY_D_PROJECT_COMPILE_LAB3_MINIC_SRC_MINIC_MINIC_YACC_H_INCLUDED  */

@@ -35,12 +35,11 @@ find_package(Graphviz REQUIRED)
 
 # 配置创建一个可执行程序，以及该程序所依赖的所有源文件、头文件等
 add_executable(${PROJECT_NAME}
-    src/minic/calculator_lex.cpp
-    src/minic/calculator_lex.h
-    src/minic/calculator_yacc.cpp
-    src/minic/calculator_yacc.h
+    src/minic/minic_lex.cpp
+    src/minic/minic_lex.h
+    src/minic/minic_yacc.cpp
+    src/minic/minic_yacc.h
     src/ast.cpp
-    src/expr.cpp
     src/main.cpp
     src/graph.cpp
     src/common.cpp
@@ -77,13 +76,13 @@ target_link_libraries(${PROJECT_NAME}  PRIVATE ${Graphviz_LIBRARIES})
 
 # 通过flex产生词法分析源代码
 add_custom_command(OUTPUT
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_lex.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_lex.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_lex.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_lex.h
     PRE_BUILD
     COMMAND
-    ${FLEX_EXECUTABLE} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_lex.cpp --header-file=${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_lex.h ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator.l
+    ${FLEX_EXECUTABLE} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_lex.cpp --header-file=${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_lex.h ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic.l
     DEPENDS
-    src/minic/calculator.l
+    src/minic/minic.l
 )
 
 # Window版和Linux版产生头文件时选项名字不一样，根据不同系统设置
@@ -95,11 +94,11 @@ endif()
 
 # 通过bison生成语法分析源代码
 add_custom_command(OUTPUT
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_yacc.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_yacc.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_yacc.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_yacc.h
     PRE_BUILD
     COMMAND
-    ${BISON_EXECUTABLE} -d -o ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_yacc.cpp ${BISON_HEADFILE_OPTION}=${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator_yacc.h ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/calculator.y
+    ${BISON_EXECUTABLE} -d -o ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_yacc.cpp ${BISON_HEADFILE_OPTION}=${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic_yacc.h ${CMAKE_CURRENT_SOURCE_DIR}/src/minic/minic.y
     DEPENDS
-    src/minic/calculator.y
+    src/minic/minic.y
 )

@@ -97,6 +97,15 @@ white_line  [\r\n]
 "for"        {yylval.var_id.lineno = yylineno;return T_FOR;}
 "break"      {yylval.var_id.lineno = yylineno;return T_BREAK;}
 "continue"   {yylval.var_id.lineno = yylineno;return T_CONTINUE;}
+"+=" |
+"-=" |
+"*=" |
+"/=" |
+"%=" {
+    yylval.var_id.lineno = yylineno;
+    strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));
+    return T_COM_ASSIGN;
+}
 "("			|
 ")"			|
 "*"			|

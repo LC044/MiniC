@@ -10,15 +10,14 @@
   - [💡改造后的MiniC文法](#改造后的minic文法)
   - [💡处理优先级和结合性](#处理优先级和结合性)
   - [💡构建抽象语法树（AST）](#构建抽象语法树ast)
-  - [💡检查语法错误](#检查语法错误)
   - [💡处理语法糖](#处理语法糖)
+  - [💡检查语法错误](#检查语法错误)
   - [💡生成代码注释](#生成代码注释)
 - [语义分析](#语义分析)
   - [🎓类型检查](#类型检查)
   - [🎓符号表管理](#符号表管理)
   - [🎓作用域分析](#作用域分析)
   - [🎓函数调用检查](#函数调用检查)
-  - [🎓类型推导](#类型推导)
   - [🎓错误处理](#错误处理-1)
 - [中间代码生成](#中间代码生成)
   - [⌛构建中间表示](#构建中间表示)
@@ -104,7 +103,7 @@
   0[0-7]+
   ```
 
-​		由于文法暂不支持浮点数，所以这里就不写浮点数的识别
+​  由于文法暂不支持浮点数，所以这里就不写浮点数的识别
 
 ### 💠屏蔽注释
 
@@ -131,9 +130,9 @@ MiniC中支持两种注释
 ```c
 int main()
 {
-	int a, b, c;
-	a = -1.5;
-	return t;
+ int a, b, c;
+ a = -1.5;
+ return t;
 }
 ```
 
@@ -208,7 +207,8 @@ statement   : blockstat                                        // 另一个语�
 表达式语句，需要自己定义优先级
 
 ```yacas
-expr    : lval '=' expr      // 赋值语句
+expr    : lval T_COM_ASSIGN expr  // 复合赋值运算 a+=1
+  | lval '=' expr      // 赋值语句
         | expr T_AND expr    // 逻辑与运算
         | expr T_OR expr     // 逻辑或运算
         | expr '+' expr      // 算数加运算
@@ -257,6 +257,7 @@ realargs    : expr
 ```yacas
 /* 越早定义的优先级越低 */
 %right '='
+%right T_COM_ASSIGN
 %left T_OR
 %left T_AND
 %left CMP_PREC  // 比较运算符优先级大于逻辑运算符
@@ -280,13 +281,10 @@ realargs    : expr
    int arr[2], d, q[4][5];
    ```
 
-   
-
 <div align="center", >
 <img src="./image/declear_var_array.jpg" height="480px">
 <p >变量声明、数组声明</p>
 </div>
-
 
 2. 函数定义
 
@@ -297,11 +295,11 @@ realargs    : expr
 ```c
 int add(int a, int b)
 {
-	return a + b;
+ return a + b;
 }
 int main()
 {
-	return 0;
+ return 0;
 }
 ```
 
@@ -310,131 +308,131 @@ int main()
 <p >函数定义(有参、无参)</p>
 </div>
 
-
 3. if语句
 
 ```c
 int main()
 {
-	int flag;
-	if (flag > 0) {
-		return 1;
-	} else {
-		return 0;
-	}
-	if (flag != 0) {
-		return 1;
-	}
-	return 0;
+ int flag;
+ if (flag > 0) {
+  return 1;
+ } else {
+  return 0;
+ }
+ if (flag != 0) {
+  return 1;
+ }
+ return 0;
 }
 ```
-
-
 
 <div align="center", >
 <img src="./image/if.jpg" height="480px">
 <p >if语句(有else、无else)</p>
 </div>
 
-
 4. while语句
 
 ```c
 int main()
 {
-	int sum;
-	int i, j;
-	while (i < 10) {
-		sum = sum + i;
-		i++;
-	}
-	return 0;
+ int sum;
+ int i, j;
+ while (i < 10) {
+  sum = sum + i;
+  i++;
+ }
+ return 0;
 }
 ```
-
-
 
 <div align="center", >
 <img src="./image/while.jpg" height="480px">
 <p >while循环</p>
 </div>
 
-
 5. for语句
 
 ```c
 int main()
 {
-	int sum = 0;
-	int i;
-	for (i = 0; i < 10; i++) {
-		sum = sum + i;
-	}
-	return 0;
+ int sum = 0;
+ int i;
+ for (i = 0; i < 10; i++) {
+  sum = sum + i;
+ }
+ return 0;
 }
 ```
-
-
 
 <div align="center", >
 <img src="./image/for.jpg" height="480px">
 <p >for循环</p>
 </div>
 
-
 6. 二元运算
 
 ```c
 int main()
 {
-	int a, b, c;
-	a = a + b;
-	a = a / b;
-	a = a || b;
-	c = a && b;
-	return 0;
+ int a, b, c;
+ a = a + b;
+ a = a / b;
+ a = a || b;
+ c = a && b;
+ return 0;
 }
 ```
-
-
 
 <div align="center", >
 <img src="./image/binary_op.jpg" height="480px">
 <p >二元运算</p>
 </div>
 
-
 7. 一元运算
 
 ```c
 int main()
 {
-	int a, b, c;
-	a = -b;
-	a = b++;
-	c = !--b;
-	return 0;
+ int a, b, c;
+ a = -b;
+ a = b++;
+ c = !--b;
+ return 0;
 }
 ```
-
-
 
 <div align="center", >
 <img src="./image/unary_op.jpg" height="480px">
 <p >一元运算</p>
 </div>
+### 💡处理语法糖
+
+语法分析器需要将语法糖转换为等价的代码。语法糖指的是一些语法上的简写形式，可以简化代码，但需要在语法分析阶段进行转换。a+=1 是 C 语言中的一种复合赋值运算符，可以看作是语法糖的一种形式，因为它简化了对变量的自增操作。
+
+```c
+int main()
+{
+ int a,b,c;
+ c /= a + b;  // 转化为 c = c / (a+b)
+ b += -2;
+ c *= a + b;
+ return c;
+}
+```
+
+<div align="center", >
+<img src="./image/compound_assign.jpg" height="480px">
+<p >复合赋值运算</p>
+</div>
+
+非布尔值的处理
 
 ### 💡检查语法错误
 
 语法分析器需要检查程序中是否存在语法错误。如果发现语法错误，语法分析器需要报告错误信息并停止编译过程。
 
-### 💡处理语法糖
-
-语法分析器需要将语法糖转换为等价的代码。语法糖指的是一些语法上的简写形式，可以简化代码，但需要在语法分析阶段进行转换。
-
-
-
-非布尔值的处理
+使用Bison工具进行语法分析，任何与文法产生式不相符的语法结构都不被识别，
 
 ### 💡生成代码注释
 
@@ -574,13 +572,13 @@ public:
 ```c
 int add(int a, int b)
 {
-	return a + b;
+ return a + b;
 }
 int main()
 {
-	int c;
-	c = add(1, 2, 3);
-	return c;
+ int c;
+ c = add(1, 2, 3);
+ return c;
 }
 ```
 
@@ -597,14 +595,14 @@ int main()
 ```c
 int add(int a, int b)
 {
-	return a + b;
+ return a + b;
 }
 int main()
 {
-	int c;
-	c = add(1, d);
+ int c;
+ c = add(1, d);
     int c;
-	return c;
+ return c;
 }
 ```
 
@@ -653,26 +651,26 @@ if语句,for循环,while循环都需要跳转语句来实现控制流转换，�
 ```c
 int main()
 {
-	int a, b, c;
-	if (a > 1 && !(c > 4) || b < 2 && c != 2) {
-		a = 1;
-	} else {
-		a = 2;
-	}
-	return a;
+ int a, b, c;
+ if (a > 1 && !(c > 4) || b < 2 && c != 2) {
+  a = 1;
+ } else {
+  a = 2;
+ }
+ return a;
 }
 ```
 
 <div align="center", >
-	<img src="./image/短路求值_01.png" height="480px">
+ <img src="./image/短路求值_01.png" height="480px">
     <img src="./image/短路求值_02.png" height="480px">
-	<img src="./image/短路求值_03.png" height="480px">
-	<img src="./image/短路求值_04.png" height="480px">
-	<img src="./image/短路求值_05.png" height="480px">
-	<img src="./image/短路求值_06.png" height="480px">
-	<img src="./image/短路求值_07.png" height="480px">
-	<img src="./image/短路求值_08.png" height="480px">
-	<img src="./image/短路求值_09.png" height="480px">
+ <img src="./image/短路求值_03.png" height="480px">
+ <img src="./image/短路求值_04.png" height="480px">
+ <img src="./image/短路求值_05.png" height="480px">
+ <img src="./image/短路求值_06.png" height="480px">
+ <img src="./image/短路求值_07.png" height="480px">
+ <img src="./image/短路求值_08.png" height="480px">
+ <img src="./image/短路求值_09.png" height="480px">
     <img src="./image/短路求值_10.png" height="480px">
     <img src="./image/短路求值_11.png" height="480px">
     <img src="./image/短路求值_12.png" height="480px">
@@ -731,4 +729,3 @@ int main()
 对多线程、多进程、分布式和GPU编程等内容进行优化，以利用多核处理器和其他并行资源提高程序性能。
 
 ## 基本块划分及控制流图
-

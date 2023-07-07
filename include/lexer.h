@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef FLEX_USE
-#include "calculator_lex.h"
+#include "minic_lex.h"
 #else
 #include "myflex.h"
 #endif
