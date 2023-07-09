@@ -89,19 +89,18 @@ typedef struct ast_node_attr {
 struct ast_node {
     struct ast_node *parent;    // 父节点
     std::vector<struct ast_node *> sons; // 孩子节点
-    struct ast_node *next;       // 同级的下一个节点
-    struct ast_node *false_next;
-    struct ast_node *true_next;
     enum ast_operator_type type; // 节点类型
-    bool jump = true;            //
-    bool newLabel = true;        //
-    std::string label;           //
-    std::vector<std::string > labels;
+    struct ast_node *next;       // 同级的下一个节点
+    struct ast_node *false_next; // 表达式为真跳转的节点
+    struct ast_node *true_next;  // 表达式为假跳转的节点
+    bool jump = true;            // 是否进行跳转
+    bool newLabel = true;        // 是否新建一个新的label
+    std::string label;           // 当前节点的label
+    std::vector<std::string > labels; // 跳转的三个Label
+    bool visited = false;        // 访问标记
     struct ast_node_attr attr;   // node的其它属性
-    bool visited = false; //
     // 线性IR指令块，可包含多条IR指令
     InterCode blockInsts;
-
     // 线性IR指令或者运行产生的Value
     Value *val;
 };

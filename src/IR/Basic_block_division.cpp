@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief		进行基本块划分
+* @author		shuaikangzhou
+* @date		    2023/06/11
+* @details      对函数内的线性IR划分基本块，生成控制流图的节点表和边表
+*/
+
 #include <string>
 #include <vector>
 #include "ast.h"
@@ -247,7 +255,6 @@ InterCode *Basic_block_division(InterCode *blockInsts)
         node = nodeTable[i];
         if (!visited[i]) {
             node->Del = true;
-            // printf("节点%d %s不可达\n", i, node->label.c_str());
             for (CfgEdge *edge : edgeTable) {
                 if (edge->fromNodeID == node->id) {
                     edge->Del = true;

@@ -1,3 +1,10 @@
+/**
+* @file
+* @brief		生成控制流图
+* @author		shuaikangzhou
+* @date		    2023/06/18
+* @details      将节点表和边表转化成图形化的控制流图
+*/
 #include <gvc.h>
 #include <iostream>
 #include <string>
@@ -18,36 +25,25 @@ void graph_visit_ast_node(Agraph_t *g, std::vector<CfgNode *> &nodeTable, std::v
         if (node->Del) { continue; }
         Agnode_t *cfgnode = agnode(g, (char *)node->label.c_str(), 1);
         GraphNodeMap.emplace(node->label, cfgnode);
-        // 填充红色,必须加这一句，否则下面的fillcolor属性设置无效
-        // agsafeset(node, (char *)"style", (char *)"filled", (char *)"");
-        // agsafeset(node, (char *)"fillcolor", (char *)"yellow", (char *)"");
-        // agsafeset(node, (char *)"fontcolor", (char *)"black", (char *)"");
-        // agsafeset(node, (char *)"fontname", (char *)"SimSun", (char *)"");
         string IRs;
         std::vector<IRInst *> code;
         code = node->blockInsts.getInsts();
+        // 换行要用\\l
         for (auto &inst : code) {
             std::string instStr;
             inst->toString(instStr);
             IRs += instStr + " \\l ";
-            if (inst->getOp() == IRINST_JUMP_BR) {
-                // break;
-            }
-            // if()
         }
+        // | 用于分栏
         std::string label = node->label + "|" + IRs;
-        //  "<TABLE><TR><TD>1</TD><TD>Node 1 Info</TD></TR></TABLE>"
         agsafeset(cfgnode, (char *)"label", (char *)label.c_str(), "");
         agsafeset(cfgnode, (char *)"shape", (char *)"record", (char *)"");
     }
     for (int i = 0;i < edgeTable.size();i++) {
-
         CfgEdge *edge = edgeTable[i];
         if (edge->Del) {
             continue;
         }
-        // std::string label1 = edge->fromNodeLabel.substr(1, edge->fromNodeLabel.length() - 1);
-        // std::string label2 = edge->toNodeLabel.substr(1, edge->toNodeLabel.length() - 1);
         std::string label1 = edge->fromNodeLabel;
         std::string label2 = edge->toNodeLabel;
         // 创建边，每条边不设置名字

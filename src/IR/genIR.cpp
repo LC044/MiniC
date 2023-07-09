@@ -27,7 +27,7 @@ extern InterCode *Basic_block_division(InterCode *blockInsts);
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
 static bool ir_leaf_node(struct ast_node *node, bool isLeft = false);
 static bool ir_def_array(struct ast_node *node, ValueType type = ValueType::ValueType_Int, bool isLocal = false);
-
+// 这个也废弃了
 static bool isJump(struct ast_node *node)
 {
     switch (node->type) {
@@ -94,6 +94,7 @@ static bool ir_block(struct ast_node *node)
     funcSymbol->currentScope--;
     return true;
 }
+// 数组定义
 static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
     Value *val = nullptr;
@@ -108,6 +109,7 @@ static bool ir_def_array(struct ast_node *node, ValueType type, bool isLocal)
     }
     return true;
 }
+// 变量定义
 static bool ir_def_list(struct ast_node *node, bool isLocal)
 {
     std::vector<struct ast_node *>::iterator pIter;
@@ -305,6 +307,7 @@ static bool ir_return(struct ast_node *node)
     // return语句不应该放在return里面，应该放在函数定义的结尾
     return true;
 }
+// 函数调用
 static bool ir_func_call(struct ast_node *node, bool isLeft)
 {
     // 第一个节点是函数名
@@ -357,6 +360,7 @@ static bool ir_func_call(struct ast_node *node, bool isLeft)
     }
     return true;
 }
+// 二元运算 + - * / %
 static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -370,14 +374,12 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
         // 某个变量没有定值
         return false;
     }
-
     // 减法的右边操作数
     struct ast_node *right = ir_visit_ast_node(src2_node);
     if (!right) {
         // 某个变量没有定值
         return false;
     }
-
     // 先把左右孩子操作数添加进去，在添加当前节点的操作数
     // 后序遍历
     node->blockInsts.addInst(left->blockInsts);
@@ -444,6 +446,7 @@ static bool ir_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     return true;
 }
+// 自增自减
 static bool ir_inc_dec(struct ast_node *node, enum ast_operator_type type, bool isLeft)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -504,6 +507,30 @@ static bool ir_inc_dec(struct ast_node *node, enum ast_operator_type type, bool 
     }
     return true;
 }
+// 取负运算
+static bool ir_neg(struct ast_node *node)
+{
+    struct ast_node *son1_node = node->sons[0];
+    struct ast_node *left = ir_visit_ast_node(son1_node);
+    if (!left) {
+        // 某个变量没有定值
+        // 这里缺省设置变量不存在则创建，因此这里不会错误
+        return false;
+    }
+    node->blockInsts.addInst(left->blockInsts);
+    if (!(left->val->isConst or left->val->type == ValueType::ValueType_Bool)) {
+        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
+        node->blockInsts.addInst(
+        new UnaryIRInst(IRINST_OP_NEG, val, left->val));
+        node->val = val;
+    } else {
+        node->val = left->val;
+        node->val->intVal = -node->val->intVal;
+    }
+    return true;
+}
+// 数组索引的维度处理
+// 应该是废弃了
 static bool ir_dimensions(struct ast_node *node, bool isSecond)
 {
 
@@ -546,7 +573,6 @@ static bool ir_dimensions(struct ast_node *node, bool isSecond)
                     new BinaryIRInst(IRINST_OP_MUL, node->val, node->sons[0]->val, offsetVal)
                 );
             }
-
         }
         dimFlag--;
     } else {
@@ -565,6 +591,7 @@ static bool ir_dimensions(struct ast_node *node, bool isSecond)
     }
     return true;
 }
+// 数组引用
 static bool ir_index(struct ast_node *node, bool isLeft)
 {
     // 数组索引第一个孩子节点是变量名
@@ -659,7 +686,6 @@ static bool ir_assign(struct ast_node *node)
     struct ast_node *son1_node = node->sons[0];
     struct ast_node *son2_node = node->sons[1];
 
-
     // 赋值运算符的右侧操作数
 
     // 赋值运算符的左侧操作数
@@ -686,27 +712,7 @@ static bool ir_assign(struct ast_node *node)
     );
     return true;
 }
-static bool ir_neg(struct ast_node *node)
-{
-    struct ast_node *son1_node = node->sons[0];
-    struct ast_node *left = ir_visit_ast_node(son1_node);
-    if (!left) {
-        // 某个变量没有定值
-        // 这里缺省设置变量不存在则创建，因此这里不会错误
-        return false;
-    }
-    node->blockInsts.addInst(left->blockInsts);
-    if (!(left->val->isConst or left->val->type == ValueType::ValueType_Bool)) {
-        Value *val = newTempValue(ValueType::ValueType_Int, FuncName);
-        node->blockInsts.addInst(
-        new UnaryIRInst(IRINST_OP_NEG, val, left->val));
-        node->val = val;
-    } else {
-        node->val = left->val;
-        node->val->intVal = -node->val->intVal;
-    }
-    return true;
-}
+// 关系运算
 static bool ir_cmp(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -737,6 +743,7 @@ static bool ir_cmp(struct ast_node *node)
     // printf("cmp指1\n");
     return true;
 }
+// if语句
 static bool ir_if(struct ast_node *node)
 {
     // if 有三个孩子节点，比较运算、true代码块、false代码块(false可能不存在)
@@ -840,6 +847,7 @@ static bool ir_if(struct ast_node *node)
     IFflag--;
     return true;
 }
+// while语句
 static bool ir_while(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -915,6 +923,7 @@ static bool ir_while(struct ast_node *node)
     IFflag--;
     return true;
 }
+// for语句
 static bool ir_for(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -951,6 +960,18 @@ static bool ir_for(struct ast_node *node)
         new UselessIRInst(label1 + ":")
     );
     node->blockInsts.addInst(cond->blockInsts);
+    if (!(cond->val->type == ValueType::ValueType_Bool)) {
+        Value *val = nullptr;
+        val = newTempValue(ValueType::ValueType_Bool, FuncName);
+        Value *constVal = newConstValue(0);
+        node->blockInsts.addInst(
+        new BinaryIRInst(IRINST_OP_CMP, "ne", val, cond->val, constVal)
+        );
+        node->blockInsts.addInst(
+            new JumpIRInst(IRINST_JUMP_BC, val, Bc1Labels.top(), Bc2Labels.top())
+        );
+        node->val = val;
+    }
     node->blockInsts.addInst(
         new UselessIRInst(label2 + ":")
     );
@@ -969,6 +990,7 @@ static bool ir_for(struct ast_node *node)
     WhileBlock = false;
     return true;
 }
+// break语句
 static bool ir_break(struct ast_node *node)
 {
     node->blockInsts.addInst(
@@ -976,6 +998,7 @@ static bool ir_break(struct ast_node *node)
     );
     return true;
 }
+// continue语句
 static bool ir_continue(struct ast_node *node)
 {
     node->blockInsts.addInst(
@@ -983,6 +1006,7 @@ static bool ir_continue(struct ast_node *node)
     );
     return true;
 }
+// 逻辑运算 ||
 static bool ir_or(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -1030,6 +1054,7 @@ static bool ir_or(struct ast_node *node)
     }
     return true;
 }
+// 逻辑运算 &&
 static bool ir_and(struct ast_node *node)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -1079,6 +1104,7 @@ static bool ir_and(struct ast_node *node)
     }
     return true;
 }
+// 逻辑非运算
 static bool ir_not(struct ast_node *node, bool isLeft)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -1126,7 +1152,7 @@ static bool ir_not(struct ast_node *node, bool isLeft)
     Bc2Labels.push(label1);
     return true;
 }
-// 递归遍历抽象语法树进行计算
+// 叶子节点
 static bool ir_leaf_node(struct ast_node *node, bool isLeft)
 {
     Value *val = nullptr;
@@ -1140,6 +1166,7 @@ static bool ir_leaf_node(struct ast_node *node, bool isLeft)
             return false;
         }
         node->val = val;
+        // printf("找到变量:%s %s\n", val->getName().c_str(), val->id_name.c_str());
         if (!isLeft) {
             if (val->dim > 0 or val->dims[0] != 0) {
                 // 数组符号做右值
@@ -1179,13 +1206,13 @@ static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft)
     if (nullptr == node) {
         return nullptr;
     }
-    if (node->type != AST_DIMS) {
-        if (!node->visited) {
-            node->visited = true;
-        } else {
-            return nullptr;
-        }
-    }
+    // if (node->type != AST_DIMS) {
+    //     if (!node->visited) {
+    //         node->visited = true;
+    //     } else {
+    //         return nullptr;
+    //     }
+    // }
 
     bool result = true;
 

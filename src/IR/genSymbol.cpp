@@ -3,7 +3,7 @@
 * @brief		生成全局变量符号表和函数符号表.
 * @author		shuaikangzhou
 * @date		    2023/06/03
-* @details      该文件大多数函数都已经弃用
+* @details      用于生成符号表和语义检查，处理语义错误，后面不再进行语义上的报错
 */
 #include "ast.h"
 #include "IRCode.h"
@@ -26,7 +26,8 @@ static bool sym_block(struct ast_node *node);
 static bool sym_def_list(struct ast_node *node, bool isLocal = false);
 static bool sym_def_func(struct ast_node *node);
 static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft = false, bool isLast = false);
-
+// 广搜AST
+// 后面用不到了，先留着吧
 void BFS(struct ast_node *node)
 {
     // 广搜所有局部变量定义
@@ -45,6 +46,25 @@ void BFS(struct ast_node *node)
     }
 
 }
+// 根节点的处理
+static bool sym_cu(struct ast_node *node)
+{
+    std::vector<struct ast_node *>::iterator pIter;
+    // // 第一步首先确定所有全局变量
+    // for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+    //     if ((*pIter)->type == AST_DEF_LIST) {
+    //         struct ast_node *temp = sym_visit_ast_node(*pIter);
+    //         if (temp == NULL) return true;
+    //     }
+    // }
+    // 第二步确定函数表
+    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
+        struct ast_node *temp = sym_visit_ast_node(*pIter);
+        if (!temp) return false;
+    }
+    return true;
+}
+// 语句块
 static bool sym_block(struct ast_node *node)
 {
     // FuncSymbol *funcVal = symbolTable->findFuncValue(FuncName);
@@ -71,6 +91,7 @@ static bool sym_block(struct ast_node *node)
     funcSymbol->currentScope--;
     return true;
 }
+// 参数里面带数组
 static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
 {
     struct ast_node *arr_name = node->sons[0];
@@ -93,6 +114,7 @@ static bool sym_paras_array(struct ast_node *node, bool isTemp = false)
     node->val = localVarValue;
     return true;
 }
+// 函数定义
 static bool sym_def_func(struct ast_node *node)
 {
     struct ast_node *func_type = node->sons[0];
@@ -170,6 +192,7 @@ static bool sym_def_func(struct ast_node *node)
     if (!func_block) return false;
     return true;
 }
+// 数组定义
 static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
 {
     Value *val = nullptr;
@@ -215,6 +238,7 @@ static bool sym_def_array(struct ast_node *node, ValueType type, bool isLocal)
     node->val = val;
     return true;
 }
+// 变量定义
 static bool sym_def_list(struct ast_node *node, bool isLocal)
 {
     std::vector<struct ast_node *>::iterator pIter;
@@ -270,23 +294,7 @@ static bool sym_def_list(struct ast_node *node, bool isLocal)
     }
     return true;
 }
-static bool sym_cu(struct ast_node *node)
-{
-    std::vector<struct ast_node *>::iterator pIter;
-    // // 第一步首先确定所有全局变量
-    // for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-    //     if ((*pIter)->type == AST_DEF_LIST) {
-    //         struct ast_node *temp = sym_visit_ast_node(*pIter);
-    //         if (temp == NULL) return true;
-    //     }
-    // }
-    // 第二步确定函数表
-    for (pIter = node->sons.begin(); pIter != node->sons.end(); ++pIter) {
-        struct ast_node *temp = sym_visit_ast_node(*pIter);
-        if (!temp) return false;
-    }
-    return true;
-}
+// 二元运算 + - * / %
 static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
 {
     // TODO real number add
@@ -310,6 +318,17 @@ static bool sym_binary_op(struct ast_node *node, enum ast_operator_type type)
     }
     return true;
 }
+// 取负运算
+static bool sym_neg(struct ast_node *node)
+{
+    struct ast_node *src1_node = node->sons[0];
+    struct ast_node *left = sym_visit_ast_node(src1_node);
+    if (!left) {
+        return false;
+    }
+    return true;
+}
+// 自增自减
 static bool sym_inc_dec(struct ast_node *node, enum ast_operator_type type, bool isLeft)
 {
     struct ast_node *src1_node = node->sons[0];
@@ -319,6 +338,8 @@ static bool sym_inc_dec(struct ast_node *node, enum ast_operator_type type, bool
     }
     return true;
 }
+// 数组索引的维度处理
+// 应该是废弃了
 static bool sym_dimensions(struct ast_node *node, bool isSecond)
 {
 
@@ -372,6 +393,7 @@ static bool sym_dimensions(struct ast_node *node, bool isSecond)
 
     return true;
 }
+// 数组引用
 static bool sym_index(struct ast_node *node, bool isLeft)
 {
     // 数组索引第一个孩子节点是变量名
@@ -388,6 +410,7 @@ static bool sym_index(struct ast_node *node, bool isLeft)
     }
     return true;
 }
+// 赋值语句
 static bool sym_assign(struct ast_node *node)
 {
     // TODO real number add
@@ -413,6 +436,7 @@ static bool sym_assign(struct ast_node *node)
     }
     return true;
 }
+// return语句
 static bool sym_return(struct ast_node *node)
 {
     ReturnFlag += 1;
@@ -432,6 +456,7 @@ static bool sym_return(struct ast_node *node)
     }
     return true;
 }
+// 函数调用
 static bool sym_func_call(struct ast_node *node, bool isLeft)
 {
     // 第一个节点是函数名
@@ -470,6 +495,7 @@ static bool sym_func_call(struct ast_node *node, bool isLeft)
     }
     return true;
 }
+// if语句
 static bool sym_if(struct ast_node *node, bool isLast)
 {
     Ifcmp = true;
@@ -493,6 +519,7 @@ static bool sym_if(struct ast_node *node, bool isLast)
     }
     return true;
 }
+// 关系运算
 static bool sym_cmp(struct ast_node *node, bool isSecond)
 {
     // 仅第一次访问有效
@@ -508,15 +535,7 @@ static bool sym_cmp(struct ast_node *node, bool isSecond)
     }
     return true;
 }
-static bool sym_neg(struct ast_node *node)
-{
-    struct ast_node *src1_node = node->sons[0];
-    struct ast_node *left = sym_visit_ast_node(src1_node);
-    if (!left) {
-        return false;
-    }
-    return true;
-}
+// while语句
 static bool sym_while(struct ast_node *node)
 {
     LoopCount++;
@@ -535,6 +554,7 @@ static bool sym_while(struct ast_node *node)
     LoopCount--;
     return true;
 }
+// for语句
 static bool sym_for(struct ast_node *node)
 {
     LoopCount++;
@@ -549,6 +569,7 @@ static bool sym_for(struct ast_node *node)
     LoopCount--;
     return true;
 }
+// break语句
 static bool sym_break(struct ast_node *node)
 {
     if (LoopCount) {
@@ -559,6 +580,7 @@ static bool sym_break(struct ast_node *node)
         return false;
     }
 }
+// continue语句
 static bool sym_continue(struct ast_node *node)
 {
     if (LoopCount) {
@@ -569,6 +591,7 @@ static bool sym_continue(struct ast_node *node)
         return false;
     }
 }
+// 逻辑运算 && ||
 static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type type, bool isSecond)
 {
     if (type == AST_OP_NOT) {
@@ -592,6 +615,7 @@ static bool sym_logical_operation(struct ast_node *node, enum ast_operator_type 
     }
     return true;
 }
+// 逻辑非运算
 static bool sym_not(struct ast_node *node, bool isLeft)
 {
     // return true;
@@ -602,6 +626,7 @@ static bool sym_not(struct ast_node *node, bool isLeft)
     }
     return true;
 }
+// 叶子节点
 static bool sym_leaf_node(struct ast_node *node, bool isLeft)
 {
     // return true;
@@ -724,6 +749,8 @@ static struct ast_node *sym_visit_ast_node(struct ast_node *node, bool isLeft, b
 
     return node;
 }
+
+// 添加内置函数
 void add_buile_in_func()
 {
     FuncSymbol *sym = newFuncValue("putint", ValueType::ValueType_Void);
@@ -739,9 +766,8 @@ void add_buile_in_func()
     sym = newFuncValue("getarray", ValueType::ValueType_Void);
     sym->fargs.push_back(val);
 }
-/// @brief 遍历抽象语法树产生线性IR，保存到IRCode中
+/// @brief 遍历抽象语法树产生符号表
 /// @param root 抽象语法树
-/// @param IRCode 线性IR
 /// @return true: 成功 false: 失败
 bool genSymbol(struct ast_node *root)
 {

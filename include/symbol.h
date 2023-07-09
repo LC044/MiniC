@@ -64,7 +64,8 @@ public:
 
     /// @brief 整型常量的值
     int intVal = 0;
-    // 不初始化会有问题
+    /// @brief 存储数组维度
+    // 不初始化会有问题, 改用vector会更好
     int dims[10] = { 0,0,0,0,0,0,0,0,0,0 };
     int dim = 0;
     /// @brief 实数常量的值

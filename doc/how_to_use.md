@@ -103,7 +103,7 @@
   0[0-7]+
   ```
 
-​  由于文法暂不支持浮点数，所以这里就不写浮点数的识别
+  由于文法暂不支持浮点数，所以这里就不写浮点数的识别
 
 ### 💠屏蔽注释
 
@@ -425,14 +425,45 @@ int main()
 <img src="./image/compound_assign.jpg" height="480px">
 <p >复合赋值运算</p>
 </div>
-
 非布尔值的处理
+
+```c
+int main()
+{
+	int flag;
+    if(flag){
+        return -1;
+    }
+    // 上句等价于
+    if(flag!=0){
+        return -1;
+    }
+    return 0;
+}
+```
+
+<div align="center" >
+<img src="./image/bool.jpg" width="480px"><img src="./image/bool_1.jpg" width="480px">
+<p >非bool值</p>
+</div>
+
+
+实际上，上面这种用法可以简化条件判断，但并不是严格意义上的语法糖, if(flag)的语义与显式写作 if (a != 0) 是相同的。所以我的代码中是在语义分析层面上判断条件表达式或者逻辑运算的操作数是否是bool值，对非bool值单独处理。
 
 ### 💡检查语法错误
 
 语法分析器需要检查程序中是否存在语法错误。如果发现语法错误，语法分析器需要报告错误信息并停止编译过程。
 
-使用Bison工具进行语法分析，任何与文法产生式不相符的语法结构都不被识别，
+使用Bison工具进行语法分析，任何与文法产生式不相符的语法结构都不被识别
+
+```c
+int main()
+{
+    return 0
+}
+```
+
+![image-20230708215002337](image/image-20230708215002337.png)
 
 ### 💡生成代码注释
 
@@ -491,6 +522,13 @@ public:
 ```
 
 函数符号本身就是一个符号变量，除了有其他符号的属性外，还有局部变量表、临时变量表、参数列表等函数的属性
+
+<div align="center">
+    <img src="image/符号表_02.png">
+    <p>符号表</p>
+</div>
+
+
 
 还使用了符号栈来管理局部变量的作用域
 
@@ -564,6 +602,11 @@ public:
 ```
 
 需要查找某个符号时从栈顶依次向下查找，直到找到某个符号。判断是否出现重定义的错误时只需要在栈顶查找该变量是否存在即可
+
+<div align="center">
+    <img src="image/符号表_01.png">
+    <p>符号表及符号栈</p>
+</div>
 
 ### 🎓函数调用检查
 
@@ -661,9 +704,9 @@ int main()
 }
 ```
 
-<div align="center", >
+<div align="center">
  <img src="./image/短路求值_01.png" height="480px">
-    <img src="./image/短路求值_02.png" height="480px">
+ <img src="./image/短路求值_02.png" height="480px">
  <img src="./image/短路求值_03.png" height="480px">
  <img src="./image/短路求值_04.png" height="480px">
  <img src="./image/短路求值_05.png" height="480px">
@@ -671,12 +714,13 @@ int main()
  <img src="./image/短路求值_07.png" height="480px">
  <img src="./image/短路求值_08.png" height="480px">
  <img src="./image/短路求值_09.png" height="480px">
-    <img src="./image/短路求值_10.png" height="480px">
-    <img src="./image/短路求值_11.png" height="480px">
-    <img src="./image/短路求值_12.png" height="480px">
-    <img src="./image/短路求值_13.png" height="480px">
-    <img src="./image/短路求值_14.png" height="480px">
+ <img src="./image/短路求值_10.png" height="480px">
+ <img src="./image/短路求值_11.png" height="480px">
+ <img src="./image/短路求值_12.png" height="480px">
+ <img src="./image/短路求值_13.png" height="480px">
+ <img src="./image/短路求值_14.png" height="480px">
 </div>
+
 
 ### ⌛符号表处理
 
@@ -708,9 +752,27 @@ int main()
 
 对循环结构进行优化，例如展开循环、循环变量初始值的调整等，以提高循环的效率。
 
-### 🔎常数折叠
+### 🔎常量折叠
 
 在编译期间对一些常量表达式进行计算，以减少程序运行时的计算量。
+
+**常量折叠**：常量折叠是编译器中的一种优化技术，它可以在生成中间IR的过程中对表达式中的常量进行优化，从而减少代码的执行时间和存储空间。常量折叠优化可以在生成中间IR的过程中进行
+
+**常量传播**：常量传播技术技术是编译器中的一种优化技术，它可以将程序中的常量表达式计算出来，然后将其值直接传递到使用该表达式的地方，从而减少表达式的计算量和内存占用。
+
+```c
+int main()
+{
+	int a;
+	a = 5 % 2 + 3 * 4;
+	return a;
+}
+```
+
+<div align="center">
+ <img src="./image/常量折叠.jpg" height="480px">
+ <p>AST</p>
+</div>
 
 ### 🔎变量复用
 
@@ -729,3 +791,140 @@ int main()
 对多线程、多进程、分布式和GPU编程等内容进行优化，以利用多核处理器和其他并行资源提高程序性能。
 
 ## 基本块划分及控制流图
+
+### 基本块划分
+
+基本块一共有三类入口：
+
+①代码段的第一个指令；
+
+②条件跳转和无条件跳转的目标语句；
+
+③条件跳转语句的下一条语句；
+
+基本块优化针对的的函数内部的IR，而IR使用一个线性表存储的，在前面处理if，while，for等出现跳转指令的时候已经实现了基本块划分，所以只需要遍历一下IR表找到label指令(类型为Useless)即可
+
+定义两个数据结构
+
+控制流节点
+
+```c++
+struct CfgNode {
+  InterCode blockInsts;  // 代码块
+  int id;          // 唯一标识符
+  bool Del = false;    // 删除标记
+  std::string label;    // 标签
+};
+```
+
+控制流的边
+
+```c++
+struct CfgEdge {
+  int fromNodeID; // 起始节点标识符
+  int toNodeID;  // 结束节点标识符
+  std::string fromNodeLabel; //
+  std::string toNodeLabel; //
+  bool Del = false; // 删除标记
+};
+```
+
+算法流程：
+
+![img](image/wps13.png)
+
+
+
+### 生成控制流图
+
+上面已经得到了控制流图的节点表和边表
+
+遍历节点表利用Graphviz的API可以生成控制流图的每个节点，节点图形的内容为该节点的代码块（换行需要使用”\\l”,分栏需要使用”|”）
+
+```c++
+for (auto &inst : code) {
+  std::string instStr;
+  inst->toString(instStr);
+  IRs += instStr + " \\l ";
+}
+std::string label = node->label + "|" + IRs;
+```
+
+遍历边表即可绘制控制流图的每条边
+
+仿照graph.cpp的代码即可实现该功能
+
+```c
+int main()
+{
+  int a, b, c;
+  int i;
+  a = 1;
+  for (i = 0;i < 10;i++) {
+    b++;
+    if (i == 5) {
+      c = 1;
+      break;
+    }
+  }
+  return c;
+}
+```
+
+<div align="center">
+ <img src="./image/test_main_cfg.png" height="720px">
+ <p>控制流图</p>
+</div>
+
+### 控制流图优化
+
+控制流图优化实现了两个优化部分
+
+一是删除无用节点（第一条指令是跳转指令）
+
+二是删除不可达节点（从起始节点不可达）
+
+实现原理：
+
+![img](image/wps15.png)
+
+ 
+
+ 对于代码
+
+```c
+int main()
+{
+ int a, b, c;
+ int i;
+ a = 1;
+ if (a) {
+  for (i = 0;i < 10;i++) {
+    b += a++;
+    if (i == 5) {
+      c = 1;
+      break;
+      c = 2; // 不可达
+    } else if (i == 6) {
+      c = 2;
+    }
+  }
+  return 1;	
+ } else {
+  return 2;
+ }
+ // 该部分不可达
+ if (a > 0) c = 11;
+ else {
+  return c;
+ }
+}
+```
+
+控制流图（红框的部分是可优化的节点）
+
+![wps16](image/wps16.jpg)
+
+优化后的控制流图如下
+
+![img](image/wps17.jpg) 
