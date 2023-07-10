@@ -1,3 +1,12 @@
+/**
+* @file
+* @brief		生成中间IR
+* @author		shuaikangzhou
+* @date		    2023/06/18
+* @details
+*/
+
+
 #include "ast.h"
 #include "IRCode.h"
 #include <string.h>
@@ -5,7 +14,6 @@
 #include <stack>
 static bool WhileBlock = false;
 extern bool ExitLabel;
-// static bool IFflag = false;
 static int IFflag = 0;
 int dimFlag = 0;
 std::string ArrName;
@@ -14,14 +22,6 @@ std::stack<std::string> Bc2Labels;
 std::stack<std::string> Breaklabels;
 std::stack<std::string> ContinueLabels;
 extern std::string FuncName;
-// #include <iostream>
-extern std::unordered_map<std::string, Value * > varsMap;
-// 用来保存所有的函数信息
-extern std::unordered_map<std::string, FuncSymbol * > funcsMap;
-// 保存全局变量名，以便顺序遍历
-extern std::vector<std::string > varsName;
-// 保存函数名，以便顺序遍历
-extern std::vector<std::string > funcsName;
 extern SymbolTable *symbolTable;
 extern InterCode *Basic_block_division(InterCode *blockInsts);
 static struct ast_node *ir_visit_ast_node(struct ast_node *node, bool isLeft = false);
@@ -146,7 +146,7 @@ static bool ir_def_func(struct ast_node *node)
     struct ast_node *func_name = node->sons[1];
     struct ast_node *func_paras = node->sons[2];
     FuncName = func_name->attr.id;
-    FuncSymbol *FuncVal = funcsMap[FuncName];
+    FuncSymbol *FuncVal = symbolTable->funcsMap[FuncName];
     func_name->val = FuncVal;
     if (is_buildIn_func(FuncName)) {
         return true;

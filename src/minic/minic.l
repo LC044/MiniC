@@ -67,18 +67,21 @@ white_line  [\r\n]
 
 
 [1-9]{d}*|0		{
+                // 十进制整数
                 yylval.integer_num.val = (int)strtol(yytext, (char **)NULL, 10);
                 yylval.integer_num.lineno = yylineno;
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
            }
 "0"(x|X){h}+	{
+                // 十六进制整数
                 yylval.integer_num.val = (int)strtol(yytext, (char **)NULL, 16);
                 yylval.integer_num.lineno = yylineno;
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
                 return T_DIGIT;
             }
-"0"{o}+	{
+"0"{o}+	        {
+                // 八进制整数
                 yylval.integer_num.val = (int)strtol(yytext, (char **)NULL, 8);
                 yylval.integer_num.lineno = yylineno;
                 // printf("%s  %d\n",yytext, yylval.integer_num.val);
@@ -122,12 +125,14 @@ white_line  [\r\n]
 "!"         |
 ","         {return yytext[0];}
 {l}+({d}|{l})* {
+                // 标识符
                 strncpy(yylval.var_id.id, yytext, sizeof(yylval.var_id.id));
                 yylval.var_id.lineno = yylineno;
                 return T_ID;
             }
 
 ((({d}+\.{d}+)|({d}+(\.)?)|(\.{d}+))(e|E)(-|\+)?{d}+)|(({d}+\.{d}+)|({d}+\.)|(\.{d}+))		{
+                // 浮点数
                 yylval.float_num.val = (double)strtod(yytext, (char **)NULL);
                 yylval.float_num.lineno = yylineno;
                 // printf("识别的数:%lf\n",yylval.float_num.val);

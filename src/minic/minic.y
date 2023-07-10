@@ -1,3 +1,11 @@
+/**
+* @file
+* @brief		MiniC文法
+* @author		shuaikangzhou
+* @date		    2023/06/18
+* @details      具体文法产生式参见doc/readme.md
+*/
+
 %{
 #include <cstdio>
 #include <cstring>
@@ -64,7 +72,7 @@ void yyerror(char * msg);
 %left T_CMP
 %left '+' '-'
 %left '*' '/' '%'
-%right UMINUS '!' "++" "--"
+%right UMINUS '!' "++" "--" 
 %nonassoc LOWER_THEN_ELSE
 %nonassoc T_ELSE
 %nonassoc '(' ')'

@@ -1,3 +1,12 @@
+/**
+* @file
+* @brief		定义控制流图的节点和边
+* @author		shuaikangzhou
+* @date		    2023/06/18
+* @details
+*/
+
+
 #include <string>
 #include <vector>
 #include "ast.h"
@@ -5,11 +14,6 @@
 #include <string.h>
 #include "symbol.h"
 #include <stack>
-// #ifndef GDOT
-// #define GDOT
-// int gDot = 0;
-// #endif
-
 
 struct CfgNode {
     InterCode blockInsts;  // 代码块
