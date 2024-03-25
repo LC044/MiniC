@@ -1,6 +1,7 @@
 test/
 cmake-build-debug/
 .VSCodeCounter/
+.vscode
 .history/
 # src/minic/calculator_lex.cpp
 # src/minic/calculator_lex.h
