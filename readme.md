@@ -219,4 +219,10 @@ git reset --hard origin/main
 
 [参考文档](./doc/readme.md)
 
-Copyright © by ShuaikangZhou
+打个广告
+
+[MemoTrace——一款强大的微信聊天记录管理工具](https://memotrace.cn/)
+
+> 我深信有意义的不是微信，而是隐藏在对话框背后的一个个深刻故事。未来，每个人都能拥有AI的陪伴，而你的数据能够赋予它有关于你过去的珍贵记忆。我希望每个人都有将自己的生活痕迹👨‍👩‍👦👚🥗🏠️🚴🧋⛹️🛌🛀留存的权利，而不是遗忘💀。
+
+![](https://memotrace.cn/img/pdfdemo.png)
